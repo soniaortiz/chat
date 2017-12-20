@@ -1,7 +1,7 @@
 import * as mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
-    var userSchema = new Schema({
+    const userSchema = new Schema({
         email: String,
         name: String,
         middleName: String,
@@ -9,7 +9,7 @@ const Schema = mongoose.Schema;
         birthdate: Date,
         sex: String,
         contacts: [{type: Schema.Types.Mixed, ref: 'User'}],
-        // conversations: [{type: Schema.Types.ObjectId, ref:'Conversation'}],
+        conversations: [{type: Schema.Types.ObjectId, ref:'Conversation'}],
         avatar: String
     });
 

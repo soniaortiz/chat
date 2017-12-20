@@ -6,7 +6,7 @@ import * as mongodb from 'mongodb';
 import * as bodyParser from 'body-parser';
 import * as errorHandler from 'errorhandler';
 import * as validator from 'express-validator';
-import { User } from './schema';
+import { User } from './models/models';
 import { MongooseDocument } from 'mongoose';
 import { log } from 'util';
 import * as graphqlHTTP from 'express-graphql';
@@ -48,7 +48,6 @@ import { GraphQLSchema } from 'graphql/type/schema';
             })
             res.send("found");
         })
-
         app.post('/singin', (req: express.Request, res: express.Response, next: express.NextFunction)=>{
             console.log("Register user");
             User.collection.insert(req.body.email).then(
@@ -58,14 +57,15 @@ import { GraphQLSchema } from 'graphql/type/schema';
                 }
             ).catch((e: Error)=>console.error(e))
         })
-
-        app.get('/me', (req: express.Request, res: express.Response, next: express.NextFunction)=>{
-            console.log("My profile");
+        app.get('/user', (req: express.Request, res: express.Response, next: express.NextFunction)=>{
+            console.log("User profile");
             User.collection.findOne({}).then(
                 ()=>console.log("this is my profile")
             )
         })
-
+        app.get('/dashboard', (req: express.Request, res: express.Response, next: express.NextFunction)=>{
+            console.log("Dashboard after authenticated");
+        })
         }
     ).catch((e: Error)=>{console.error(e);});
 
