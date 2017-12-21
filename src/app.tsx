@@ -86,9 +86,11 @@ import { GraphQLSchema } from 'graphql/type/schema';
             res.send(200);
         });
         app.get('/user/aceptfriendrequest', (req, res, next)=>{
-            User.findById(req.query._id).update({$push: {contacts: req.query.sender_id}})
+            User.findById(req.query._id).update({$push: {contacts: req.query.sender_id, conversations: new Conversation()}})
         .then((updatedUser)=>{
                 res.send(updatedUser)
+            }).catch((e)=>{
+                res.send(e);
             })
         });
         app.get('/users', (req, res, next)=>{

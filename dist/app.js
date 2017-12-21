@@ -75,9 +75,11 @@ mongoose.connect(url).then(function () {
         res.send(200);
     });
     app.get('/user/aceptfriendrequest', function (req, res, next) {
-        models_1.User.findById(req.query._id).update({ $push: { contacts: req.query.sender_id } })
+        models_1.User.findById(req.query._id).update({ $push: { contacts: req.query.sender_id, conversations: new models_1.Conversation() } })
             .then(function (updatedUser) {
             res.send(updatedUser);
+        }).catch(function (e) {
+            res.send(e);
         });
     });
     app.get('/users', function (req, res, next) {
