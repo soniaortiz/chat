@@ -2,11 +2,12 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var express = require("express");
 var http = require("http");
+var path = require("path");
 var mongoose = require("mongoose");
 var bodyParser = require("body-parser");
 var errorHandler = require("errorhandler");
 var validator = require("express-validator");
-var schema_1 = require("./schema");
+var models_1 = require("./models/models");
 //server use
 var url = 'mongodb://localhost:27017/chat';
 var app = express();
@@ -20,36 +21,84 @@ mongoose.Promise = global.Promise; //Overwrite mongoose promise
 //DB connection
 mongoose.connect(url).then(function () {
     console.log("connection with db stablished");
-    app.get('/', function (req, res, next) {
-        console.log("Send response");
-        // User.create
-        res.send();
-    });
-    app.get('/login', function (req, res, next) {
-        console.log("login");
-        console.log("Env port: ", process.env.PORT);
-        // console.log(req.query);
-        res.send('route with react');
-    });
     app.post('/login', function (req, res, next) {
-        // console.log(req.body);
-        schema_1.User.findOne({ email: req.body.email }).then(function (doc) {
-            console.log(doc);
+        models_1.User.findOne({ email: req.body.email }).then(function (doc) {
+            console.log("User found ", doc);
+            res.send(doc);
         }).catch(function (e) {
             console.log("User not found");
         });
-        res.send("found");
     });
-    app.post('/singin', function (req, res, next) {
-        console.log("Register user");
-        schema_1.User.collection.insert(req.body.email).then(function () {
-            console.log("request", req.body);
-            res.send("inserted");
+    app.post('/signup', function (req, res, next) {
+        // console.log("Register user", req.body);
+        var user = new models_1.User(req.body).save()
+            .then(function (user) {
+            console.log("request", user);
+            res.send(user);
         }).catch(function (e) { return console.error(e); });
     });
-    app.get('/me', function (req, res, next) {
-        console.log("My profile");
-        schema_1.User.collection.findOne({}).then(function () { return console.log("this is my profile"); });
+    app.get('/user', function (req, res, next) {
+        console.log("User profile");
+        if (req.query._id.length != 24)
+            res.status(404).send("Invalid id");
+        models_1.User.findById(req.query._id)
+            .then(function (user) {
+            console.log(user);
+            !user ? res.status(404).send("User not found") :
+                (console.log("this is my profile", user),
+                    res.send(user));
+        });
+    });
+    app.get('user/conversations', function (req, res, next) {
+        console.log("Serving conversations");
+        models_1.User.findById(req.query._id)
+            .then(function (user) {
+            !user && res.send(404).send('User not found');
+            console.log("Sending conversations");
+            models_1.Conversation.find()
+                .then(function (conversations) {
+                res.send(conversations); //will send all conversations of the user
+            });
+        });
+    });
+    app.get('user/conversations/:_id', function (req, res, next) {
+        console.log("Serving conversation");
+        models_1.Conversation.findById(req.body._id)
+            .then(function (conversation) {
+            // !conversation && res.send(404);
+            res.send(conversation);
+        });
+    });
+    app.get('user/addcontact', function (req, res, next) {
+        //create conversation when accepted
+        //pass the id of contact that want to add
+        res.send(200);
+    });
+    app.get('/user/aceptfriendrequest', function (req, res, next) {
+        models_1.User.findById(req.query._id).update({ $push: { contacts: req.query.sender_id } })
+            .then(function (updatedUser) {
+            res.send(updatedUser);
+        });
+    });
+    app.get('/users', function (req, res, next) {
+        models_1.User.find()
+            .then(function (users) {
+            res.send(users);
+        });
+    });
+    app.get('/deleteusers', function (req, res, next) {
+        models_1.User.find({ password: null }, function (users) {
+            res.send(users);
+            // console.log(users)
+        }).then(function (users) {
+            users.forEach(function (user, i) {
+                console.log("usuario ", i, " : ", user);
+                users[i].remove();
+            });
+        });
+    });
+    app.get('*', function (req, res, next) {
+        res.sendFile(path.join(__dirname, '../public/index.html'));
     });
 }).catch(function (e) { console.error(e); });
 //Create and boot server

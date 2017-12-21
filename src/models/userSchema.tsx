@@ -6,9 +6,10 @@ const Schema = mongoose.Schema;
         name: String,
         middleName: String,
         lastName: String,
+        password: String,
         birthdate: Date,
         sex: String,
-        contacts: [{type: Schema.Types.Mixed, ref: 'User'}],
+        contacts: [{type: Schema.Types.ObjectId, ref: 'User'}],
         conversations: [{type: Schema.Types.ObjectId, ref:'Conversation'}],
         avatar: String
     });
