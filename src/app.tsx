@@ -28,7 +28,6 @@ import { GraphQLSchema } from 'graphql/type/schema';
 
     mongoose.connect(url).then(()=>{
         console.log("connection with db stablished");
-
         app.post('/login', (req, res, next)=>{
             User.findOne({email: req.body.email}).then((doc)=>{
                 console.log("User found ", doc)
@@ -86,12 +85,22 @@ import { GraphQLSchema } from 'graphql/type/schema';
             res.send(200);
         });
         app.get('/user/aceptfriendrequest', (req, res, next)=>{
-            User.findById(req.query._id).update({$push: {contacts: req.query.sender_id, conversations: new Conversation()}})
-        .then((updatedUser)=>{
-                res.send(updatedUser)
-            }).catch((e)=>{
-                res.send(e);
+            const conversation = new Conversation({name: 'test'}).save()
+            .then((conversation)=>{
+                User.findById(req.query.user_id)
+                .update({$push: {contacts: req.query.request_user_id, conversations: conversation._id}})//adds contact and create conversation
+                .then((updatedUser)=>{
+                    Conversation.findById(conversation._id).update({$push: {participants: [req.query.user_id, req.query.request_user_id]}})//adds participants to the conversation
+                    User.findById(req.query.request_user_id).update({$push: {contacts: req.query.user_id, conversations: conversation._id}})
+                    .then(()=>{
+                        res.send(updatedUser);
+                    })
+                }).catch((e)=>{
+                    res.send(e);
+                });
+    
             })
+
         });
         app.get('/users', (req, res, next)=>{
             User.find()
@@ -100,7 +109,7 @@ import { GraphQLSchema } from 'graphql/type/schema';
             })
         });
         app.get('/deleteusers', (req, res, next)=>{
-            User.find({password: null},(users)=>{
+            User.find({},(users)=>{
                 res.send(users)
                 // console.log(users)
             }).then((users)=>{
@@ -110,6 +119,20 @@ import { GraphQLSchema } from 'graphql/type/schema';
                 })
             })
         });
+        app.post('/user/message', (req, res, next)=>{
+            let theMessage = new Message(req.body).save().then(
+                (m)=>{
+                    res.send(m._id)
+                }
+            );
+        });
+        app.get('/user/sendmessage', (req, res, next)=>{
+            Conversation.findById({_id: req.query.conversation_id}).update(
+                {$push: {messages: req.query.message_id}}
+            ).then(()=>{
+                res.send(200)
+            })            
+        })
         app.get('*', (req: express.Request, res: express.Response, next: express.NextFunction)=>{
             res.sendFile(path.join(__dirname, '../public/index.html'));
         });      

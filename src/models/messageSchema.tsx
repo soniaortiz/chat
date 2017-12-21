@@ -6,6 +6,5 @@ const messageSchema = new Schema({
     date: Date,
     sender: {type: Schema.Types.ObjectId, ref: 'User'},
     receiver: {type: Schema.Types.ObjectId, ref: 'User'},
-    conversationId: {type: Schema.Types.ObjectId, ref: 'Conversation'}
 });
 export const Message = mongoose.model('Message', messageSchema);

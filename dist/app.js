@@ -75,11 +75,19 @@ mongoose.connect(url).then(function () {
         res.send(200);
     });
     app.get('/user/aceptfriendrequest', function (req, res, next) {
-        models_1.User.findById(req.query._id).update({ $push: { contacts: req.query.sender_id, conversations: new models_1.Conversation() } })
-            .then(function (updatedUser) {
-            res.send(updatedUser);
-        }).catch(function (e) {
-            res.send(e);
+        var conversation = new models_1.Conversation({ name: 'test' }).save()
+            .then(function (conversation) {
+            models_1.User.findById(req.query.user_id)
+                .update({ $push: { contacts: req.query.request_user_id, conversations: conversation._id } }) //adds contact and create conversation
+                .then(function (updatedUser) {
+                models_1.Conversation.findById(conversation._id).update({ $push: { participants: [req.query.user_id, req.query.request_user_id] } }); //adds participants to the conversation
+                models_1.User.findById(req.query.request_user_id).update({ $push: { contacts: req.query.user_id, conversations: conversation._id } })
+                    .then(function () {
+                    res.send(updatedUser);
+                });
+            }).catch(function (e) {
+                res.send(e);
+            });
         });
     });
     app.get('/users', function (req, res, next) {
@@ -89,7 +97,7 @@ mongoose.connect(url).then(function () {
         });
     });
     app.get('/deleteusers', function (req, res, next) {
-        models_1.User.find({ password: null }, function (users) {
+        models_1.User.find({}, function (users) {
             res.send(users);
             // console.log(users)
         }).then(function (users) {
@@ -97,6 +105,16 @@ mongoose.connect(url).then(function () {
                 console.log("usuario ", i, " : ", user);
                 users[i].remove();
             });
+        });
+    });
+    app.post('/user/message', function (req, res, next) {
+        var theMessage = new models_1.Message(req.body).save().then(function (m) {
+            res.send(m._id);
+        });
+    });
+    app.get('/user/sendmessage', function (req, res, next) {
+        models_1.Conversation.findById({ _id: req.query.conversation_id }).update({ $push: { messages: req.query.message_id } }).then(function () {
+            res.send(200);
         });
     });
     app.get('*', function (req, res, next) {
