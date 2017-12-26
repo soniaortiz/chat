@@ -7,4 +7,4 @@ const converstationSchema =new Schema({
     messages: [{type: Schema.Types.ObjectId, ref: 'Message'}]
 });
 
-export const Conversation = mongoose.model('Conversation', converstationSchema);
+export const ConversationModel = mongoose.model('Conversation', converstationSchema);

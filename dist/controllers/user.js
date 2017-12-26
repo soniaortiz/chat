@@ -13,6 +13,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var base_1 = require("./base");
 var userSchema_1 = require("../models/userSchema");
 var conversationSchema_1 = require("../models/conversationSchema");
+var messageSchema_1 = require("../models/messageSchema");
 var User = /** @class */ (function (_super) {
     __extends(User, _super);
     function User() {
@@ -36,8 +37,7 @@ var User = /** @class */ (function (_super) {
                 .then(function (doc) {
                 if (doc)
                     res.send(409).write('User already created'); //Conflict, user
-                var user = new userSchema_1.UserModel(req.body);
-                user.save()
+                new userSchema_1.UserModel(req.body).save()
                     .then(function (newUser) { return res.json(newUser); });
             }).catch(function (e) { return res.send(e); });
         };
@@ -54,7 +54,7 @@ var User = /** @class */ (function (_super) {
         _this.conversations = function (req, res, next) {
             console.log("Conversations");
             var email = req.body.email;
-            userSchema_1.UserModel.findOne({ email: email })
+            userSchema_1.UserModel.findOne({ email: email }).populate("conversations")
                 .then(function (user) {
                 if (user) {
                     console.log(user.email);
@@ -64,27 +64,38 @@ var User = /** @class */ (function (_super) {
         };
         _this.friendlist = function (req, res, next) {
             var email = req.body.email;
-            userSchema_1.UserModel.findOne({ email: email })
+            userSchema_1.UserModel.findOne({ email: email }).populate("contacts")
                 .then(function (user) {
                 // !user&& res.sendStatus(404);//user not found
                 if (user) {
-                    res.send(user.contacts);
+                    res.send(user);
                 }
             });
         };
-        _this.sendFriendRequest = function (req, res, next) {
-        };
+        // friendrequests=(req: express.Request, res: express.Response, next: express.NextFunction)=>{
+        // }
+        // sendFriendRequest=(req: express.Request, res: express.Response, next: express.NextFunction)=>{//Incomplete
+        // }
         _this.aceptFriendRequest = function (req, res, next) {
             var _a = req.body, email = _a.email, email_friend = _a.email_friend; //email is for the user email_friend is of the other user
-            new conversationSchema_1.Conversation({}).save()
+            new conversationSchema_1.ConversationModel({}).save()
                 .then(function (conversation) {
                 userSchema_1.UserModel.findOneAndUpdate({ email: email }, { $push: { contacts: email_friend, conversations: conversation._id } })
                     .then(function () {
-                    conversationSchema_1.Conversation.findById(conversation._id).update({ $push: { participants: [email, email_friend] } }); //adds participants to the conversation
+                    conversationSchema_1.ConversationModel.findById(conversation._id).update({ $push: { participants: [email, email_friend] } }); //adds participants to the conversation
                     userSchema_1.UserModel.findOneAndUpdate({ email_friend: email_friend }, { $push: { contacts: email, conversations: conversation._id } });
                 }).catch(function (e) {
                     res.send(e);
                 });
+            });
+        };
+        _this.sendMessage = function (req, res, next) {
+            new messageSchema_1.MessageModel({
+                messageContent: req.body.messageContent,
+                sender: req.body.sender
+            }).save().then(function (m) {
+                conversationSchema_1.ConversationModel.findOneAndUpdate({ _id: req.body.conversation_id }, { $push: { messages: m._id } })
+                    .then(function () { return res.send(200); });
             });
         };
         return _this;

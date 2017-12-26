@@ -7,5 +7,5 @@ var converstationSchema = new Schema({
     conversationName: { type: String, unique: true },
     messages: [{ type: Schema.Types.ObjectId, ref: 'Message' }]
 });
-exports.Conversation = mongoose.model('Conversation', converstationSchema);
+exports.ConversationModel = mongoose.model('Conversation', converstationSchema);
 //# sourceMappingURL=conversationSchema.js.map

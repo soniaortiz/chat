@@ -8,12 +8,6 @@ var mongoose = require("mongoose");
 var bodyParser = require("body-parser");
 var errorHandler = require("errorhandler");
 var validator = require("express-validator");
-// import { UserModel, ConversationModel, MessageModel} from './models/models';
-// import { MongooseDocument } from 'mongoose';
-// import { log } from 'util';
-// import * as graphqlHTTP from 'express-graphql';
-// import { graphql } from 'graphql/graphql';
-// import { GraphQLSchema } from 'graphql/type/schema';
 var user_1 = require("./controllers/user");
 //server use
 var url = 'mongodb://localhost:27017/chat';
@@ -35,59 +29,7 @@ mongoose.connect(url).then(function () {
     app.post('/profile', myUser.profile);
     app.post('/user/conversations', myUser.conversations);
     app.post('/user/friendlist', myUser.friendlist);
-    // app.get('user/conversations', (req, res, next)=>{
-    //     console.log("Serving conversations");
-    //     User.findById(req.query._id)
-    //     .then((user)=>{
-    //         !user && res.send(404).send('User not found');
-    //         console.log("Sending conversations");
-    //         Conversation.find()
-    //         .then((conversations)=>{
-    //             res.send(conversations);//will send all conversations of the user
-    //         })
-    //     })
-    // });
-    // app.get('/user/conversations/:_id', (req, res, next)=>{
-    //         console.log("Serving conversation");
-    //         Conversation.findById(req.query.conversation_id)//conversation id
-    //         .then((conversation)=>{
-    //             // !conversation && res.send(404);
-    //             res.send(conversation);
-    //         })                
-    // });
-    // app.get('user/addcontact', (req, res, next)=>{
-    //     //create conversation when accepted
-    //     //pass the id of contact that want to add
-    //     res.send(200);
-    // });
-    // app.post('/user/aceptfriendrequest', (req, res, next)=>{
-    //     const conversation = new Conversation({name: 'test'}).save()
-    //     .then((conversation)=>{
-    //         User.findById(req.body.user_id)
-    //         .update({$push: {contacts: req.body.request_user_id, conversations: conversation._id}})//adds contact and create conversation
-    //         .then(()=>{
-    //             Conversation.findById(conversation._id).update({$push: {participants: [req.body.user_id, req.body.request_user_id]}});//adds participants to the conversation
-    //             User.findById(req.body.request_user_id).update({$push: {contacts: req.body.user_id, conversations: conversation._id}})
-    //             .then(()=>{
-    //                 res.send(conversation);
-    //             })
-    //         }).catch((e)=>{
-    //             res.send(e);
-    //         });    
-    //     })
-    // });
-    // app.get('/users', (req, res, next)=>{
-    //     User.find()
-    //     .then((users)=>{
-    //         res.send(users)
-    //     })
-    // });
-    // app.get('/conversations', (req, res, next)=>{
-    //     Conversation.find()
-    //     .then((conversation)=>{
-    //         res.send(conversation)
-    //     })
-    // });
+    app.post('/conversation/sendmessage', myUser.sendMessage);
     // app.get('/deleteusers', (req, res, next)=>{
     //     User.find({},(users)=>{
     //         res.send(users)
