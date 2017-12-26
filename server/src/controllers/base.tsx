@@ -1,6 +1,6 @@
 import * as express from 'express';
-import { MongooseDocument, Error, Mongoose, Query, Document } from 'mongoose';
-import { Request } from 'express';
+import { MongooseDocument, Error} from 'mongoose';
+// import { Request } from 'express';
 
 export abstract class  Controller {//for shared methods in the classes
     constructor() {        

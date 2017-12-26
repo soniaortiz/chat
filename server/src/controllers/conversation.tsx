@@ -1,6 +1,6 @@
 import {Controller} from './base';
 
-class Conversation extends Controller{
+export class Conversation extends Controller{
     model = Conversation;
 
     

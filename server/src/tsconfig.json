@@ -1,0 +1,15 @@
+{
+    "extends": "../../tsconfig.json",
+    "compilerOptions": {
+        "outDir": "../../dist",                        /* Redirect output structure to the directory. */
+         "rootDir": ".",
+         "module": "commonjs" ,
+         "lib"   : [
+             "es6",
+            "esnext.asynciterable"
+         ]
+    },
+    "exclude": [
+        "node_modules"
+    ]
+}

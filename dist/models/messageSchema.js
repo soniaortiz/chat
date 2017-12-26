@@ -8,3 +8,4 @@ var messageSchema = new Schema({
     sender: { type: Schema.Types.ObjectId, ref: 'User' },
 });
 exports.Message = mongoose.model('Message', messageSchema);
+//# sourceMappingURL=messageSchema.js.map

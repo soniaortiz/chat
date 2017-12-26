@@ -20,3 +20,5 @@ var Conversation = /** @class */ (function (_super) {
     }
     return Conversation;
 }(base_1.Controller));
+exports.Conversation = Conversation;
+//# sourceMappingURL=conversation.js.map

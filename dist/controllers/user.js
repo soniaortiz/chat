@@ -76,7 +76,7 @@ var User = /** @class */ (function (_super) {
         };
         _this.aceptFriendRequest = function (req, res, next) {
             var _a = req.body, email = _a.email, email_friend = _a.email_friend; //email is for the user email_friend is of the other user
-            var conversation = new conversationSchema_1.Conversation({}).save()
+            new conversationSchema_1.Conversation({}).save()
                 .then(function (conversation) {
                 userSchema_1.UserModel.findOneAndUpdate({ email: email }, { $push: { contacts: email_friend, conversations: conversation._id } })
                     .then(function () {
@@ -92,3 +92,4 @@ var User = /** @class */ (function (_super) {
     return User;
 }(base_1.Controller));
 exports.User = User;
+//# sourceMappingURL=user.js.map

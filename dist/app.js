@@ -4,14 +4,21 @@ var express = require("express");
 var http = require("http");
 var path = require("path");
 var mongoose = require("mongoose");
+// import * as mongodb from 'mongodb';
 var bodyParser = require("body-parser");
 var errorHandler = require("errorhandler");
 var validator = require("express-validator");
+// import { UserModel, ConversationModel, MessageModel} from './models/models';
+// import { MongooseDocument } from 'mongoose';
+// import { log } from 'util';
+// import * as graphqlHTTP from 'express-graphql';
+// import { graphql } from 'graphql/graphql';
+// import { GraphQLSchema } from 'graphql/type/schema';
 var user_1 = require("./controllers/user");
 //server use
 var url = 'mongodb://localhost:27017/chat';
 var app = express();
-var port = 3000;
+// const port = 3000;
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -116,3 +123,4 @@ var boot = function () {
     }));
 };
 boot();
+//# sourceMappingURL=app.js.map

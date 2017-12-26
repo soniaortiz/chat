@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+// import { Request } from 'express';
 var Controller = /** @class */ (function () {
     function Controller() {
         var _this = this;
@@ -37,3 +38,4 @@ var Controller = /** @class */ (function () {
     return Controller;
 }());
 exports.Controller = Controller;
+//# sourceMappingURL=base.js.map

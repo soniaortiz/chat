@@ -1,5 +1,5 @@
 import {Controller} from './base';
-import {UserModel, IUserDocument} from '../models/userSchema';
+import {UserModel} from '../models/userSchema';
 import {Conversation} from '../models/conversationSchema';
 
 import * as express from 'express';
@@ -64,7 +64,7 @@ export class User extends Controller{
     }
     aceptFriendRequest=(req: express.Request, res: express.Response, next: express.NextFunction)=>{
         const {email, email_friend} = req.body; //email is for the user email_friend is of the other user
-        const conversation = new Conversation({}).save()
+       new Conversation({}).save()
         .then((conversation)=>{
             UserModel.findOneAndUpdate({email}, {$push: {contacts: email_friend, conversations: conversation._id}})
             .then(()=>{
