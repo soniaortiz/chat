@@ -2,7 +2,7 @@ import * as mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
     const userSchema = new Schema({
-        email: String,
+        email: {type: String, unique: true},
         name: String,
         middleName: String,
         lastName: String,
@@ -14,6 +14,16 @@ const Schema = mongoose.Schema;
         avatar: String
     });
 
-    export const User = mongoose.model('User', userSchema);    
-    let queryResult = User.findOne({name: 'sonia'});
-    console.log(queryResult);
+    export interface IUserDocument extends mongoose.Document{
+        email:string,
+        name: string,
+        middleName: string,
+        lastName: string,
+        password: string,
+        birthdate: Date,
+        sex: string,
+        contacts: string[],
+        conversations: string[],
+        avatar: string
+    }
+    export const UserModel = mongoose.model<IUserDocument>('User', userSchema)    

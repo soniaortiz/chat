@@ -7,7 +7,7 @@ var mongoose = require("mongoose");
 var bodyParser = require("body-parser");
 var errorHandler = require("errorhandler");
 var validator = require("express-validator");
-var models_1 = require("./models/models");
+var user_1 = require("./controllers/user");
 //server use
 var url = 'mongodb://localhost:27017/chat';
 var app = express();
@@ -21,102 +21,88 @@ mongoose.Promise = global.Promise; //Overwrite mongoose promise
 //DB connection
 mongoose.connect(url).then(function () {
     console.log("connection with db stablished");
-    app.post('/login', function (req, res, next) {
-        models_1.User.findOne({ email: req.body.email }).then(function (doc) {
-            console.log("User found ", doc);
-            res.send(doc);
-        }).catch(function (e) {
-            console.log("User not found");
-        });
-    });
-    app.post('/signup', function (req, res, next) {
-        // console.log("Register user", req.body);
-        var user = new models_1.User(req.body).save()
-            .then(function (user) {
-            console.log("request", user);
-            res.send(user);
-        }).catch(function (e) { return console.error(e); });
-    });
-    app.get('/user', function (req, res, next) {
-        console.log("User profile");
-        if (req.query._id.length != 24)
-            res.status(404).send("Invalid id");
-        models_1.User.findById(req.query._id)
-            .then(function (user) {
-            console.log(user);
-            !user ? res.status(404).send("User not found") :
-                (console.log("this is my profile", user),
-                    res.send(user));
-        });
-    });
-    app.get('user/conversations', function (req, res, next) {
-        console.log("Serving conversations");
-        models_1.User.findById(req.query._id)
-            .then(function (user) {
-            !user && res.send(404).send('User not found');
-            console.log("Sending conversations");
-            models_1.Conversation.find()
-                .then(function (conversations) {
-                res.send(conversations); //will send all conversations of the user
-            });
-        });
-    });
-    app.get('user/conversations/:_id', function (req, res, next) {
-        console.log("Serving conversation");
-        models_1.Conversation.findById(req.body._id)
-            .then(function (conversation) {
-            // !conversation && res.send(404);
-            res.send(conversation);
-        });
-    });
-    app.get('user/addcontact', function (req, res, next) {
-        //create conversation when accepted
-        //pass the id of contact that want to add
-        res.send(200);
-    });
-    app.get('/user/aceptfriendrequest', function (req, res, next) {
-        var conversation = new models_1.Conversation({ name: 'test' }).save()
-            .then(function (conversation) {
-            models_1.User.findById(req.query.user_id)
-                .update({ $push: { contacts: req.query.request_user_id, conversations: conversation._id } }) //adds contact and create conversation
-                .then(function (updatedUser) {
-                models_1.Conversation.findById(conversation._id).update({ $push: { participants: [req.query.user_id, req.query.request_user_id] } }); //adds participants to the conversation
-                models_1.User.findById(req.query.request_user_id).update({ $push: { contacts: req.query.user_id, conversations: conversation._id } })
-                    .then(function () {
-                    res.send(updatedUser);
-                });
-            }).catch(function (e) {
-                res.send(e);
-            });
-        });
-    });
-    app.get('/users', function (req, res, next) {
-        models_1.User.find()
-            .then(function (users) {
-            res.send(users);
-        });
-    });
-    app.get('/deleteusers', function (req, res, next) {
-        models_1.User.find({}, function (users) {
-            res.send(users);
-            // console.log(users)
-        }).then(function (users) {
-            users.forEach(function (user, i) {
-                console.log("usuario ", i, " : ", user);
-                users[i].remove();
-            });
-        });
-    });
-    app.post('/user/message', function (req, res, next) {
-        var theMessage = new models_1.Message(req.body).save().then(function (m) {
-            res.send(m._id);
-        });
-    });
-    app.get('/user/sendmessage', function (req, res, next) {
-        models_1.Conversation.findById({ _id: req.query.conversation_id }).update({ $push: { messages: req.query.message_id } }).then(function () {
-            res.send(200);
-        });
-    });
+    var myUser = new user_1.User();
+    app.get('/users', myUser.getAll); //all users
+    app.post('/signup', myUser.signup);
+    app.post('/login', myUser.login);
+    app.post('/profile', myUser.profile);
+    app.post('/user/conversations', myUser.conversations);
+    app.post('/user/friendlist', myUser.friendlist);
+    // app.get('user/conversations', (req, res, next)=>{
+    //     console.log("Serving conversations");
+    //     User.findById(req.query._id)
+    //     .then((user)=>{
+    //         !user && res.send(404).send('User not found');
+    //         console.log("Sending conversations");
+    //         Conversation.find()
+    //         .then((conversations)=>{
+    //             res.send(conversations);//will send all conversations of the user
+    //         })
+    //     })
+    // });
+    // app.get('/user/conversations/:_id', (req, res, next)=>{
+    //         console.log("Serving conversation");
+    //         Conversation.findById(req.query.conversation_id)//conversation id
+    //         .then((conversation)=>{
+    //             // !conversation && res.send(404);
+    //             res.send(conversation);
+    //         })                
+    // });
+    // app.get('user/addcontact', (req, res, next)=>{
+    //     //create conversation when accepted
+    //     //pass the id of contact that want to add
+    //     res.send(200);
+    // });
+    // app.post('/user/aceptfriendrequest', (req, res, next)=>{
+    //     const conversation = new Conversation({name: 'test'}).save()
+    //     .then((conversation)=>{
+    //         User.findById(req.body.user_id)
+    //         .update({$push: {contacts: req.body.request_user_id, conversations: conversation._id}})//adds contact and create conversation
+    //         .then(()=>{
+    //             Conversation.findById(conversation._id).update({$push: {participants: [req.body.user_id, req.body.request_user_id]}});//adds participants to the conversation
+    //             User.findById(req.body.request_user_id).update({$push: {contacts: req.body.user_id, conversations: conversation._id}})
+    //             .then(()=>{
+    //                 res.send(conversation);
+    //             })
+    //         }).catch((e)=>{
+    //             res.send(e);
+    //         });    
+    //     })
+    // });
+    // app.get('/users', (req, res, next)=>{
+    //     User.find()
+    //     .then((users)=>{
+    //         res.send(users)
+    //     })
+    // });
+    // app.get('/conversations', (req, res, next)=>{
+    //     Conversation.find()
+    //     .then((conversation)=>{
+    //         res.send(conversation)
+    //     })
+    // });
+    // app.get('/deleteusers', (req, res, next)=>{
+    //     User.find({},(users)=>{
+    //         res.send(users)
+    //         // console.log(users)
+    //     }).then((users)=>{
+    //         users.forEach((user, i)=>{
+    //             console.log("usuario ", i, " : ", user)
+    //             users[i].remove();
+    //         })
+    //     })
+    // });
+    // app.post('/user/sendmessage', (req, res, next)=>{
+    //     let theMessage = new Message({
+    //         messageContent: req.body.messageContent,
+    //         sender: req.body.sender,
+    //         receiver: req.body.receiver}).save().then(
+    //         (m)=>{//after the message is created then the reference is passed to the conversation
+    //             Conversation.findById({_id: req.body.conversation_id}).update({$push: {messages: m._id}})
+    //             .then(()=>res.send(200))
+    //         }
+    //     );
+    // });
     app.get('*', function (req, res, next) {
         res.sendFile(path.join(__dirname, '../public/index.html'));
     });
