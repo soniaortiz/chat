@@ -26,31 +26,26 @@ mongoose.connect(url).then(function () {
     app.get('/users', myUser.getAll); //all users
     app.post('/signup', myUser.signup);
     app.post('/login', myUser.login);
-    app.post('/profile', myUser.profile);
+    app.get('/profile', myUser.profile);
     app.post('/user/conversations', myUser.conversations);
     app.post('/user/friendlist', myUser.friendlist);
     app.post('/conversation/sendmessage', myUser.sendMessage);
-    // app.get('/deleteusers', (req, res, next)=>{
-    //     User.find({},(users)=>{
-    //         res.send(users)
-    //         // console.log(users)
-    //     }).then((users)=>{
-    //         users.forEach((user, i)=>{
-    //             console.log("usuario ", i, " : ", user)
-    //             users[i].remove();
+    app.delete('/deleteuser', myUser.delete);
+    app.delete('/deleteconversation', myUser.delete);
+    // app.post('/user/acceptfriendrequest', myUser.acceptFriendRequest)
+    app.get('/user/friendrequestlist', myUser.friendRequestList);
+    app.post('/user/sendfriendrequest', myUser.sendFriendRequest);
+    // app.get('/deletemessages', (req, res, next)=>{
+    //     MessageModel.find({},(messages)=>{
+    //     }).then((messages)=>{
+    //         if(messages.length==0)
+    //             res.sendStatus(202)
+    //         messages.forEach((message, i)=>{
+    //             console.log("usuario ", i, " : ", message)
+    //             messages[i].remove();
     //         })
+    //         res.sendStatus(200);
     //     })
-    // });
-    // app.post('/user/sendmessage', (req, res, next)=>{
-    //     let theMessage = new Message({
-    //         messageContent: req.body.messageContent,
-    //         sender: req.body.sender,
-    //         receiver: req.body.receiver}).save().then(
-    //         (m)=>{//after the message is created then the reference is passed to the conversation
-    //             Conversation.findById({_id: req.body.conversation_id}).update({$push: {messages: m._id}})
-    //             .then(()=>res.send(200))
-    //         }
-    //     );
     // });
     app.get('*', function (req, res, next) {
         res.sendFile(path.join(__dirname, '../public/index.html'));

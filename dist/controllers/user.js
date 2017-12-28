@@ -23,10 +23,12 @@ var User = /** @class */ (function (_super) {
             console.log("login");
             var _a = req.body, email = _a.email, password = _a.password;
             console.log(email, password);
-            userSchema_1.UserModel.findOne({ email: email, password: password }).then(function (doc) {
+            userSchema_1.UserModel.findOne({ email: email, password: password })
+                .then(function (doc) {
                 !doc && res.sendStatus(403); //forbidden, user not found
                 res.json(doc);
-            }).catch(function (e) {
+            })
+                .catch(function (e) {
                 res.send(e);
             });
         };
@@ -37,13 +39,14 @@ var User = /** @class */ (function (_super) {
                 .then(function (doc) {
                 if (doc)
                     res.send(409).write('User already created'); //Conflict, user
-                new userSchema_1.UserModel(req.body).save()
-                    .then(function (newUser) { return res.json(newUser); });
-            }).catch(function (e) { return res.send(e); });
+                return new userSchema_1.UserModel(req.body).save();
+            })
+                .then(function (newUser) { return res.json(newUser); })
+                .catch(function (e) { return res.send(e); });
         };
         _this.profile = function (req, res, next) {
             // console.log("User profile");
-            var email = req.body.email.email;
+            var email = req.query.email.email;
             console.log(email);
             userSchema_1.UserModel.findOne(email)
                 .then(function (user) {
@@ -53,8 +56,9 @@ var User = /** @class */ (function (_super) {
         };
         _this.conversations = function (req, res, next) {
             console.log("Conversations");
-            var email = req.body.email;
-            userSchema_1.UserModel.findOne({ email: email }).populate("conversations")
+            var user_id = req.body.user_id;
+            userSchema_1.UserModel.findById({ _id: user_id })
+                .populate("conversations")
                 .then(function (user) {
                 if (user) {
                     console.log(user.email);
@@ -63,40 +67,88 @@ var User = /** @class */ (function (_super) {
             });
         };
         _this.friendlist = function (req, res, next) {
-            var email = req.body.email;
-            userSchema_1.UserModel.findOne({ email: email }).populate("contacts")
+            var user_id = req.body.user_id;
+            userSchema_1.UserModel.findById({ _id: user_id }).populate("contacts")
                 .then(function (user) {
-                // !user&& res.sendStatus(404);//user not found
                 if (user) {
-                    res.send(user);
+                    res.send(user.contacts);
                 }
             });
         };
-        // friendrequests=(req: express.Request, res: express.Response, next: express.NextFunction)=>{
-        // }
-        // sendFriendRequest=(req: express.Request, res: express.Response, next: express.NextFunction)=>{//Incomplete
-        // }
-        _this.aceptFriendRequest = function (req, res, next) {
-            var _a = req.body, email = _a.email, email_friend = _a.email_friend; //email is for the user email_friend is of the other user
-            new conversationSchema_1.ConversationModel({}).save()
-                .then(function (conversation) {
-                userSchema_1.UserModel.findOneAndUpdate({ email: email }, { $push: { contacts: email_friend, conversations: conversation._id } })
-                    .then(function () {
-                    conversationSchema_1.ConversationModel.findById(conversation._id).update({ $push: { participants: [email, email_friend] } }); //adds participants to the conversation
-                    userSchema_1.UserModel.findOneAndUpdate({ email_friend: email_friend }, { $push: { contacts: email, conversations: conversation._id } });
-                }).catch(function (e) {
-                    res.send(e);
-                });
+        _this.sendFriendRequest = function (req, res, next) {
+            //find the friend
+            userSchema_1.UserModel.findOneAndUpdate({ _id: req.body.friend_id }, { $push: { friendRequests: req.body.sender_id } }) //
+                .then(function (friend) {
+                res.send(200);
             });
         };
+        _this.friendRequestList = function (req, res, next) {
+            userSchema_1.UserModel.findById(req.query._id)
+                .then(function (user) {
+                if (user) {
+                    // const friendList = user.friendRequests;
+                    // friendList.forEach((i)=>{
+                    //     console.log(i)
+                    // })
+                    res.send(user.friendRequests);
+                }
+            })
+                .catch(function (e) { return res.send(e); });
+        };
+        // acceptFriendRequest=(req: express.Request, res: express.Response, next: express.NextFunction)=>{
+        //     let newConversationId: string  = ''
+        //     const {email, email_friend, conversation_name} = req.body; //email is for the user email_friend is of the other user
+        //     new ConversationModel({conversationName: conversation_name})
+        //         .save()
+        //         .then((conversation)=> {
+        //             newConversationId = conversation._id;
+        //             return UserModel.findOneAndUpdate(
+        //                 {email},
+        //                 {$push: {contacts: email_friend, conversation: newConversationId}},
+        //                 {new: true}
+        //             ).exec()
+        //         })
+        //         .then((user)=> {
+        //             if(user){
+        //                 return UserModel.findOneAndUpdate(
+        //                     {email: email_friend},
+        //                     {$push: {contacts: email, conversation: newConversationId}},
+        //                     {new: true}
+        //                 ).exec()    
+        //             }
+        //             else 
+        //                 return null;
+        //         })
+        //         .then((friend)=>{ 
+        //             if(friend){
+        //                 ConversationModel
+        //                 .findByIdAndUpdate(
+        //                     newConversationId,
+        //                     {$push: {participants: [email, email_friend]}
+        //                 })//adds participants to the conversation
+        //                 .exec()    
+        //             }
+        //         })
+        //         .then((conversation) => {
+        //             res.status(200).send(conversation)
+        //         })
+        //         .catch((e:Error)=>res.send(e))
+        // }
         _this.sendMessage = function (req, res, next) {
             new messageSchema_1.MessageModel({
                 messageContent: req.body.messageContent,
                 sender: req.body.sender
-            }).save().then(function (m) {
-                conversationSchema_1.ConversationModel.findOneAndUpdate({ _id: req.body.conversation_id }, { $push: { messages: m._id } })
-                    .then(function () { return res.send(200); });
-            });
+            })
+                .save()
+                .then(function (m) {
+                conversationSchema_1.ConversationModel
+                    .findOneAndUpdate({
+                    _id: req.body.conversation_id
+                }, { $push: { messages: m._id }
+                });
+            })
+                .then(function (conversation) { return res.send(conversation); })
+                .catch(function (e) { return res.send(e); });
         };
         return _this;
     }

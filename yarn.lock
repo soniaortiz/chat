@@ -79,7 +79,7 @@
     "@types/events" "*"
     "@types/node" "*"
 
-"@types/mongoose@^4.7.29":
+"@types/mongoose@^4.7.30":
   version "4.7.30"
   resolved "https://registry.yarnpkg.com/@types/mongoose/-/mongoose-4.7.30.tgz#68d2071c4e250e7849f383bd3d4b233a220f70c8"
   dependencies:

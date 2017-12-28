@@ -11,6 +11,7 @@ const Schema = mongoose.Schema;
         sex: String,
         contacts: [{type: Schema.Types.ObjectId, ref: 'User'}],
         conversations: [{type: Schema.Types.ObjectId, ref:'Conversation'}],
+        friendRequests: [{type: Schema.Types.ObjectId, ref: 'User'}],
         avatar: String
     });
 
@@ -24,6 +25,7 @@ const Schema = mongoose.Schema;
         sex: string,
         contacts: string[],
         conversations: string[],
+        friendRequests: string[],
         avatar: string
     }
     export const UserModel = mongoose.model<IUserDocument>('User', userSchema)    
