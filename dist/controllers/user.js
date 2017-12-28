@@ -95,45 +95,22 @@ var User = /** @class */ (function (_super) {
             })
                 .catch(function (e) { return res.send(e); });
         };
-        // acceptFriendRequest=(req: express.Request, res: express.Response, next: express.NextFunction)=>{
-        //     let newConversationId: string  = ''
-        //     const {email, email_friend, conversation_name} = req.body; //email is for the user email_friend is of the other user
-        //     new ConversationModel({conversationName: conversation_name})
-        //         .save()
-        //         .then((conversation)=> {
-        //             newConversationId = conversation._id;
-        //             return UserModel.findOneAndUpdate(
-        //                 {email},
-        //                 {$push: {contacts: email_friend, conversation: newConversationId}},
-        //                 {new: true}
-        //             ).exec()
-        //         })
-        //         .then((user)=> {
-        //             if(user){
-        //                 return UserModel.findOneAndUpdate(
-        //                     {email: email_friend},
-        //                     {$push: {contacts: email, conversation: newConversationId}},
-        //                     {new: true}
-        //                 ).exec()    
-        //             }
-        //             else 
-        //                 return null;
-        //         })
-        //         .then((friend)=>{ 
-        //             if(friend){
-        //                 ConversationModel
-        //                 .findByIdAndUpdate(
-        //                     newConversationId,
-        //                     {$push: {participants: [email, email_friend]}
-        //                 })//adds participants to the conversation
-        //                 .exec()    
-        //             }
-        //         })
-        //         .then((conversation) => {
-        //             res.status(200).send(conversation)
-        //         })
-        //         .catch((e:Error)=>res.send(e))
-        // }
+        _this.acceptFriendRequest = function (req, res, next) {
+            var _a = req.body, user_id = _a.user_id, request_id = _a.request_id;
+            new conversationSchema_1.ConversationModel({ conversationName: req.body.conver_name })
+                .save()
+                .then(function (conversation) {
+                return (userSchema_1.UserModel.findByIdAndUpdate(user_id, { $pull: { friendRequests: request_id },
+                    $push: { contacts: request_id, conversations: conversation._id } }, { new: true }).exec(), conversation);
+            })
+                .then(function (conversation) {
+                return userSchema_1.UserModel.findByIdAndUpdate(request_id, { $push: { contacts: user_id, conversations: conversation._id } }, { new: true }).exec();
+            })
+                .then(function (user) {
+                res.send(user);
+            })
+                .catch(function (e) { return res.send(e); });
+        };
         _this.sendMessage = function (req, res, next) {
             new messageSchema_1.MessageModel({
                 messageContent: req.body.messageContent,

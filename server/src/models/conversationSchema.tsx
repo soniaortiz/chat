@@ -8,7 +8,7 @@ const converstationSchema =new Schema({
 });
 export interface IConversationDocument extends mongoose.Document{
     participants: string[],
-    conversationName: string,
+    conversationName?: string,
     messages: string[]
 }
 export const ConversationModel =  mongoose.model<IConversationDocument>('Conversation', converstationSchema);

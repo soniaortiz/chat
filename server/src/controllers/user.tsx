@@ -84,45 +84,22 @@ export class User extends Controller{
         })
         .catch((e:Error)=>res.send(e))
     }
-    // acceptFriendRequest=(req: express.Request, res: express.Response, next: express.NextFunction)=>{
-    //     let newConversationId: string  = ''
-    //     const {email, email_friend, conversation_name} = req.body; //email is for the user email_friend is of the other user
-    //     new ConversationModel({conversationName: conversation_name})
-    //         .save()
-    //         .then((conversation)=> {
-    //             newConversationId = conversation._id;
-    //             return UserModel.findOneAndUpdate(
-    //                 {email},
-    //                 {$push: {contacts: email_friend, conversation: newConversationId}},
-    //                 {new: true}
-    //             ).exec()
-    //         })
-    //         .then((user)=> {
-    //             if(user){
-    //                 return UserModel.findOneAndUpdate(
-    //                     {email: email_friend},
-    //                     {$push: {contacts: email, conversation: newConversationId}},
-    //                     {new: true}
-    //                 ).exec()    
-    //             }
-    //             else 
-    //                 return null;
-    //         })
-    //         .then((friend)=>{ 
-    //             if(friend){
-    //                 ConversationModel
-    //                 .findByIdAndUpdate(
-    //                     newConversationId,
-    //                     {$push: {participants: [email, email_friend]}
-    //                 })//adds participants to the conversation
-    //                 .exec()    
-    //             }
-    //         })
-    //         .then((conversation) => {
-    //             res.status(200).send(conversation)
-    //         })
-    //         .catch((e:Error)=>res.send(e))
-    // }
+    acceptFriendRequest=(req: express.Request, res: express.Response, next: express.NextFunction)=>{
+        const {user_id, request_id}=req.body;
+        new ConversationModel({conversationName: req.body.conver_name})
+        .save()
+        .then((conversation)=>{
+            return (UserModel.findByIdAndUpdate(user_id,{$pull:{friendRequests: request_id}, 
+                $push:{contacts: request_id, conversations: conversation._id}}, {new: true}).exec(),conversation);
+        })
+        .then((conversation)=>{            
+            return UserModel.findByIdAndUpdate(request_id, {$push: {contacts: user_id, conversations: conversation._id}}, {new: true}).exec();
+        })
+        .then((user)=>{
+            res.send(user)
+        })
+        .catch((e)=>res.send(e));
+    }
     sendMessage=(req: express.Request, res: express.Response, next: express.NextFunction)=>{
         new MessageModel({
             messageContent: req.body.messageContent,

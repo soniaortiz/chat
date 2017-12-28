@@ -32,7 +32,7 @@ mongoose.connect(url).then(function () {
     app.post('/conversation/sendmessage', myUser.sendMessage);
     app.delete('/deleteuser', myUser.delete);
     app.delete('/deleteconversation', myUser.delete);
-    // app.post('/user/acceptfriendrequest', myUser.acceptFriendRequest)
+    app.post('/user/acceptfriendrequest', myUser.acceptFriendRequest);
     app.get('/user/friendrequestlist', myUser.friendRequestList);
     app.post('/user/sendfriendrequest', myUser.sendFriendRequest);
     // app.get('/deletemessages', (req, res, next)=>{
