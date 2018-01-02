@@ -6,13 +6,12 @@ import * as bodyParser from 'body-parser';
 import * as errorHandler from 'errorhandler';
 import * as validator from 'express-validator';
 import {User} from './controllers/user';
-// import {MessageModel} from './models/messageSchema';
-// import * as sio from 'socket.io';
+import {Conversation} from './controllers/conversation';
+import {Message} from './controllers/message';
 
 //server use
     const url = 'mongodb://localhost:27017/chat';
     const app = express();
-    // const port = 3000;
     app.use(express.static('public'));
     app.use(bodyParser.urlencoded({extended: true}));
     app.use(bodyParser.json());
@@ -23,6 +22,9 @@ import {User} from './controllers/user';
     mongoose.connect(url).then(()=>{
         console.log("connection with db stablished");
         const myUser = new User();
+        const myConversation = new Conversation();
+        const myMessage = new Message();
+
         app.get('/users', myUser.getAll);//all users
         app.post('/signup', myUser.signup);
         app.post('/login', myUser.login);
@@ -35,6 +37,10 @@ import {User} from './controllers/user';
         app.post('/user/acceptfriendrequest', myUser.acceptFriendRequest)
         app.get('/user/friendrequestlist', myUser.friendRequestList);
         app.post('/user/sendfriendrequest', myUser.sendFriendRequest);
+        app.get('/conversations', myConversation.getAll);
+        app.get('/deleteallconversations', myConversation.delete);
+        app.get('/getallmessages', myMessage.getAll);
+
         app.get('*', (req: express.Request, res: express.Response, next: express.NextFunction)=>{
             res.sendFile(path.join(__dirname, '../public/index.html'));
         });      

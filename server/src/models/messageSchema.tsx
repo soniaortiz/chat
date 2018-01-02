@@ -5,6 +5,5 @@ const messageSchema = new Schema({
     messageContent: String,
     date: Date,
     sender: {type: Schema.Types.ObjectId, ref: 'User'},
-    // receiver: {type: Schema.Types.ObjectId, ref: 'User'},
 });
 export const MessageModel = mongoose.model('Message', messageSchema);

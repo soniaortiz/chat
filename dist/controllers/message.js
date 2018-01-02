@@ -11,15 +11,15 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var base_1 = require("./base");
-var conversationSchema_1 = require("../models/conversationSchema");
-var Conversation = /** @class */ (function (_super) {
-    __extends(Conversation, _super);
-    function Conversation() {
+var messageSchema_1 = require("../models/messageSchema");
+var Message = /** @class */ (function (_super) {
+    __extends(Message, _super);
+    function Message() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this.model = conversationSchema_1.ConversationModel;
+        _this.model = messageSchema_1.MessageModel;
         return _this;
     }
-    return Conversation;
+    return Message;
 }(base_1.Controller));
-exports.Conversation = Conversation;
-//# sourceMappingURL=conversation.js.map
+exports.Message = Message;
+//# sourceMappingURL=message.js.map

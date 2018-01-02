@@ -28,4 +28,4 @@ const Schema = mongoose.Schema;
         friendRequests: string[],
         avatar: string
     }
-    export const UserModel = mongoose.model<IUserDocument>('User', userSchema)    
+    export const UserModel = mongoose.model<IUserDocument>('User', userSchema);

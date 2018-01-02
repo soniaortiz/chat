@@ -8,12 +8,11 @@ var bodyParser = require("body-parser");
 var errorHandler = require("errorhandler");
 var validator = require("express-validator");
 var user_1 = require("./controllers/user");
-// import {MessageModel} from './models/messageSchema';
-// import * as sio from 'socket.io';
+var conversation_1 = require("./controllers/conversation");
+var message_1 = require("./controllers/message");
 //server use
 var url = 'mongodb://localhost:27017/chat';
 var app = express();
-// const port = 3000;
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -24,6 +23,8 @@ mongoose.Promise = global.Promise; //Overwrite mongoose promise
 mongoose.connect(url).then(function () {
     console.log("connection with db stablished");
     var myUser = new user_1.User();
+    var myConversation = new conversation_1.Conversation();
+    var myMessage = new message_1.Message();
     app.get('/users', myUser.getAll); //all users
     app.post('/signup', myUser.signup);
     app.post('/login', myUser.login);
@@ -36,6 +37,9 @@ mongoose.connect(url).then(function () {
     app.post('/user/acceptfriendrequest', myUser.acceptFriendRequest);
     app.get('/user/friendrequestlist', myUser.friendRequestList);
     app.post('/user/sendfriendrequest', myUser.sendFriendRequest);
+    app.get('/conversations', myConversation.getAll);
+    app.get('/deleteallconversations', myConversation.delete);
+    app.get('/getallmessages', myMessage.getAll);
     app.get('*', function (req, res, next) {
         res.sendFile(path.join(__dirname, '../public/index.html'));
     });
