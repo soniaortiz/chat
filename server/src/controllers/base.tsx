@@ -1,6 +1,5 @@
 import * as express from 'express';
 import { MongooseDocument, Error} from 'mongoose';
-// import { Request } from 'express';
 
 export abstract class  Controller {//for shared methods in the classes
     constructor() {        
@@ -12,7 +11,9 @@ export abstract class  Controller {//for shared methods in the classes
         ).catch((e: Error)=>e);
     }
     count=(req: express.Request, res: express.Response, next: express.NextFunction)=>{
-        this.model.count({}).then((count: number)=>res.send(count)
+        this.model.count().then((count: number)=>{
+            res.json(count)
+        }
         ).catch((e: Error)=>e)
     }
     insert=(req: express.Request, res: express.Response, next: express.NextFunction)=>{

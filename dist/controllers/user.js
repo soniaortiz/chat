@@ -79,8 +79,9 @@ var User = /** @class */ (function (_super) {
             //find the friend
             userSchema_1.UserModel.findOneAndUpdate({ _id: req.body.friend_id }, { $push: { friendRequests: req.body.sender_id } }) //
                 .then(function (friend) {
+                console.log(friend);
                 res.send(200);
-            });
+            }).catch(function (e) { return res.send(e); });
         };
         _this.friendRequestList = function (req, res, next) {
             userSchema_1.UserModel.findById(req.query._id)
@@ -97,14 +98,19 @@ var User = /** @class */ (function (_super) {
         };
         _this.acceptFriendRequest = function (req, res, next) {
             var _a = req.body, user_id = _a.user_id, request_id = _a.request_id;
-            new conversationSchema_1.ConversationModel({ conversationName: req.body.conver_name })
+            new conversationSchema_1.ConversationModel({})
                 .save()
                 .then(function (conversation) {
                 return (userSchema_1.UserModel.findByIdAndUpdate(user_id, { $pull: { friendRequests: request_id },
                     $push: { contacts: request_id, conversations: conversation._id } }, { new: true }).exec(), conversation);
             })
                 .then(function (conversation) {
-                return userSchema_1.UserModel.findByIdAndUpdate(request_id, { $push: { contacts: user_id, conversations: conversation._id } }, { new: true }).exec();
+                console.log("the conversation id: ", conversation._id);
+                return (conversationSchema_1.ConversationModel.findByIdAndUpdate(conversation._id, { $set: { participants: [user_id, request_id], conversationName: req.body.conversation_id } }).exec(), conversation);
+            })
+                .then(function (conversation) {
+                return userSchema_1.UserModel.findByIdAndUpdate(request_id, { $push: { contacts: user_id, conversations: conversation._id } }, { new: true })
+                    .exec();
             })
                 .then(function (user) {
                 res.send(user);

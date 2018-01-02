@@ -37,9 +37,15 @@ import {Message} from './controllers/message';
         app.post('/user/acceptfriendrequest', myUser.acceptFriendRequest)
         app.get('/user/friendrequestlist', myUser.friendRequestList);
         app.post('/user/sendfriendrequest', myUser.sendFriendRequest);
-        app.get('/conversations', myConversation.getAll);
+
+        app.get('/allconversations', myConversation.getAll)
+        app.get('/conversations/:_id', myConversation.getConversation);
+        app.post('/user/conversations/sendmessage',myConversation.sendMessage);
+
         app.get('/deleteallconversations', myConversation.delete);
         app.get('/getallmessages', myMessage.getAll);
+        app.get('/deletenullconversation', myConversation.findnull);
+        app.get('/conversationscount', myConversation.count);
 
         app.get('*', (req: express.Request, res: express.Response, next: express.NextFunction)=>{
             res.sendFile(path.join(__dirname, '../public/index.html'));

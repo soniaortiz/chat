@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-// import { Request } from 'express';
 var Controller = /** @class */ (function () {
     function Controller() {
         var _this = this;
@@ -8,7 +7,9 @@ var Controller = /** @class */ (function () {
             _this.model.find({}).then(function (docs) { return res.json(docs); }).catch(function (e) { return e; });
         };
         this.count = function (req, res, next) {
-            _this.model.count({}).then(function (count) { return res.send(count); }).catch(function (e) { return e; });
+            _this.model.count().then(function (count) {
+                res.json(count);
+            }).catch(function (e) { return e; });
         };
         this.insert = function (req, res, next) {
             var obj = new _this.model(req.body);

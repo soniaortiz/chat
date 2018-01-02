@@ -68,8 +68,9 @@ export class User extends Controller{
         UserModel.findOneAndUpdate({_id: req.body.friend_id}, 
             {$push:{friendRequests: req.body.sender_id}})//
         .then((friend)=>{
+            console.log(friend)
             res.send(200);
-        })
+        }).catch((e:Error)=>res.send(e))
     }
     friendRequestList=(req: express.Request, res: express.Response, next: express.NextFunction)=>{//see friend request list
         UserModel.findById(req.query._id)
@@ -86,14 +87,22 @@ export class User extends Controller{
     }
     acceptFriendRequest=(req: express.Request, res: express.Response, next: express.NextFunction)=>{
         const {user_id, request_id}=req.body;
-        new ConversationModel({conversationName: req.body.conver_name})
+        new ConversationModel({})
         .save()
         .then((conversation)=>{
-            return (UserModel.findByIdAndUpdate(user_id,{$pull:{friendRequests: request_id}, 
+            return (UserModel.findByIdAndUpdate(user_id,
+                {$pull:{friendRequests : request_id},
                 $push:{contacts: request_id, conversations: conversation._id}}, {new: true}).exec(),conversation);
         })
-        .then((conversation)=>{            
-            return UserModel.findByIdAndUpdate(request_id, {$push: {contacts: user_id, conversations: conversation._id}}, {new: true}).exec();
+        .then((conversation)=>{
+            console.log("the conversation id: ", conversation._id);
+            return (ConversationModel.findByIdAndUpdate(conversation._id, 
+                {$set:{participants: [user_id, request_id], conversationName: req.body.conversation_id}}).exec(), conversation)
+        })
+        .then((conversation)=>{        
+            return UserModel.findByIdAndUpdate(request_id, 
+                    {$push: {contacts: user_id, conversations: conversation._id}}, {new: true})
+                    .exec();
         })
         .then((user)=>{
             res.send(user)
