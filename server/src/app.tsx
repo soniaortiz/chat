@@ -2,7 +2,6 @@ import * as express from 'express';
 import * as http from 'http';
 import * as path from 'path';
 import * as mongoose from 'mongoose';
-// import * as mongodb from 'mongodb';
 import * as bodyParser from 'body-parser';
 import * as errorHandler from 'errorhandler';
 import * as validator from 'express-validator';
@@ -51,4 +50,3 @@ import {User} from './controllers/user';
         }))
     };
     boot();
-

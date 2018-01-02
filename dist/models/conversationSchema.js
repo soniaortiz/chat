@@ -4,7 +4,7 @@ var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
 var converstationSchema = new Schema({
     participants: [{ type: Schema.Types.ObjectId, ref: 'User' }],
-    conversationName: { type: String, unique: true, required: false },
+    conversationName: String,
     messages: [{ type: Schema.Types.ObjectId, ref: 'Message' }]
 });
 exports.ConversationModel = mongoose.model('Conversation', converstationSchema);
