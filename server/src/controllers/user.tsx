@@ -115,8 +115,7 @@ export class User extends Controller{
             }
         )
         .then((conversation)=>res.send(conversation))
-        .catch((e:Error)=>res.send(e));
-        
+        .catch((e:Error)=>res.send(e));        
     }
 
     }

@@ -9,6 +9,7 @@ var bodyParser = require("body-parser");
 var errorHandler = require("errorhandler");
 var validator = require("express-validator");
 var user_1 = require("./controllers/user");
+var sio = require("socket.io");
 //server use
 var url = 'mongodb://localhost:27017/chat';
 var app = express();
@@ -35,18 +36,6 @@ mongoose.connect(url).then(function () {
     app.post('/user/acceptfriendrequest', myUser.acceptFriendRequest);
     app.get('/user/friendrequestlist', myUser.friendRequestList);
     app.post('/user/sendfriendrequest', myUser.sendFriendRequest);
-    // app.get('/deletemessages', (req, res, next)=>{
-    //     MessageModel.find({},(messages)=>{
-    //     }).then((messages)=>{
-    //         if(messages.length==0)
-    //             res.sendStatus(202)
-    //         messages.forEach((message, i)=>{
-    //             console.log("usuario ", i, " : ", message)
-    //             messages[i].remove();
-    //         })
-    //         res.sendStatus(200);
-    //     })
-    // });
     app.get('*', function (req, res, next) {
         res.sendFile(path.join(__dirname, '../public/index.html'));
     });
@@ -54,6 +43,13 @@ mongoose.connect(url).then(function () {
 //Create and boot server
 app.set('port', 3000);
 var server = http.createServer(app);
+var io = sio.listen(server);
+io.on('connection', function (socket) {
+    socket.emit('news', { hello: 'world' });
+    socket.on('my other event', function (data) {
+        console.log(data);
+    });
+});
 var boot = function () {
     server.listen(app.listen(app.get('port'), function () {
         console.info('Express server listening on port ' + app.get('port'));

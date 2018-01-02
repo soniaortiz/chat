@@ -7,7 +7,9 @@ import * as bodyParser from 'body-parser';
 import * as errorHandler from 'errorhandler';
 import * as validator from 'express-validator';
 import {User} from './controllers/user';
-import {MessageModel} from './models/messageSchema';
+// import {MessageModel} from './models/messageSchema';
+// import * as sio from 'socket.io';
+
 //server use
     const url = 'mongodb://localhost:27017/chat';
     const app = express();
@@ -34,20 +36,6 @@ import {MessageModel} from './models/messageSchema';
         app.post('/user/acceptfriendrequest', myUser.acceptFriendRequest)
         app.get('/user/friendrequestlist', myUser.friendRequestList);
         app.post('/user/sendfriendrequest', myUser.sendFriendRequest);
-
-        // app.get('/deletemessages', (req, res, next)=>{
-        //     MessageModel.find({},(messages)=>{
-        //     }).then((messages)=>{
-        //         if(messages.length==0)
-        //             res.sendStatus(202)
-        //         messages.forEach((message, i)=>{
-        //             console.log("usuario ", i, " : ", message)
-        //             messages[i].remove();
-        //         })
-        //         res.sendStatus(200);
-        //     })
-        // });
-
         app.get('*', (req: express.Request, res: express.Response, next: express.NextFunction)=>{
             res.sendFile(path.join(__dirname, '../public/index.html'));
         });      
@@ -63,3 +51,4 @@ import {MessageModel} from './models/messageSchema';
         }))
     };
     boot();
+
