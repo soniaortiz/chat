@@ -4,7 +4,7 @@ var Controller = /** @class */ (function () {
     function Controller() {
         var _this = this;
         this.getAll = function (req, res, next) {
-            _this.model.find({}).then(function (docs) { return res.json(docs); }).catch(function (e) { return e; });
+            _this.model.find({}).then(function (docs) { return res.json(docs); }).catch(function (e) { return res.send(e); });
         };
         this.count = function (req, res, next) {
             _this.model.count().then(function (count) {

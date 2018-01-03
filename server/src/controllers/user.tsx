@@ -126,5 +126,18 @@ export class User extends Controller{
         .then((conversation)=>res.send(conversation))
         .catch((e:Error)=>res.send(e));        
     }
+    logout=(req: express.Request, res: express.Response, next: express.NextFunction)=>{
+        //close session
+        //or close connection
+    }
+    deleteContact=(req: express.Request, res: express.Response, next: express.NextFunction)=>{
+        const {user_id, contact_id} = req.body;
+        UserModel.findByIdAndUpdate(user_id, {$pull:{contacts: contact_id}})
+        .then(()=>{
+            return UserModel.findByIdAndUpdate(contact_id, {$pull:{contacts: user_id}}).exec()
+        })
+        .then( (user)=> res.json(user))
+        .catch((e:Error)=>res.send(e))
+    }
 
     }

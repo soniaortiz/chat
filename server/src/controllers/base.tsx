@@ -8,7 +8,7 @@ export abstract class  Controller {//for shared methods in the classes
     getAll=(req: express.Request, res: express.Response, next: express.NextFunction)=>{
         this.model.find({}).then(
             (docs: MongooseDocument[])=>res.json(docs)
-        ).catch((e: Error)=>e);
+        ).catch((e: Error)=>res.send(e));
     }
     count=(req: express.Request, res: express.Response, next: express.NextFunction)=>{
         this.model.count().then((count: number)=>{

@@ -28,24 +28,24 @@ import {Message} from './controllers/message';
         app.get('/users', myUser.getAll);//all users
         app.post('/signup', myUser.signup);
         app.post('/login', myUser.login);
+        app.post('/logout', myUser.logout);
         app.get('/profile', myUser.profile);
-        app.post('/user/conversations', myUser.conversations);
-        app.post('/user/friendlist', myUser.friendlist);
+        // app.post('/user/conversations', myUser.conversations);
+        // app.post('/user/friendlist', myUser.friendlist);
         app.post('/conversation/sendmessage', myUser.sendMessage);
-        app.delete('/deleteuser',myUser.delete);
+        app.delete('/deletecontact',myUser.deleteContact);
         app.delete('/deleteconversation', myUser.delete);
         app.post('/user/acceptfriendrequest', myUser.acceptFriendRequest)
-        app.get('/user/friendrequestlist', myUser.friendRequestList);
+        // app.get('/user/friendrequestlist', myUser.friendRequestList);
         app.post('/user/sendfriendrequest', myUser.sendFriendRequest);
-
-        app.get('/allconversations', myConversation.getAll)
+        // app.get('/allconversations', myConversation.getAll)
         app.get('/conversations/:_id', myConversation.getConversation);
         app.post('/user/conversations/sendmessage',myConversation.sendMessage);
 
-        app.get('/deleteallconversations', myConversation.delete);
-        app.get('/getallmessages', myMessage.getAll);
+        // app.get('/deleteallconversations', myConversation.delete);
+        // app.get('/getallmessages', myMessage.getAll);
         app.get('/deletenullconversation', myConversation.findnull);
-        app.get('/conversationscount', myConversation.count);
+        // app.get('/conversationscount', myConversation.count);
 
         app.get('*', (req: express.Request, res: express.Response, next: express.NextFunction)=>{
             res.sendFile(path.join(__dirname, '../public/index.html'));

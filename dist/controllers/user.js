@@ -133,6 +133,19 @@ var User = /** @class */ (function (_super) {
                 .then(function (conversation) { return res.send(conversation); })
                 .catch(function (e) { return res.send(e); });
         };
+        _this.logout = function (req, res, next) {
+            //close session
+            //or close connection
+        };
+        _this.deleteContact = function (req, res, next) {
+            var _a = req.body, user_id = _a.user_id, contact_id = _a.contact_id;
+            userSchema_1.UserModel.findByIdAndUpdate(user_id, { $pull: { contacts: contact_id } })
+                .then(function () {
+                return userSchema_1.UserModel.findByIdAndUpdate(contact_id, { $pull: { contacts: user_id } }).exec();
+            })
+                .then(function (user) { return res.json(user); })
+                .catch(function (e) { return res.send(e); });
+        };
         return _this;
     }
     return User;
