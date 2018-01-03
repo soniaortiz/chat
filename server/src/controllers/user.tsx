@@ -3,8 +3,8 @@ import {UserModel} from '../models/userSchema';
 import {ConversationModel} from '../models/conversationSchema';
 import {MessageModel} from '../models/messageSchema';
 import * as express from 'express';
-import { Error} from 'mongoose';
-import * as passport from 'passport';
+import {Error} from 'mongoose';
+// import * as passport from 'passport';
 
 export class User extends Controller{
     model = UserModel;

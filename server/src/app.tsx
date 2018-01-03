@@ -8,6 +8,8 @@ import * as validator from 'express-validator';
 import {User} from './controllers/user';
 import {Conversation} from './controllers/conversation';
 import {Message} from './controllers/message';
+import * as routes from './controllers/routes';
+
 
 //server use
     const url = 'mongodb://localhost:27017/chat';
@@ -21,29 +23,29 @@ import {Message} from './controllers/message';
 //DB connection
     mongoose.connect(url).then(()=>{
         console.log("connection with db stablished");
-        const myUser = new User();
-        const myConversation = new Conversation();
-        const myMessage = new Message();
+        // const myUser = new User();
+        // const myConversation = new Conversation();
+        // const myMessage = new Message();
 
-        app.get('/users', myUser.getAll);//all users
-        app.post('/signup', myUser.signup);
-        app.post('/login', myUser.login);
-        app.post('/logout', myUser.logout);
-        app.get('/profile', myUser.profile);
+        app.get('/users', routes.user.getAll);//all users
+        app.post('/signup', routes.user.signup);
+        app.post('/login', routes.user.login);
+        app.post('/logout', routes.user.logout);
+        app.get('/profile', routes.user.profile);
         // app.post('/user/conversations', myUser.conversations);
         // app.post('/user/friendlist', myUser.friendlist);
-        app.post('/conversation/sendmessage', myUser.sendMessage);
-        app.delete('/deletecontact',myUser.deleteContact);
-        app.delete('/deleteconversation', myUser.delete);
-        app.post('/user/acceptfriendrequest', myUser.acceptFriendRequest)
+        app.post('/conversation/sendmessage', routes.user.sendMessage);
+        app.delete('/deletecontact',routes.user.deleteContact);
+        app.delete('/deleteconversation', routes.user.delete);
+        app.post('/user/acceptfriendrequest', routes.user.acceptFriendRequest)
         // app.get('/user/friendrequestlist', myUser.friendRequestList);
-        app.post('/user/sendfriendrequest', myUser.sendFriendRequest);
+        app.post('/user/sendfriendrequest', routes.user.sendFriendRequest);
         // app.get('/allconversations', myConversation.getAll)
-        app.get('/conversations/:_id', myConversation.getConversation);
-        app.post('/user/conversations/sendmessage',myConversation.sendMessage);
+        app.get('/conversations/:_id', routes.conversation.getConversation);
+        app.post('/user/conversations/sendmessage',routes.conversation.sendMessage);
         // app.get('/deleteallconversations', myConversation.delete);
         // app.get('/getallmessages', myMessage.getAll);
-        app.get('/deletenullconversation', myConversation.findnull);
+        app.get('/deletenullconversation', routes.conversation.findnull);
         // app.get('/conversationscount', myConversation.count);
 
         app.get('*', (req: express.Request, res: express.Response, next: express.NextFunction)=>{

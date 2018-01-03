@@ -14,6 +14,7 @@ var base_1 = require("./base");
 var userSchema_1 = require("../models/userSchema");
 var conversationSchema_1 = require("../models/conversationSchema");
 var messageSchema_1 = require("../models/messageSchema");
+// import * as passport from 'passport';
 var User = /** @class */ (function (_super) {
     __extends(User, _super);
     function User() {
@@ -46,7 +47,7 @@ var User = /** @class */ (function (_super) {
         };
         _this.profile = function (req, res, next) {
             // console.log("User profile");
-            var email = req.query.email.email;
+            var email = req.query.email;
             console.log(email);
             userSchema_1.UserModel.findOne(email)
                 .then(function (user) {
