@@ -4,9 +4,10 @@ import {ConversationModel} from '../models/conversationSchema';
 import {MessageModel} from '../models/messageSchema';
 import * as express from 'express';
 import { Error} from 'mongoose';
+import * as passport from 'passport';
+
 export class User extends Controller{
     model = UserModel;
-
     login = (req: express.Request, res: express.Response, next: express.NextFunction)=>{
         console.log("login");
         const {email, password} = req.body;
@@ -34,7 +35,7 @@ export class User extends Controller{
     }
     profile=(req: express.Request, res: express.Response, next: express.NextFunction)=>{
         // console.log("User profile");
-        const {email} =  req.query.email;
+        const {email} =  req.query;
         console.log(email)
         UserModel.findOne(email)
         .then(

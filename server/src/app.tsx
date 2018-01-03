@@ -41,7 +41,6 @@ import {Message} from './controllers/message';
         // app.get('/allconversations', myConversation.getAll)
         app.get('/conversations/:_id', myConversation.getConversation);
         app.post('/user/conversations/sendmessage',myConversation.sendMessage);
-
         // app.get('/deleteallconversations', myConversation.delete);
         // app.get('/getallmessages', myMessage.getAll);
         app.get('/deletenullconversation', myConversation.findnull);
