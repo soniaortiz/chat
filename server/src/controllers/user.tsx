@@ -4,9 +4,8 @@ import {ConversationModel} from '../models/conversationSchema';
 import {MessageModel} from '../models/messageSchema';
 import * as express from 'express';
 import {Error} from 'mongoose';
-import * as passport from 'passport';
+// import * as passport from 'passport';
 import * as jwt from 'jsonwebtoken';
-import { ENODEV } from 'constants';
 import { Secret } from 'jsonwebtoken';
 
 export class User extends Controller{
@@ -50,18 +49,19 @@ export class User extends Controller{
         .catch((e:Error)=>res.send(e))
     }
     profile=(req: express.Request, res: express.Response, next: express.NextFunction)=>{
-        // console.log("User profile");
-        const {email} =  req.body;
-        console.log(email)
-        UserModel.findOne(email)
+        //console.log("User profile");
+        const {_id} =  req.body;
+        //console.log(email);
+        UserModel.findById(_id)
         .then(
             (user)=>{
                 !user && res.status(404).send("User not found");
                 res.json(user);//send the user
             })
+        .catch((e: Error)=>res.send(e))
     }
     conversations=(req: express.Request, res: express.Response, next: express.NextFunction)=>{
-        console.log("Conversations")
+        // console.log("Conversations")
         const{user_id}=req.body;
         UserModel.findById({_id: user_id})
         .populate("conversations")

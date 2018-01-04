@@ -14,6 +14,7 @@ var base_1 = require("./base");
 var userSchema_1 = require("../models/userSchema");
 var conversationSchema_1 = require("../models/conversationSchema");
 var messageSchema_1 = require("../models/messageSchema");
+// import * as passport from 'passport';
 var jwt = require("jsonwebtoken");
 var User = /** @class */ (function (_super) {
     __extends(User, _super);
@@ -58,17 +59,18 @@ var User = /** @class */ (function (_super) {
                 .catch(function (e) { return res.send(e); });
         };
         _this.profile = function (req, res, next) {
-            // console.log("User profile");
-            var email = req.body.email;
-            console.log(email);
-            userSchema_1.UserModel.findOne(email)
+            //console.log("User profile");
+            var _id = req.body._id;
+            //console.log(email);
+            userSchema_1.UserModel.findById(_id)
                 .then(function (user) {
                 !user && res.status(404).send("User not found");
                 res.json(user); //send the user
-            });
+            })
+                .catch(function (e) { return res.send(e); });
         };
         _this.conversations = function (req, res, next) {
-            console.log("Conversations");
+            // console.log("Conversations")
             var user_id = req.body.user_id;
             userSchema_1.UserModel.findById({ _id: user_id })
                 .populate("conversations")
