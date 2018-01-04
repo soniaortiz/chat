@@ -4,22 +4,38 @@ import {ConversationModel} from '../models/conversationSchema';
 import {MessageModel} from '../models/messageSchema';
 import * as express from 'express';
 import {Error} from 'mongoose';
-// import * as passport from 'passport';
+import * as passport from 'passport';
+import * as jwt from 'jsonwebtoken';
+import { ENODEV } from 'constants';
+import { Secret } from 'jsonwebtoken';
 
 export class User extends Controller{
     model = UserModel;
     login = (req: express.Request, res: express.Response, next: express.NextFunction)=>{
-        console.log("login");
-        const {email, password} = req.body;
-        console.log(email, password)
-        UserModel.findOne({email, password})
-            .then((doc)=>{
-                !doc && res.sendStatus(403);//forbidden, user not found
-                res.json(doc);
+        const {password, _id} = req.body;
+        UserModel
+        .findOne({_id: _id, password: password})
+        .populate({
+            path: 'conversations',
+            populate: {
+                path: 'participants',
+                select: 'name -_id'
+            }
+        })
+        .then((user)=>{
+            !user && res.sendStatus(403);//forbidden, user not found
+                const id_token = jwt.sign({
+                    _id: _id
+                }, process.env.SECRET_TOKEN as Secret, {expiresIn: '1d'});
+
+                res.status(200).json({
+                    user,
+                    id_token
+                });    
             })
-            .catch((e: Error)=>{
-                res.send(e);
-            })
+        .catch((e: Error)=>{
+            res.send(e);
+        })
     }
     signup= (req: express.Request, res: express.Response, next: express.NextFunction)=>{
         // console.log("Register user", req.body);
@@ -35,7 +51,7 @@ export class User extends Controller{
     }
     profile=(req: express.Request, res: express.Response, next: express.NextFunction)=>{
         // console.log("User profile");
-        const {email} =  req.query;
+        const {email} =  req.body;
         console.log(email)
         UserModel.findOne(email)
         .then(

@@ -14,20 +14,32 @@ var base_1 = require("./base");
 var userSchema_1 = require("../models/userSchema");
 var conversationSchema_1 = require("../models/conversationSchema");
 var messageSchema_1 = require("../models/messageSchema");
-// import * as passport from 'passport';
+var jwt = require("jsonwebtoken");
 var User = /** @class */ (function (_super) {
     __extends(User, _super);
     function User() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.model = userSchema_1.UserModel;
         _this.login = function (req, res, next) {
-            console.log("login");
-            var _a = req.body, email = _a.email, password = _a.password;
-            console.log(email, password);
-            userSchema_1.UserModel.findOne({ email: email, password: password })
-                .then(function (doc) {
-                !doc && res.sendStatus(403); //forbidden, user not found
-                res.json(doc);
+            var _a = req.body, password = _a.password, _id = _a._id;
+            userSchema_1.UserModel
+                .findOne({ _id: _id, password: password })
+                .populate({
+                path: 'conversations',
+                populate: {
+                    path: 'participants',
+                    select: 'name -_id'
+                }
+            })
+                .then(function (user) {
+                !user && res.sendStatus(403); //forbidden, user not found
+                var id_token = jwt.sign({
+                    _id: _id
+                }, process.env.SECRET_TOKEN, { expiresIn: '1d' });
+                res.status(200).json({
+                    user: user,
+                    id_token: id_token
+                });
             })
                 .catch(function (e) {
                 res.send(e);
@@ -47,7 +59,7 @@ var User = /** @class */ (function (_super) {
         };
         _this.profile = function (req, res, next) {
             // console.log("User profile");
-            var email = req.query.email;
+            var email = req.body.email;
             console.log(email);
             userSchema_1.UserModel.findOne(email)
                 .then(function (user) {
