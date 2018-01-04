@@ -13,7 +13,7 @@ import {Strategy, StrategyOptions, ExtractJwt} from 'passport-jwt';
 import * as passport from 'passport'
 import {UserModel} from './models/userSchema';
 import { error } from 'util';
-import { Error } from 'mongoose';
+import { Error } from 'mongoose'; 
 
 const opts: StrategyOptions ={
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
