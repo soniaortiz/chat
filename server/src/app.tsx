@@ -5,14 +5,14 @@ import * as mongoose from 'mongoose';
 import * as bodyParser from 'body-parser';
 import * as errorHandler from 'errorhandler';
 import * as validator from 'express-validator';
-import {User} from './controllers/user';
-import {Conversation} from './controllers/conversation';
-import {Message} from './controllers/message';
+// import {User} from './controllers/user';
+// import {Conversation} from './controllers/conversation';
+// import {Message} from './controllers/message';
 import * as routes from './controllers/routes';
 import {Strategy, StrategyOptions, ExtractJwt} from 'passport-jwt';
 import * as passport from 'passport'
 import {UserModel} from './models/userSchema';
-import { error } from 'util';
+// import { error } from 'util';
 import { Error } from 'mongoose'; 
 
 const opts: StrategyOptions ={
@@ -22,7 +22,7 @@ const opts: StrategyOptions ={
  //server use
     const url = 'mongodb://localhost:27017/chat';
     const app = express();
-    app.use(express.static('public'));
+    app.use(express.static(path.join(__dirname, '../build/')));
     app.use(bodyParser.urlencoded({extended: true}));
     app.use(bodyParser.json());
     app.use(validator());
@@ -36,9 +36,7 @@ const opts: StrategyOptions ={
         })
         .catch((e:Error)=>done(e, false))
     }));
-
     app.use(passport.initialize());
-
     (mongoose as any).Promise = global.Promise; //Overwrite mongoose promise
 //DB connection
     mongoose.connect(url).then(()=>{
@@ -68,14 +66,16 @@ const opts: StrategyOptions ={
 
         app.get('/deletenullconversation', routes.conversation.findnull);
         app.get('*', (req: express.Request, res: express.Response, next: express.NextFunction)=>{
-            res.sendFile(path.join(__dirname, '../public/index.html'));
+            res.sendFile(path.join(__dirname, '../build/index.html'));
+            // res.sendStatus(200);
+            // res.sendFile('../build/index.html')
             }
         );      
         }
     ).catch((e: Error)=>{console.error(e);}); 
 
 //Create and boot server
-    app.set('port', 3000);
+    app.set('port', 8000);
     const server = http.createServer(app);
     const boot =  ()=>{
         server.listen(app.listen(app.get('port'), ()=>{

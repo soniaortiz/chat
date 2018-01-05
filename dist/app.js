@@ -7,6 +7,9 @@ var mongoose = require("mongoose");
 var bodyParser = require("body-parser");
 var errorHandler = require("errorhandler");
 var validator = require("express-validator");
+// import {User} from './controllers/user';
+// import {Conversation} from './controllers/conversation';
+// import {Message} from './controllers/message';
 var routes = require("./controllers/routes");
 var passport_jwt_1 = require("passport-jwt");
 var passport = require("passport");
@@ -18,7 +21,7 @@ var opts = {
 //server use
 var url = 'mongodb://localhost:27017/chat';
 var app = express();
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, '../build/')));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(validator());
@@ -55,11 +58,13 @@ mongoose.connect(url).then(function () {
     // app.get('/deleteallconversations', myConversation.delete);
     app.get('/deletenullconversation', routes.conversation.findnull);
     app.get('*', function (req, res, next) {
-        res.sendFile(path.join(__dirname, '../public/index.html'));
+        res.sendFile(path.join(__dirname, '../build/index.html'));
+        // res.sendStatus(200);
+        // res.sendFile('../build/index.html')
     });
 }).catch(function (e) { console.error(e); });
 //Create and boot server
-app.set('port', 3000);
+app.set('port', 8000);
 var server = http.createServer(app);
 var boot = function () {
     server.listen(app.listen(app.get('port'), function () {
