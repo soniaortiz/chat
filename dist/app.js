@@ -38,12 +38,12 @@ app.use(passport.initialize());
 mongoose.Promise = global.Promise; //Overwrite mongoose promise
 //DB connection
 mongoose.connect(url).then(function () {
-    console.log("connection with db stablished");
+    // console.log("connection with db stablished");
     app.post('/signup', routes.user.signup);
     app.post('/login', routes.user.login);
     app.post('/logout', routes.user.logout);
     app.post('/profile', routes.user.profile);
-    app.get('/users', routes.user.getAll);
+    // app.get('/users', routes.user.getAll);
     // app.post('/user/conversations', myUser.conversations);
     // app.post('/user/friendlist', myUser.friendlist);
     app.post('/conversation/sendmessage', routes.user.sendMessage);
