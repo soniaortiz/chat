@@ -1,0 +1,7 @@
+interface passwordProperties{
+
+}
+
+interface passwordState{
+    
+}

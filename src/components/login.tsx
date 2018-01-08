@@ -1,28 +1,23 @@
 import * as React from 'react';
 
-const EmailField = ()=>{
-    return (
-        <input type="text"/>
-    )
+interface LoginProps{
+}
+interface LoginState{
 }
 
-const PasswordField =()=>{
-    return <input type="password"/>
-}
+export class Login extends React.Component<LoginProps, LoginState>{
+    validateEmailType(){
+        const regEx = /([a-zA-Z0-9]+)\@([a-zA-Z0-9]+)\.([a-zA-Z0-9]{2,5})(\.)*([a-zA-Z0-9]{2,5})$/ig
+    }
 
-const LoginBtn = ()=>{
-    return <button>Login</button>
-}
-
-export class Login extends React.Component{
     render(){
         return (
-        <div id="loginform">
+        <div id="loginForm" className="from-group">
             <label htmlFor="">Email</label>
-            <EmailField />
+            <input type="text" required={true} id="emailField"/>
             <label htmlFor="">Password</label>
-            <PasswordField />
-            <LoginBtn/>
+            <input type="password" required={true} id="passwordfield"/>
+            <button className={'btn btn-primary'}>Login</button>        
         </div>)
     }
 }
