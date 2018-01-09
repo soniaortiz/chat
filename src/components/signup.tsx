@@ -1,11 +1,15 @@
 import * as React from 'react';
 import {EmailField} from './email';
 import * as axios from 'axios';
+import {Password} from './password';
 const request = axios.default;
 
 export class Signup extends React.Component<SignupProps, SignupState>{
     constructor(props: SignupProps){
         super(props)
+    }
+    setPassword=(password: string)=>{
+        this.setState({password: password});
     }
     getEmailValue=(mailValue: string)=>{
         this.setState({email: mailValue});
@@ -38,8 +42,8 @@ export class Signup extends React.Component<SignupProps, SignupState>{
                     <input type="text" id="lastName" name="lastName" required className="form-control" onChange={this.handleInputChange}/>
                 <label htmlFor="">email</label>
                     <EmailField setEmailValue={this.getEmailValue}/>  
-                <label htmlFor="">Password</label>             
-                    {/* <PasswordField /> */}
+                <label htmlFor="">Password</label>
+                    <Password />            
                 <label htmlFor="userNameField">Username</label>
                     <input type="text" id="userNameField" name= "useraame" required={true} className="form-control"  onChange={this.handleInputChange}/>
                 <label htmlFor="birthdateField" >Birthdate</label>

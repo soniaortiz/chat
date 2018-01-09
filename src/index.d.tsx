@@ -1,7 +1,11 @@
-interface passwordProperties{
+interface PasswordProps{
+    // setValidPassword: Function
 }
 
 interface passwordState{
+    firstPassword: string,
+    confirmationPassword: string
+    disable: boolean
 }
 
 interface emailProps{
