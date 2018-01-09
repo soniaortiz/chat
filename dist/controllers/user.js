@@ -58,7 +58,11 @@ var User = /** @class */ (function (_super) {
                     res.send(409).write('User already created'); //Conflict, user
                 return new userSchema_1.UserModel(req.body).save();
             })
-                .then(function (newUser) { return res.json(newUser); })
+                .then(function (newUser) {
+                console.log("Saving new user");
+                console.log(newUser);
+                res.json(newUser);
+            })
                 .catch(function (e) { return res.send(e); });
         };
         _this.profile = function (req, res, next) {

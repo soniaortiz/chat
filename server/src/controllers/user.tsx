@@ -48,7 +48,11 @@ export class User extends Controller{
                 res.send(409).write('User already created');//Conflict, user
             return new UserModel(req.body).save()
         })
-        .then((newUser)=>res.json(newUser))
+        .then((newUser)=>{
+            console.log("Saving new user")
+            console.log(newUser)
+            res.json(newUser)
+        })
         .catch((e:Error)=>res.send(e))
     }
     profile=(req: express.Request, res: express.Response, next: express.NextFunction)=>{

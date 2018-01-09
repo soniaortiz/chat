@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {EmailField} from './email'
+import {EmailField} from './email';
 import * as axios from 'axios';
 const request = axios.default;
 

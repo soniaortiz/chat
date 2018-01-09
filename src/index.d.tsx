@@ -18,13 +18,13 @@ interface SignupState{
     name: string,
     middleName: string,
     lastName: string, 
+    username: string,
+    birthdate: Date,
+    gender: string,
     email: string,
-    userName: string,
-    password: string    
+    password: string
 }
 interface LoginProps{
-    // email: string,
-    // password: string
 }
 interface LoginState{//from child
     email: string,
