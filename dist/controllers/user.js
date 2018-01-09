@@ -22,9 +22,11 @@ var User = /** @class */ (function (_super) {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.model = userSchema_1.UserModel;
         _this.login = function (req, res, next) {
-            var _a = req.body, password = _a.password, _id = _a._id;
+            console.log("Validate the user");
+            var _a = req.body, password = _a.password, email = _a.email;
+            console.log("email: ", email, "\n", "password: ", password);
             userSchema_1.UserModel
-                .findOne({ _id: _id, password: password })
+                .findOne({ email: email, password: password })
                 .populate({
                 path: 'conversations',
                 populate: {
@@ -35,7 +37,8 @@ var User = /** @class */ (function (_super) {
                 .then(function (user) {
                 !user && res.sendStatus(403); //forbidden, user not found
                 var id_token = jwt.sign({
-                    _id: _id
+                    // _id: _id
+                    email: email
                 }, process.env.SECRET_TOKEN, { expiresIn: '1d' });
                 res.status(200).json({
                     user: user,

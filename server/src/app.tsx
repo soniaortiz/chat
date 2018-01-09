@@ -45,7 +45,7 @@ const opts: StrategyOptions ={
         app.post('/login', routes.user.login);
         app.post('/logout', routes.user.logout);
         app.post('/profile', routes.user.profile);
-        // app.get('/users', routes.user.getAll);
+        app.get('/users', routes.user.getAll);
         // app.post('/user/conversations', myUser.conversations);
         // app.post('/user/friendlist', myUser.friendlist);
         app.post('/conversation/sendmessage', routes.user.sendMessage); 

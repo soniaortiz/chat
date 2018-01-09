@@ -11,9 +11,11 @@ import { Secret } from 'jsonwebtoken';
 export class User extends Controller{
     model = UserModel;
     login = (req: express.Request, res: express.Response, next: express.NextFunction)=>{
-        const {password, _id} = req.body;
+        console.log("Validate the user");
+        const {password, email} = req.body;
+        console.log("email: ", email, "\n", "password: ", password)
         UserModel
-        .findOne({_id: _id, password: password})
+        .findOne({email: email, password: password})
         .populate({
             path: 'conversations',
             populate: {
@@ -24,7 +26,8 @@ export class User extends Controller{
         .then((user)=>{
             !user && res.sendStatus(403);//forbidden, user not found
                 const id_token = jwt.sign({
-                    _id: _id
+                    // _id: _id
+                    email: email
                 }, process.env.SECRET_TOKEN as Secret, {expiresIn: '1d'});
 
                 res.status(200).json({

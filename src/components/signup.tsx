@@ -1,10 +1,25 @@
 import * as React from 'react';
+import {EmailField} from './email';
 
-const EmailField=()=>{
-    return <input type="email" className="form-control"/>
-}
-
-export class Signup extends React.Component{
+export class Signup extends React.Component<SignupProps, SignupState>{
+    constructor(props: SignupProps){
+        super(props)
+    }
+    getEmailValue=(mailValue: string)=>{
+        this.setState({email: mailValue});
+    }
+    setName= (event: React.ChangeEvent<HTMLInputElement>)=>{
+        this.setState({name: event.target.value});
+    }
+    setMiddleName= (event: React.ChangeEvent<HTMLInputElement>)=>{
+        this.setState({middleName: event.target.value});
+    }
+    setLastName= (event: React.ChangeEvent<HTMLInputElement>)=>{
+        this.setState({lastName: event.target.value});
+    }
+    setUserName=(event: React.ChangeEvent<HTMLInputElement>)=>{
+        this.setState({userName: event.target.value});
+    }
     render(){
         return (
             <div id="signup" className="form-group">
@@ -15,7 +30,7 @@ export class Signup extends React.Component{
                 <label htmlFor="lastNameField">Lastname</label>
                 <input type="text" id="lastNameField" required className="form-control"/>
                 <label htmlFor="">email</label>
-                <EmailField />               
+                <EmailField setEmailValue={this.getEmailValue}/>               
                 <label htmlFor="userNameField">Username</label>
                 <input type="text" required={true} className="form-control" id="userNameField"/>
                 <label htmlFor="birthdateField">Birthdate</label>
