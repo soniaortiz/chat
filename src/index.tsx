@@ -8,7 +8,6 @@ import {Login} from './components/login';
 const {BrowserRouter, Route} = ReactRouter;
 
 import './index.css';
-
   ReactDOM.render(
     (
       <BrowserRouter> 

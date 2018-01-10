@@ -9,6 +9,7 @@ export class Signup extends React.Component<SignupProps, SignupState>{
         super(props)
     }
     setPassword=(password: string)=>{
+        console.log("password")
         this.setState({password: password});
     }
     getEmailValue=(mailValue: string)=>{
@@ -19,15 +20,15 @@ export class Signup extends React.Component<SignupProps, SignupState>{
     }
     handleInputChange= ({target: {name, value}}: React.ChangeEvent<HTMLInputElement>)=>{
         this.setState((prevState, props)=>{
-            console.log(this.state, prevState);
+            // console.log(this.state, prevState);
             return {...prevState, [name]: value}
-        }); //change to date
+        });
     }
     register=(event: React.MouseEvent<HTMLButtonElement>)=>{
         console.log({...this.state});
         request.post('/signup', {...this.state})
         .then((result)=>{
-            console.log(result)
+            console.log(result);
         })
         .catch((e: Error)=>e)
     }
@@ -43,7 +44,7 @@ export class Signup extends React.Component<SignupProps, SignupState>{
                 <label htmlFor="">email</label>
                     <EmailField setEmailValue={this.getEmailValue}/>  
                 <label htmlFor="">Password</label>
-                    <Password />            
+                    <Password passwordValidation={this.setPassword}/>            
                 <label htmlFor="userNameField">Username</label>
                     <input type="text" id="userNameField" name= "useraame" required={true} className="form-control"  onChange={this.handleInputChange}/>
                 <label htmlFor="birthdateField" >Birthdate</label>
@@ -55,7 +56,7 @@ export class Signup extends React.Component<SignupProps, SignupState>{
                         <label htmlFor="femaleOpt" className="form-check-label">Female</label>
                         <input type="radio" name = "gender" onChange={this.handleInputChange} value="female" className="form-check-input" id="femaleOpt"/>
                     </div>
-                <button className="btn btn-primary" onClick={this.register} >Register</button>
+                <button className="btn btn-primary" onClick={this.register} disabled={true}>Register</button>
             </div>
         )
     }

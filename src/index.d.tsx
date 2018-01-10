@@ -1,9 +1,9 @@
 interface PasswordProps{
-    // setValidPassword: Function
+    passwordValidation: Function
 }
 
 interface passwordState{
-    firstPassword: string,
+    password: string,
     confirmationPassword: string
     disable: boolean
 }
