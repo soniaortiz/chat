@@ -2,7 +2,8 @@ import * as React from 'react';
 import {EmailField} from './email';
 import * as axios from 'axios';
 const request = axios.default;
-import * as ReactDOM from 'react-dom'
+import  * as Cookies from 'js-cookie'
+
 
 export class Login extends React.Component<LoginProps, LoginState>{
     constructor(props: LoginProps){
@@ -12,18 +13,16 @@ export class Login extends React.Component<LoginProps, LoginState>{
     validateUser = (event: React.MouseEvent<HTMLButtonElement>)=>{
         request.post('/login',{email: this.state.email, password: this.state.password})
         .then((result)=>{
-            if(result)
-            console.log(result)
+            console.log("then")
+            Cookies.set('token', result);
             this.setState(()=>({password: ''}))
             console.log(result);
         })
         .catch((e)=>e)
-        ReactDOM.findDOMNode(this.refs.password).nodeValue='';
     }
 
     getEmailValue=(mailValue: string)=>{
         this.setState({email: mailValue});
-        // console.log(mailValue);
     }
     handleData=(data: LoginState)=>{
         this.setState({

@@ -28,7 +28,7 @@ export class User extends Controller{
                 const id_token = jwt.sign({
                     email: email
                 }, process.env.SECRET_TOKEN as Secret, {expiresIn: '10d'});
-                res.status(200).cookie('token', id_token);    
+                res.json(id_token);    
             })
         .catch((e: Error)=>{
             res.send(e);

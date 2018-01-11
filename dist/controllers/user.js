@@ -31,7 +31,7 @@ var User = /** @class */ (function (_super) {
                 var id_token = jwt.sign({
                     email: email
                 }, process.env.SECRET_TOKEN, { expiresIn: '10d' });
-                res.status(200).cookie('token', id_token);
+                res.json(id_token);
             })
                 .catch(function (e) {
                 res.send(e);
