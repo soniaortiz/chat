@@ -9,10 +9,10 @@ var userSchema = new Schema({
     lastName: String,
     password: String,
     birthdate: Date,
-    sex: String,
-    contacts: [{ type: Schema.Types.ObjectId, ref: 'User', unique: true }],
+    gender: String,
+    contacts: [{ type: Schema.Types.ObjectId, ref: 'User' }],
     conversations: [{ type: Schema.Types.ObjectId, ref: 'Conversation' }],
-    friendRequests: [{ type: Schema.Types.ObjectId, ref: 'User', unique: true }],
+    friendRequests: [{ type: Schema.Types.ObjectId, ref: 'User' }],
     avatar: String
 });
 exports.UserModel = mongoose.model('User', userSchema);

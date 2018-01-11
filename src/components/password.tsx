@@ -1,5 +1,4 @@
 import * as React from 'react';
-// import * as ReactDOM from 'react-dom';
 
 export class Password extends React.Component<PasswordProps, passwordState>{
     constructor(props: PasswordProps){
@@ -18,9 +17,7 @@ export class Password extends React.Component<PasswordProps, passwordState>{
         }
     }
     matchPassword=({target:{value}}: React.ChangeEvent<HTMLInputElement>)=>{
-        // console.log("value second password: ", value);
         this.setState(()=>({confirmationPassword: value}));
-        // console.log('matching password', RegExp(this.state.password));
         (RegExp("^"+this.state.password+"$").test(value))? 
         this.props.passwordValidation(value):this.props.passwordValidation('')
     }

@@ -8,10 +8,10 @@ const Schema = mongoose.Schema;
         lastName: String,
         password: String,
         birthdate: Date,
-        sex: String,
-        contacts: [{type: Schema.Types.ObjectId, ref: 'User', unique: true}],
+        gender: String,
+        contacts: [{type: Schema.Types.ObjectId, ref: 'User'}],
         conversations: [{type: Schema.Types.ObjectId, ref:'Conversation'}],
-        friendRequests: [{type: Schema.Types.ObjectId, ref: 'User', unique: true}],
+        friendRequests: [{type: Schema.Types.ObjectId, ref: 'User'}],
         avatar: String
     });
 
@@ -22,10 +22,10 @@ const Schema = mongoose.Schema;
         lastName: string,
         password: string,
         birthdate: Date,
-        sex: string,
-        contacts: string[],
-        conversations: string[],
-        friendRequests: string[],
-        avatar: string
+        gender: string,
+        contacts?: string[],
+        conversations?: string[],
+        friendRequests?: string[],
+        avatar?: string
     }
     export const UserModel = mongoose.model<IUserDocument>('User', userSchema);

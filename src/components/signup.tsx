@@ -41,9 +41,12 @@ export class Signup extends React.Component<SignupProps, SignupState>{
         }, this.validateAndEnableBtn)
      }
     register=(event: React.MouseEvent<HTMLButtonElement>)=>{
-        request.post('/signup', {...this.state})
+        const r = {...this.state}
+        delete r.enabledBtn;
+        request.post('/signup', r)
         .then((result)=>{
             console.log(result);
+            
         })
         .catch((e: Error)=>e)
     }

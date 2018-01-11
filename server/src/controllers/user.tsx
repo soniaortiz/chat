@@ -4,9 +4,7 @@ import {ConversationModel} from '../models/conversationSchema';
 import {MessageModel} from '../models/messageSchema';
 import * as express from 'express';
 import {Error} from 'mongoose';
-// import {CookiesProvider} from 'react-cookie';
 
-// import * as passport from 'passport';
 import * as jwt from 'jsonwebtoken';
 import { Secret } from 'jsonwebtoken';
 
@@ -15,27 +13,22 @@ export class User extends Controller{
     login = (req: express.Request, res: express.Response, next: express.NextFunction)=>{
         console.log("Validate the user");
         const {password, email} = req.body;
-        console.log("email: ", email, "\n", "password: ", password)
+        // console.log("email: ", email, "\n", "password: ", password)
         UserModel
         .findOne({email: email, password: password})
-        .populate({
-            path: 'conversations',
-            populate: {
-                path: 'participants',
-                select: 'name -_id'
-            }
-        })
+        // .populate({
+        //     path: 'conversations',
+        //     populate: {
+        //         path: 'participants',
+        //         select: 'name -_id'
+        //     }
+        // })
         .then((user)=>{
             !user && res.sendStatus(403);//forbidden, user not found
                 const id_token = jwt.sign({
-                    // _id: _id
                     email: email
-                }, process.env.SECRET_TOKEN as Secret, {expiresIn: '1d'});
-
-                res.status(200).json({
-                    user,
-                    id_token
-                });    
+                }, process.env.SECRET_TOKEN as Secret, {expiresIn: '10d'});
+                res.status(200).cookie('token', id_token);    
             })
         .catch((e: Error)=>{
             res.send(e);
@@ -43,22 +36,21 @@ export class User extends Controller{
     }
     signup= (req: express.Request, res: express.Response, next: express.NextFunction)=>{
         // console.log("Register user", req.body);
-        const {email} = req.body; 
+        const {email} = req.body; console.log(req.body)
         UserModel.findOne({email: email})
         .then((doc)=>{
+            console.log(doc)
             if(doc)
-                res.send(409).write('User already created');//Conflict, user
+                res.send(409)//Conflict, user
             return new UserModel(req.body).save()
         })
         .then((newUser)=>{
-            console.log("Saving new user")
-            console.log(newUser)
-            res.json(newUser)
+            // res.json(newUser)
+            res.sendStatus(200);
         })
         .catch((e:Error)=>res.send(e))
     }
     profile=(req: express.Request, res: express.Response, next: express.NextFunction)=>{
-        //console.log("User profile");
         const {_id} =  req.body;
         //console.log(email);
         UserModel.findById(_id)

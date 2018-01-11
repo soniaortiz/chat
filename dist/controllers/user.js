@@ -14,8 +14,6 @@ var base_1 = require("./base");
 var userSchema_1 = require("../models/userSchema");
 var conversationSchema_1 = require("../models/conversationSchema");
 var messageSchema_1 = require("../models/messageSchema");
-// import {CookiesProvider} from 'react-cookie';
-// import * as passport from 'passport';
 var jwt = require("jsonwebtoken");
 var User = /** @class */ (function (_super) {
     __extends(User, _super);
@@ -25,26 +23,15 @@ var User = /** @class */ (function (_super) {
         _this.login = function (req, res, next) {
             console.log("Validate the user");
             var _a = req.body, password = _a.password, email = _a.email;
-            console.log("email: ", email, "\n", "password: ", password);
+            // console.log("email: ", email, "\n", "password: ", password)
             userSchema_1.UserModel
                 .findOne({ email: email, password: password })
-                .populate({
-                path: 'conversations',
-                populate: {
-                    path: 'participants',
-                    select: 'name -_id'
-                }
-            })
                 .then(function (user) {
                 !user && res.sendStatus(403); //forbidden, user not found
                 var id_token = jwt.sign({
-                    // _id: _id
                     email: email
-                }, process.env.SECRET_TOKEN, { expiresIn: '1d' });
-                res.status(200).json({
-                    user: user,
-                    id_token: id_token
-                });
+                }, process.env.SECRET_TOKEN, { expiresIn: '10d' });
+                res.status(200).cookie('token', id_token);
             })
                 .catch(function (e) {
                 res.send(e);
@@ -53,21 +40,21 @@ var User = /** @class */ (function (_super) {
         _this.signup = function (req, res, next) {
             // console.log("Register user", req.body);
             var email = req.body.email;
+            console.log(req.body);
             userSchema_1.UserModel.findOne({ email: email })
                 .then(function (doc) {
+                console.log(doc);
                 if (doc)
-                    res.send(409).write('User already created'); //Conflict, user
+                    res.send(409); //Conflict, user
                 return new userSchema_1.UserModel(req.body).save();
             })
                 .then(function (newUser) {
-                console.log("Saving new user");
-                console.log(newUser);
-                res.json(newUser);
+                // res.json(newUser)
+                res.sendStatus(200);
             })
                 .catch(function (e) { return res.send(e); });
         };
         _this.profile = function (req, res, next) {
-            //console.log("User profile");
             var _id = req.body._id;
             //console.log(email);
             userSchema_1.UserModel.findById(_id)
