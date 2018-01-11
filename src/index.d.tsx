@@ -9,11 +9,13 @@ interface passwordState{
 }
 
 interface emailProps{
-    setEmailValue: Function
+    setEmailValue: Function,
 }
 
 interface emailState{
-    valid: boolean
+    valid: boolean,
+    expression: boolean
+
 }
 
 interface SignupProps{
@@ -23,14 +25,27 @@ interface SignupState{
     middleName: string,
     lastName: string, 
     username: string,
-    birthdate: Date,
+    birthdate: any,//change to Date
     gender: string,
     email: string,
-    password: string
+    password: string,
+    enabledBtn: boolean
 }
 interface LoginProps{
 }
 interface LoginState{//from child
     email: string,
-    password: string
+    password: string,
+}
+interface DashboardProps{
+
+}
+interface DashboardState{
+
+}
+interface SidebarProps{
+
+}
+interface SidebarState{
+
 }

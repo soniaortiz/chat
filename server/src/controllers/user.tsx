@@ -4,6 +4,8 @@ import {ConversationModel} from '../models/conversationSchema';
 import {MessageModel} from '../models/messageSchema';
 import * as express from 'express';
 import {Error} from 'mongoose';
+// import {CookiesProvider} from 'react-cookie';
+
 // import * as passport from 'passport';
 import * as jwt from 'jsonwebtoken';
 import { Secret } from 'jsonwebtoken';

@@ -14,6 +14,7 @@ var base_1 = require("./base");
 var userSchema_1 = require("../models/userSchema");
 var conversationSchema_1 = require("../models/conversationSchema");
 var messageSchema_1 = require("../models/messageSchema");
+// import {CookiesProvider} from 'react-cookie';
 // import * as passport from 'passport';
 var jwt = require("jsonwebtoken");
 var User = /** @class */ (function (_super) {

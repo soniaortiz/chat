@@ -5,6 +5,7 @@ import registerServiceWorker from './registerServiceWorker';
 import * as ReactRouter from 'react-router-dom';
 import {Signup} from './components/signup';
 import {Login} from './components/login';
+import {Dashboard} from './components/dashboard';
 const {BrowserRouter, Route} = ReactRouter;
 
 import './index.css';
@@ -12,9 +13,12 @@ import './index.css';
     (
       <BrowserRouter> 
         <div>
-          <Route path="/" component={Login}/>
-          <Route path="/registration" component={Signup}/>
-        </div>        
+          <Route exact path="/" component={Login}/>
+          <Route exact path="/registration" component={Signup}/>
+          <Route path="/dashboard" 
+                render={()=><div><Dashboard /></div>
+                } />
+          </div>
       </BrowserRouter>
     ), document.getElementById('root')
   )

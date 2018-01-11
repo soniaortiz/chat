@@ -10,20 +10,27 @@ export class Password extends React.Component<PasswordProps, passwordState>{
         disable: true}
     }
     enableSecondPasswordInput=({target: {value:{length}}, target: {value}}: React.ChangeEvent<HTMLInputElement>)=>{
-        length<8?
-            this.setState({disable: true, password: value}):
+        if(length<8){
+            this.setState({disable: true, password: value, confirmationPassword: ''});
+            this.props.passwordValidation('');
+        }else{
             this.setState({disable: false, password: value});
+        }
     }
     matchPassword=({target:{value}}: React.ChangeEvent<HTMLInputElement>)=>{
+        // console.log("value second password: ", value);
+        this.setState(()=>({confirmationPassword: value}));
         // console.log('matching password', RegExp(this.state.password));
         (RegExp("^"+this.state.password+"$").test(value))? 
-        this.props.passwordValidation(value):()=>{}
+        this.props.passwordValidation(value):this.props.passwordValidation('')
     }
+
     render(){
         return <div>
-            <input type="password" onChange={this.enableSecondPasswordInput}/>
-            <input type="password" disabled={this.state.disable} 
-            ref="confirmPassword" onChange={this.matchPassword}/>
+            <input type="password" onChange={this.enableSecondPasswordInput} value={this.state.password}/>
+            <p hidden={!this.state.disable}>The password must contain at least 8 characters</p>
+            <input type="password" disabled={this.state.disable} value={this.state.confirmationPassword}
+            ref="confirmPassword" onChange={this.matchPassword} />
         </div>
     }
 }

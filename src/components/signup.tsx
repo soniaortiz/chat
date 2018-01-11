@@ -7,30 +7,54 @@ const request = axios.default;
 export class Signup extends React.Component<SignupProps, SignupState>{
     constructor(props: SignupProps){
         super(props)
+        this.state={
+             name: '',
+             middleName: '',
+             lastName: '', 
+             username: '',
+             birthdate: '',
+             gender: '',
+             email: '',
+             password: '',
+             enabledBtn: true}         
     }
     setPassword=(password: string)=>{
-        console.log("password")
-        this.setState({password: password});
+        this.setState((prevState)=>{
+            return {password: password}
+        }, this.validateAndEnableBtn);
+        this.validateAndEnableBtn();
     }
     getEmailValue=(mailValue: string)=>{
-        this.setState({email: mailValue});
+        this.setState((prevState)=>{
+            return {...prevState, email: mailValue}
+        }, this.validateAndEnableBtn);
     }
     handleBirthdate=({target: {value}}: React.ChangeEvent<HTMLInputElement>)=>{
-        this.setState({birthdate: new Date(value)});
+        this.setState((prevState)=>{
+            return{...prevState, birthdate: value}
+        }, this.validateAndEnableBtn)
+        this.validateAndEnableBtn();
     }
     handleInputChange= ({target: {name, value}}: React.ChangeEvent<HTMLInputElement>)=>{
-        this.setState((prevState, props)=>{
-            // console.log(this.state, prevState);
-            return {...prevState, [name]: value}
-        });
-    }
+        this.setState((prevState)=>{
+            return { ...prevState,[name]: value}
+        }, this.validateAndEnableBtn)
+     }
     register=(event: React.MouseEvent<HTMLButtonElement>)=>{
-        console.log({...this.state});
         request.post('/signup', {...this.state})
         .then((result)=>{
             console.log(result);
         })
         .catch((e: Error)=>e)
+    }
+    validateAndEnableBtn=()=>{
+        const values = Object.values(this.state);
+            console.log(values.every(val=>{
+                console.log(values)
+                return val!=''}));
+            (values.every(val=>val!=''))?
+                this.setState((prevState)=>({enabledBtn: false})):
+                this.setState((prevState)=>({enabledBtn: true}))
     }
     render(){
         return (
@@ -41,22 +65,22 @@ export class Signup extends React.Component<SignupProps, SignupState>{
                     <input type="text" id="middleName" name="middleName" className="form-control" onChange={this.handleInputChange}/>
                 <label htmlFor="lastNameField">Lastname</label>
                     <input type="text" id="lastName" name="lastName" required className="form-control" onChange={this.handleInputChange}/>
-                <label htmlFor="">email</label>
-                    <EmailField setEmailValue={this.getEmailValue}/>  
-                <label htmlFor="">Password</label>
-                    <Password passwordValidation={this.setPassword}/>            
-                <label htmlFor="userNameField">Username</label>
-                    <input type="text" id="userNameField" name= "useraame" required={true} className="form-control"  onChange={this.handleInputChange}/>
+                    <label htmlFor="userNameField">Username</label>
+                    <input type="text" id="userNameField" name= "username" required={true} className="form-control"  onChange={this.handleInputChange}/>
                 <label htmlFor="birthdateField" >Birthdate</label>
                     <input type="date" id="birthdateField" name="birthdate" className="form-control" onChange={this.handleBirthdate}/>
                 <label htmlFor="sexField" >Sex</label>
                     <div id="sexField" className="form-check">
                         <label htmlFor="maleOpt" className="form-check-label">Male</label>
-                        <input type="radio" name ="gender" onChange={this.handleInputChange} value="male" checked className="form-check-input" id="maleOpt" />
+                        <input type="radio" name ="gender" onChange={this.handleInputChange} value="male" className="form-check-input" id="maleOpt" />
                         <label htmlFor="femaleOpt" className="form-check-label">Female</label>
                         <input type="radio" name = "gender" onChange={this.handleInputChange} value="female" className="form-check-input" id="femaleOpt"/>
                     </div>
-                <button className="btn btn-primary" onClick={this.register} disabled={true}>Register</button>
+                <label htmlFor="">email</label>
+                    <EmailField setEmailValue={this.getEmailValue}/>  
+                <label htmlFor="">Password</label>
+                    <Password passwordValidation={this.setPassword}/>         
+                <button className="btn btn-primary" onClick={this.register} disabled={this.state.enabledBtn}>Register</button>
             </div>
         )
     }
