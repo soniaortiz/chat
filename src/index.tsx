@@ -5,7 +5,7 @@ import registerServiceWorker from './registerServiceWorker';
 import * as ReactRouter from 'react-router-dom';
 import {Signup} from './components/signup';
 import {Login} from './components/login';
-import {Dashboard} from './components/dashboard';
+import {Dashboard} from './components/dashboard/dashboardIndex';
 const {BrowserRouter, Route} = ReactRouter;
 
 import './index.css';

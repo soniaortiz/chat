@@ -2,8 +2,11 @@
   "name": "server",
   "version": "1.0.0",
   "main": "index.js",
+  "proxy": "http://localhost:8000",
   "scripts": {
     "transpile": "concurrently \"tsc -w -p server/src\" \"nodemon ./dist/app.js\"",
+    "dev": "concurrently \"mongod\" \"react-scripts-ts start\" \"tsc -w -p server\" \"nodemon ./build/server/index.js\"",
+
     "start": "react-scripts-ts start",
     "build": "react-scripts-ts build",
     "test": "react-scripts-ts test --env=jsdom",
@@ -23,6 +26,7 @@
     "@types/jest": "^21.1.9",
     "@types/js-cookie": "^2.1.0",
     "@types/jsonwebtoken": "^7.2.5",
+    "@types/jss": "^9.3.0",
     "@types/mongoose": "^4.7.30",
     "@types/node": "^8.5.2",
     "@types/passport": "^0.4.2",

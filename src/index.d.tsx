@@ -1,5 +1,5 @@
 interface PasswordProps{
-    passwordValidation: Function
+    passwordValidation: Function 
 }
 
 interface passwordState{
@@ -29,7 +29,8 @@ interface SignupState{
     gender: string,
     email: string,
     password: string,
-    enabledBtn: boolean
+    enabledBtn: boolean,
+    redirect: boolean
 }
 interface LoginProps{
 }

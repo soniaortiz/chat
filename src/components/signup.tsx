@@ -16,7 +16,9 @@ export class Signup extends React.Component<SignupProps, SignupState>{
              gender: '',
              email: '',
              password: '',
-             enabledBtn: true}         
+             enabledBtn: true,
+             redirect: false
+            }         
     }
     setPassword=(password: string)=>{
         this.setState((prevState)=>{
@@ -43,10 +45,12 @@ export class Signup extends React.Component<SignupProps, SignupState>{
     register=(event: React.MouseEvent<HTMLButtonElement>)=>{
         const r = {...this.state}
         delete r.enabledBtn;
+        delete r.redirect;//probably not necesary
+
         request.post('/signup', r)
         .then((result)=>{
             console.log(result);
-            
+            result? this.setState(()=>({redirect: true})): {}            
         })
         .catch((e: Error)=>e)
     }
@@ -63,26 +67,42 @@ export class Signup extends React.Component<SignupProps, SignupState>{
         return (
             <div id="signup" className="form-group">
                 <label htmlFor="nameField">First Name</label>
-                    <input type="text" id="name" name="name" required className="form-control" onChange={this.handleInputChange}/>
+                    <input type="text" id="name" name="name" required 
+                    className="form-control" onChange={this.handleInputChange}/>
+
                 <label htmlFor="middleNameField">Middle name</label>
-                    <input type="text" id="middleName" name="middleName" className="form-control" onChange={this.handleInputChange}/>
+                    <input type="text" id="middleName" name="middleName" 
+                    className="form-control" onChange={this.handleInputChange}/>
+
                 <label htmlFor="lastNameField">Lastname</label>
-                    <input type="text" id="lastName" name="lastName" required className="form-control" onChange={this.handleInputChange}/>
-                    <label htmlFor="userNameField">Username</label>
-                    <input type="text" id="userNameField" name= "username" required={true} className="form-control"  onChange={this.handleInputChange}/>
+                    <input type="text" id="lastName" name="lastName" 
+                    required className="form-control" onChange={this.handleInputChange}/>
+
+                <label htmlFor="userNameField">Username</label>
+                    <input type="text" id="userNameField" name= "username" required={true} 
+                    className="form-control"  onChange={this.handleInputChange}/>
+
                 <label htmlFor="birthdateField" >Birthdate</label>
-                    <input type="date" id="birthdateField" name="birthdate" className="form-control" onChange={this.handleBirthdate}/>
+                    <input type="date" id="birthdateField" name="birthdate" 
+                    className="form-control" onChange={this.handleBirthdate}/>
+
                 <label htmlFor="sexField" >Sex</label>
                     <div id="sexField" className="form-check">
                         <label htmlFor="maleOpt" className="form-check-label">Male</label>
-                        <input type="radio" name ="gender" onChange={this.handleInputChange} value="male" className="form-check-input" id="maleOpt" />
+                        <input type="radio" name ="gender" onChange={this.handleInputChange} value="male" 
+                        className="form-check-input" id="maleOpt" />
+
                         <label htmlFor="femaleOpt" className="form-check-label">Female</label>
-                        <input type="radio" name = "gender" onChange={this.handleInputChange} value="female" className="form-check-input" id="femaleOpt"/>
+                        <input type="radio" name = "gender" onChange={this.handleInputChange} value="female" 
+                        className="form-check-input" id="femaleOpt"/>
                     </div>
+
                 <label htmlFor="">email</label>
                     <EmailField setEmailValue={this.getEmailValue}/>  
+
                 <label htmlFor="">Password</label>
-                    <Password passwordValidation={this.setPassword}/>         
+                    <Password passwordValidation={this.setPassword}/>     
+
                 <button className="btn btn-primary" onClick={this.register} disabled={this.state.enabledBtn}>Register</button>
             </div>
         )

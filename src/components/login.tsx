@@ -3,9 +3,8 @@ import {EmailField} from './email';
 import * as axios from 'axios';
 const request = axios.default;
 import  * as Cookies from 'js-cookie';
-import {Redirect} from 'react-router'
-
-
+import {Redirect} from 'react-router';
+// import Button from 'material-ui/Button';
 export class Login extends React.Component<LoginProps, LoginState>{
     constructor(props: LoginProps){
         super(props)
@@ -33,7 +32,7 @@ export class Login extends React.Component<LoginProps, LoginState>{
         this.setState({password: event.target.value})
     }
     render(){
-        if(this.state.redirect)
+        if(this.state.redirect || Cookies.get())
             {return <Redirect to="/dashboard"/>}
         return (
         <div id="loginForm" className="from-group">
