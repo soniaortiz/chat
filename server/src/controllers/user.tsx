@@ -13,7 +13,6 @@ export class User extends Controller{
     login = (req: express.Request, res: express.Response, next: express.NextFunction)=>{
         console.log("Validate the user");
         const {password, email} = req.body;
-        // console.log("email: ", email, "\n", "password: ", password)
         UserModel
         .findOne({email: email, password: password})
         // .populate({
@@ -28,10 +27,10 @@ export class User extends Controller{
                 const id_token = jwt.sign({
                     email: email
                 }, process.env.SECRET_TOKEN as Secret, {expiresIn: '10d'});
-                res.json(id_token);    
+                res.cookie('token',id_token).send();    
             })
         .catch((e: Error)=>{
-            res.send(e);
+            res.json(e).status(400).send();
         })
     }
     signup= (req: express.Request, res: express.Response, next: express.NextFunction)=>{

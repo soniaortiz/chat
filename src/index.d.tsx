@@ -36,6 +36,7 @@ interface LoginProps{
 interface LoginState{//from child
     email: string,
     password: string,
+    redirect: boolean
 }
 interface DashboardProps{
 

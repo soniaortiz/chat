@@ -23,7 +23,6 @@ var User = /** @class */ (function (_super) {
         _this.login = function (req, res, next) {
             console.log("Validate the user");
             var _a = req.body, password = _a.password, email = _a.email;
-            // console.log("email: ", email, "\n", "password: ", password)
             userSchema_1.UserModel
                 .findOne({ email: email, password: password })
                 .then(function (user) {
@@ -31,10 +30,10 @@ var User = /** @class */ (function (_super) {
                 var id_token = jwt.sign({
                     email: email
                 }, process.env.SECRET_TOKEN, { expiresIn: '10d' });
-                res.json(id_token);
+                res.cookie('token', id_token).send();
             })
                 .catch(function (e) {
-                res.send(e);
+                res.json(e).status(400).send();
             });
         };
         _this.signup = function (req, res, next) {
