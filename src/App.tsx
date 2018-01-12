@@ -1,21 +1,26 @@
 import * as React from 'react';
-import './App.css';
-const logo = require('./logo.svg');
+import * as ReactRouter from 'react-router-dom';
+const { BrowserRouter, Route } = ReactRouter;
+import { Signup } from './components/signup';
+import { Login } from './components/login';
+import { Dashboard } from './components/dashboard/dashboardIndex';
+import { MuiThemeProvider, getMuiTheme, lightBaseTheme } from 'material-ui/styles';
 
 class App extends React.Component {
   render() {
     return (
-      <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo"/>
-          <h2>Welcome to primitive chat</h2>
-        </div>
-        <p className="App-intro">
-          To get started, edit <code>src/App.tsx</code> and save to reload.
-        </p>
-      </div>      
-    );
+      <MuiThemeProvider muiTheme={getMuiTheme(lightBaseTheme)}>
+        <BrowserRouter>
+          <div>
+            <Route exact path="/" component={Login} />
+            <Route exact path="/registration" component={Signup} />
+            <Route path="/dashboard"
+              render={() => <div><Dashboard /></div>
+              } />
+          </div>
+        </BrowserRouter>
+      </MuiThemeProvider>
+    )
   }
 }
-
 export default App;

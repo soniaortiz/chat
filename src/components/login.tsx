@@ -4,7 +4,8 @@ import * as axios from 'axios';
 const request = axios.default;
 import  * as Cookies from 'js-cookie';
 import {Redirect} from 'react-router';
-// import Button from 'material-ui/Button';
+import {FlatButton} from 'material-ui';
+
 export class Login extends React.Component<LoginProps, LoginState>{
     constructor(props: LoginProps){
         super(props)
@@ -26,10 +27,10 @@ export class Login extends React.Component<LoginProps, LoginState>{
         this.setState({
             email: data.email,
             password: data.password
-        })
+        });
     }
     setPasswordValue=(event: React.ChangeEvent<HTMLInputElement>)=>{
-        this.setState({password: event.target.value})
+        this.setState({password: event.target.value});
     }
     render(){
         if(this.state.redirect || Cookies.get())
@@ -40,7 +41,7 @@ export class Login extends React.Component<LoginProps, LoginState>{
             < EmailField setEmailValue={this.getEmailValue}/>
             <label htmlFor="">Password</label>
             <input type="password" required={true} id="passwordfield" onChange={this.setPasswordValue} ref="password" value={this.state.password}/>
-            <button className={'btn btn-primary'} onClick={this.validateUser}>Login</button>        
+            <FlatButton className={'btn btn-primary'} onClick={this.validateUser}>Login</FlatButton>        
         </div>)
     } 
 }
