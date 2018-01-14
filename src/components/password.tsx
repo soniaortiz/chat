@@ -26,6 +26,7 @@ export class Password extends React.Component<PasswordProps, passwordState>{
         return <div>
             <input type="password" onChange={this.enableSecondPasswordInput} value={this.state.password}/>
             <p hidden={!this.state.disable}>The password must contain at least 8 characters</p>
+            <p>Confirm password</p>
             <input type="password" disabled={this.state.disable} value={this.state.confirmationPassword}
             ref="confirmPassword" onChange={this.matchPassword} />
         </div>

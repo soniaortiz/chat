@@ -30,7 +30,7 @@ interface SignupState{
     email: string,
     password: string,
     enabledBtn: boolean,
-    redirect: boolean
+    // redirect: boolean
 }
 interface LoginProps{
 }
