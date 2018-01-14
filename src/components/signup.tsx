@@ -3,13 +3,15 @@ import { EmailField } from './email';
 import * as axios from 'axios';
 import { Password } from './password';
 import { TextField, RadioButtonGroup, RadioButton, DatePicker, Divider } from 'material-ui';
-// import { RadioButtonGroup } from 'material-ui/RadioButton/RadioButtonGroup';
+import { Redirect } from 'react-router-dom';
+
 const request = axios.default;
 
 export class Signup extends React.Component<SignupProps, SignupState>{
     constructor(props: SignupProps) {
         super(props)
         this.state = {
+            redirect: true,
             name: '',
             middleName: '',
             lastName: '',
@@ -18,8 +20,7 @@ export class Signup extends React.Component<SignupProps, SignupState>{
             gender: '',
             email: '',
             password: '',
-            enabledBtn: true,
-            // redirect: false
+            enabledBtn: true
         }
     }
     setPassword = (password: string) => {
@@ -46,13 +47,14 @@ export class Signup extends React.Component<SignupProps, SignupState>{
     }
     register = (event: React.MouseEvent<HTMLButtonElement>) => {        
         const r = { ...this.state }
-        delete r.enabledBtn;
-        // delete r.redirect;//probably not necesary
+        // delete r.enabledBtn;
+        // delete r.redirect;
         console.log("Register new user ", r)
         request.post('/signup', r)
             .then((result) => {
-                console.log(result);
-                // result ? this.setState(() => ({ redirect: true })) : {}
+                console.log("", result);
+                this.setState(()=>({redirect: false}))
+                console.log('redirect not working');
             })
             .catch((e: Error) => e)
     }
@@ -66,7 +68,16 @@ export class Signup extends React.Component<SignupProps, SignupState>{
             this.setState((prevState) => ({ enabledBtn: false })) :
             this.setState((prevState) => ({ enabledBtn: true }))
     }
+
+    redToLogin(){
+        console.log("trying to redirect");
+        // this.setState(()=>({redirect: true}))
+    }
     render() {
+
+        console.log("btn to render login", this.state.enabledBtn);
+        if(!(this.state.redirect))
+            return <Redirect to='/login'/>
         return (
             <div id="signup" >
                 <label htmlFor="nameField">First Name</label>

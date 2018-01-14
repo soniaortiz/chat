@@ -21,6 +21,7 @@ interface emailState{
 interface SignupProps{
 }
 interface SignupState{
+    redirect: boolean,
     name: string,
     middleName: string,
     lastName: string, 
@@ -30,7 +31,6 @@ interface SignupState{
     email: string,
     password: string,
     enabledBtn: boolean,
-    // redirect: boolean
 }
 interface LoginProps{
 }

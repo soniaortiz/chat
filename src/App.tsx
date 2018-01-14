@@ -13,6 +13,9 @@ class App extends React.Component {
         <BrowserRouter>
           <div>
             <Route exact path="/" component={Login} />
+    <Route exact path="/login" render={()=> <div>
+        <Login />
+       </div>} />
             <Route exact path="/registration" component={Signup} />
             <Route path="/dashboard"
               render={() => <div><Dashboard /></div>

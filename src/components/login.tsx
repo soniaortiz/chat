@@ -35,7 +35,8 @@ export class Login extends React.Component<LoginProps, LoginState>{
         this.setState({ password: event.target.value });
     }
     render() {
-       if (Cookies){return <Redirect to="/dashboard" /> }
+        console.log("Cookie name: ", Cookies.get("name"));
+       if (Cookies.get(name)){return <Redirect to="/dashboard" /> }
         return (
             <div id="loginForm" className="from-group">
                 <label htmlFor="">Email</label>
