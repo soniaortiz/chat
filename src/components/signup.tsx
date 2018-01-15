@@ -47,14 +47,9 @@ export class Signup extends React.Component<SignupProps, SignupState>{
     }
     register = (event: React.MouseEvent<HTMLButtonElement>) => {        
         const r = { ...this.state }
-        // delete r.enabledBtn;
-        // delete r.redirect;
-        console.log("Register new user ", r)
         request.post('/signup', r)
             .then((result) => {
-                console.log("", result);
-                this.setState(()=>({redirect: false}))
-                console.log('redirect not working');
+                this.setState(()=>({redirect: false}));
             })
             .catch((e: Error) => e)
     }
@@ -68,14 +63,7 @@ export class Signup extends React.Component<SignupProps, SignupState>{
             this.setState((prevState) => ({ enabledBtn: false })) :
             this.setState((prevState) => ({ enabledBtn: true }))
     }
-
-    redToLogin(){
-        console.log("trying to redirect");
-        // this.setState(()=>({redirect: true}))
-    }
     render() {
-
-        console.log("btn to render login", this.state.enabledBtn);
         if(!(this.state.redirect))
             return <Redirect to='/login'/>
         return (
@@ -105,7 +93,7 @@ export class Signup extends React.Component<SignupProps, SignupState>{
                     onChange={this.handleBirthdate} />
                 <Divider />
 
-                <RadioButtonGroup name="gender" onChange={this.handleInputChange} defaultSelected={'male'}>
+                <RadioButtonGroup name="gender" onChange={this.handleInputChange}>
                     <RadioButton value="male" id="maleOpt" label='male' />
                     <RadioButton value="female" id="femaleOpt" label='female' />
                 </RadioButtonGroup>

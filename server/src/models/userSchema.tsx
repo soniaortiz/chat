@@ -1,12 +1,14 @@
 import * as mongoose from 'mongoose';
+import * as bcrypt from 'bcrypt';
+
 const Schema = mongoose.Schema;
 
     const userSchema = new Schema({
-        email: {type: String, unique: true},
+        email: {type: String, unique: true, lowercase: true},
         name: String,
         middleName: String,
         lastName: String,
-        password: String,
+        password: {type: String},
         birthdate: Date,
         gender: String,
         contacts: [{type: Schema.Types.ObjectId, ref: 'User'}],
@@ -28,4 +30,23 @@ const Schema = mongoose.Schema;
         friendRequests?: string[],
         avatar?: string
     }
+
+    userSchema.set('toJSON', {       
+        transform: function(doc: IUserDocument, user:IUserDocument , options: any){
+            delete user.password;
+            console.log('transform');
+            return user;
+        }
+    })
+
+    userSchema.pre('save', function (this: IUserDocument, next){
+        const user = this;
+        bcrypt.genSalt(10, function(err, salt){
+            bcrypt.hash(user.password, salt, function(err, hash){
+                user.password=hash;
+                next();
+            })
+        })
+    })
+
     export const UserModel = mongoose.model<IUserDocument>('User', userSchema);

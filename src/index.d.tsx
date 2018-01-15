@@ -37,17 +37,15 @@ interface LoginProps{
 interface LoginState{//from child
     email: string,
     password: string,
-    redirect: boolean
+    redirect: boolean,
+    open: boolean
 }
 interface DashboardProps{
-
 }
 interface DashboardState{
-
 }
 interface SidebarProps{
-
 }
 interface SidebarState{
-
 }
+

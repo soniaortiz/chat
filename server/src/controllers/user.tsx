@@ -7,44 +7,66 @@ import {Error} from 'mongoose';
 
 import * as jwt from 'jsonwebtoken';
 import { Secret } from 'jsonwebtoken';
+import * as bcrypt from 'bcrypt';
 
 export class User extends Controller{
     model = UserModel;
     login = (req: express.Request, res: express.Response, next: express.NextFunction)=>{
-        console.log("Validate the user");
         const {password, email} = req.body;
-        UserModel
-        .findOne({email: email, password: password})
-        // .populate({
-        //     path: 'conversations',
-        //     populate: {
-        //         path: 'participants',
-        //         select: 'name -_id'
-        //     }
-        // })
+        
+        UserModel.findOne({email})
         .then((user)=>{
-            !user && res.sendStatus(403);//forbidden, user not found
-                const id_token = jwt.sign({
-                    email: email
-                }, process.env.SECRET_TOKEN as Secret, {expiresIn: '10d'});
-                res.cookie('token',id_token).send();    
+            console.log(password, user&&user.password)
+            if(user)
+                {
+                return bcrypt.compare(password, user.password)}
+            else
+                res.sendStatus(404);
+        })
+        .then(()=>{
+            console.log("dsa")
+            return UserModel
+            .findOne({email})
+            .populate({
+                path: 'conversations',
+                populate: {
+                    path: 'participants',
+                    select: 'name -_id'
+                }
             })
+            .then((user)=>{
+                console.log(user)
+                if(user){    
+                    const id_token = jwt.sign({
+                        _id: user._id
+                        }, process.env.SECRET_TOKEN as Secret, {expiresIn: '10d'});  
+                        res.json({id_token, user});
+                    }
+                else{
+                    res.sendStatus(403);
+                }
+                })
+                .catch((e: Error)=> res.status(500).json(e))
+        })
         .catch((e: Error)=>{
-            res.json(e).status(400).send();
+            res.status(500).json(e);
         })
     }
     signup= (req: express.Request, res: express.Response, next: express.NextFunction)=>{
-        // console.log("Register user", req.body);
         const {email} = req.body; console.log(req.body)
         UserModel.findOne({email: email})
         .then((doc)=>{
             console.log(doc)
-            if(doc)
-                res.send(409)//Conflict, user
+            if(doc){
+                const id_token = jwt.sign({
+                    email: email
+                }, process.env.SECRET_TOKEN as Secret, {expiresIn: '10d'});
+                console.log(id_token);
+                res.json(id_token);
+            }
             return new UserModel(req.body).save()
         })
         .then((newUser)=>{
-            // res.json(newUser)
             res.sendStatus(200);
         })
         .catch((e:Error)=>res.send(e))

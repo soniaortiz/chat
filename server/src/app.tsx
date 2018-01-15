@@ -37,6 +37,7 @@ const opts: StrategyOptions ={
         .catch((e:Error)=>done(e, false))
     }));
     app.use(passport.initialize());
+
     (mongoose as any).Promise = global.Promise; //Overwrite mongoose promise
 //DB connection
     mongoose.connect(url).then(()=>{
@@ -46,19 +47,15 @@ const opts: StrategyOptions ={
         app.post('/logout', routes.user.logout);
         app.post('/profile', routes.user.profile);
         app.get('/users', routes.user.getAll);
-        // app.post('/user/conversations', myUser.conversations);
-        // app.post('/user/friendlist', myUser.friendlist);
         app.post('/conversation/sendmessage', routes.user.sendMessage); 
         app.delete('/deletecontact',routes.user.deleteContact);
         app.delete('/deleteconversation', routes.user.delete);
         app.post('/user/acceptfriendrequest', routes.user.acceptFriendRequest);
-        // app.get('/user/friendrequestlist', myUser.friendRequestList);
         app.post('/user/sendfriendrequest', routes.user.sendFriendRequest);
-        // app.get('/allconversations', myConversation.getAll);
         app.get('/conversations/:_id', routes.conversation.getConversation);
         app.post('/user/conversations/sendmessage',routes.conversation.sendMessage);
-        // app.get('/deleteallconversations', myConversation.delete);
         app.get('/deletenullconversation', routes.conversation.findnull);
+        
         app.get('*', (req: express.Request, res: express.Response, next: express.NextFunction)=>{
             res.sendFile(path.join(__dirname, '../build/index.html'));
             // res.sendStatus(200);

@@ -15,40 +15,68 @@ var userSchema_1 = require("../models/userSchema");
 var conversationSchema_1 = require("../models/conversationSchema");
 var messageSchema_1 = require("../models/messageSchema");
 var jwt = require("jsonwebtoken");
+var bcrypt = require("bcrypt");
 var User = /** @class */ (function (_super) {
     __extends(User, _super);
     function User() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.model = userSchema_1.UserModel;
         _this.login = function (req, res, next) {
-            console.log("Validate the user");
             var _a = req.body, password = _a.password, email = _a.email;
-            userSchema_1.UserModel
-                .findOne({ email: email, password: password })
+            userSchema_1.UserModel.findOne({ email: email })
                 .then(function (user) {
-                !user && res.sendStatus(403); //forbidden, user not found
-                var id_token = jwt.sign({
-                    email: email
-                }, process.env.SECRET_TOKEN, { expiresIn: '10d' });
-                res.cookie('token', id_token).send();
+                console.log(password, user && user.password);
+                if (user) {
+                    return bcrypt.compare(password, user.password);
+                }
+                else
+                    res.sendStatus(404);
+            })
+                .then(function () {
+                console.log("dsa");
+                return userSchema_1.UserModel
+                    .findOne({ email: email })
+                    .populate({
+                    path: 'conversations',
+                    populate: {
+                        path: 'participants',
+                        select: 'name -_id'
+                    }
+                })
+                    .then(function (user) {
+                    console.log(user);
+                    if (user) {
+                        var id_token = jwt.sign({
+                            _id: user._id
+                        }, process.env.SECRET_TOKEN, { expiresIn: '10d' });
+                        res.json({ id_token: id_token, user: user });
+                    }
+                    else {
+                        res.sendStatus(403);
+                    }
+                })
+                    .catch(function (e) { return res.status(500).json(e); });
             })
                 .catch(function (e) {
-                res.json(e).status(400).send();
+                res.status(500).json(e);
             });
         };
         _this.signup = function (req, res, next) {
-            // console.log("Register user", req.body);
             var email = req.body.email;
             console.log(req.body);
             userSchema_1.UserModel.findOne({ email: email })
                 .then(function (doc) {
                 console.log(doc);
-                if (doc)
-                    res.send(409); //Conflict, user
+                if (doc) {
+                    var id_token = jwt.sign({
+                        email: email
+                    }, process.env.SECRET_TOKEN, { expiresIn: '10d' });
+                    console.log(id_token);
+                    res.json(id_token);
+                }
                 return new userSchema_1.UserModel(req.body).save();
             })
                 .then(function (newUser) {
-                // res.json(newUser)
                 res.sendStatus(200);
             })
                 .catch(function (e) { return res.send(e); });

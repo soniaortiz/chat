@@ -18,7 +18,7 @@ export class EmailField extends React.Component<emailProps, emailState>{
     }
     render() {
         return <div >
-            <TextField className="form-control" onChange={this.validateExpression} ref="email" />
+            <TextField name="email" onChange={this.validateExpression} ref="email" />
             <p hidden={this.state.expression}>
                 this is not a valid email, example: user@myaddress.com
             </p>
