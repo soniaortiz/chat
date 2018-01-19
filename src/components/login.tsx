@@ -18,15 +18,12 @@ export class Login extends React.Component<LoginProps, LoginState>{
             flag = false : flag = true;
         if (flag)
             request.post('/login', { email: this.state.email, password: this.state.password }, {withCredentials: true})
-                // .then(({ data: { id_token, user:{email}} }) => {
-                    .then((response) => {
-                        console.log("response :", response)
-                    if (response.data.id_token) {
-                        // Cookies.set('chat', id_token);
+                    .then(({data:{user_id}}) => {
+                        console.log(user_id);
                         this.setState(() => ({ password: '', redirect: true }));
-                        this.props.login(response.data.email);
+                        this.props.login(user_id);
                         console.log("change to: ", this.props.isLogged);
-                    }
+                        console.log("Set user id to: ", this.props.user_id_is);
                 })
                 .catch((e) => e)
     }
@@ -60,7 +57,7 @@ export class Login extends React.Component<LoginProps, LoginState>{
 }
 
 export default connect<loginMapToProps, loginReducersToProps, LoginProps, AppStore>(
-    (store) => ({ isLogged: store.app.logged, email: store.app.userEmail}),
+    (store) => ({ isLogged: store.app.logged, user_id_is: store.app.user_id}),
     {
         login: RequestLogin
     }

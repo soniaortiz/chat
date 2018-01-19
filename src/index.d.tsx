@@ -1,13 +1,11 @@
 interface PasswordProps{
     passwordValidation: Function 
 }
-
 interface passwordState{
     password: string,
     confirmationPassword: string
     disable: boolean
 }
-
 interface emailProps{
     setEmailValue: Function,
 }
@@ -49,13 +47,13 @@ interface SidebarState{
 interface AppStore{
     app: { 
             logged: boolean,
-            userEmail: string
+            user_id: string
         }
 }
-interface loginMapToProps{
+interface loginMapToProps{//store state to props in the component
     isLogged: boolean,
-    email: string
+    user_id_is: string
 }
-interface loginReducersToProps{
+interface loginReducersToProps{//props from the component to the store
     login : any
 }

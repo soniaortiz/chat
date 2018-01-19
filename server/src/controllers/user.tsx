@@ -18,7 +18,7 @@ export class User extends Controller{
             res.sendStatus(403);    
         UserModel.findOne({email})
         .then((user)=>{
-            console.log(password, user&&user.password)
+            // console.log(password, user&&user.password)
             if(user)
                 {
                 return bcrypt.compare(password, user.password)}
@@ -26,7 +26,6 @@ export class User extends Controller{
                 res.sendStatus(404);
         })
         .then(()=>{
-            console.log("dsa")
             return UserModel
             .findOne({email})
             .populate({
@@ -37,17 +36,14 @@ export class User extends Controller{
                 }
             })
             .then((user)=>{
-                console.log(user)
                 if(user){    
                     const id_token = jwt.sign({
                         _id: user._id
                         }, process.env.SECRET_TOKEN as Secret);  
-                        // res.json({id_token, user});
-                        console.log(id_token);
                         res.cookie('token', id_token, {
                             expires: new Date(Date.now()+900000),
                             httpOnly: true
-                        }).send();
+                        }).send({user_id: user.id});
                     }
                 else{
                     res.sendStatus(403);

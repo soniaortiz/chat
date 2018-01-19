@@ -27,7 +27,7 @@ var User = /** @class */ (function (_super) {
                 res.sendStatus(403);
             userSchema_1.UserModel.findOne({ email: email })
                 .then(function (user) {
-                console.log(password, user && user.password);
+                // console.log(password, user&&user.password)
                 if (user) {
                     return bcrypt.compare(password, user.password);
                 }
@@ -35,7 +35,6 @@ var User = /** @class */ (function (_super) {
                     res.sendStatus(404);
             })
                 .then(function () {
-                console.log("dsa");
                 return userSchema_1.UserModel
                     .findOne({ email: email })
                     .populate({
@@ -46,17 +45,14 @@ var User = /** @class */ (function (_super) {
                     }
                 })
                     .then(function (user) {
-                    console.log(user);
                     if (user) {
                         var id_token = jwt.sign({
                             _id: user._id
                         }, process.env.SECRET_TOKEN);
-                        // res.json({id_token, user});
-                        console.log(id_token);
                         res.cookie('token', id_token, {
                             expires: new Date(Date.now() + 900000),
                             httpOnly: true
-                        }).send();
+                        }).send({ user_id: user.id });
                     }
                     else {
                         res.sendStatus(403);
