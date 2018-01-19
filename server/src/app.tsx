@@ -5,14 +5,10 @@ import * as mongoose from 'mongoose';
 import * as bodyParser from 'body-parser';
 import * as errorHandler from 'errorhandler';
 import * as validator from 'express-validator';
-// import {User} from './controllers/user';
-// import {Conversation} from './controllers/conversation';
-// import {Message} from './controllers/message';
 import * as routes from './controllers/routes';
 import {Strategy, StrategyOptions, ExtractJwt} from 'passport-jwt';
 import * as passport from 'passport'
 import {UserModel} from './models/userSchema';
-// import { error } from 'util';
 import { Error } from 'mongoose'; 
 
 const opts: StrategyOptions ={
@@ -58,8 +54,6 @@ const opts: StrategyOptions ={
         
         app.get('*', (req: express.Request, res: express.Response, next: express.NextFunction)=>{
             res.sendFile(path.join(__dirname, '../build/index.html'));
-            // res.sendStatus(200);
-            // res.sendFile('../build/index.html')
             }
         );      
         }

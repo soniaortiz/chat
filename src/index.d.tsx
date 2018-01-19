@@ -11,13 +11,11 @@ interface passwordState{
 interface emailProps{
     setEmailValue: Function,
 }
-
 interface emailState{
     valid: boolean,
     expression: boolean
 
 }
-
 interface SignupProps{
 }
 interface SignupState{
@@ -32,7 +30,7 @@ interface SignupState{
     password: string,
     enabledBtn: boolean,
 }
-interface LoginProps{
+interface LoginProps extends loginReducersToProps, loginMapToProps{
 }
 interface LoginState{//from child
     email: string,
@@ -48,4 +46,12 @@ interface SidebarProps{
 }
 interface SidebarState{
 }
-
+interface AppStore{
+    app: { logged: boolean}
+}
+interface loginMapToProps{
+    isLogged: boolean
+}
+interface loginReducersToProps{
+    login : any
+}

@@ -14,6 +14,8 @@ export class User extends Controller{
     login = (req: express.Request, res: express.Response, next: express.NextFunction)=>{
         const {password, email} = req.body;
         
+        if(!password || !email)
+            res.sendStatus(403);    
         UserModel.findOne({email})
         .then((user)=>{
             console.log(password, user&&user.password)
@@ -45,8 +47,8 @@ export class User extends Controller{
                 else{
                     res.sendStatus(403);
                 }
-                })
-                .catch((e: Error)=> res.status(500).json(e))
+            })
+            .catch((e: Error)=> res.status(500).json(e))
         })
         .catch((e: Error)=>{
             res.status(500).json(e);

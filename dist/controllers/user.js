@@ -23,6 +23,8 @@ var User = /** @class */ (function (_super) {
         _this.model = userSchema_1.UserModel;
         _this.login = function (req, res, next) {
             var _a = req.body, password = _a.password, email = _a.email;
+            if (!password || !email)
+                res.sendStatus(403);
             userSchema_1.UserModel.findOne({ email: email })
                 .then(function (user) {
                 console.log(password, user && user.password);
