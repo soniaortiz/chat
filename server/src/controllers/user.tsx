@@ -41,8 +41,13 @@ export class User extends Controller{
                 if(user){    
                     const id_token = jwt.sign({
                         _id: user._id
-                        }, process.env.SECRET_TOKEN as Secret, {expiresIn: '10d'});  
-                        res.json({id_token, user});
+                        }, process.env.SECRET_TOKEN as Secret);  
+                        // res.json({id_token, user});
+                        console.log(id_token);
+                        res.cookie('token', id_token, {
+                            expires: new Date(Date.now()+900000),
+                            httpOnly: true
+                        }).send();
                     }
                 else{
                     res.sendStatus(403);
@@ -74,8 +79,8 @@ export class User extends Controller{
         .catch((e:Error)=>res.send(e))
     }
     profile=(req: express.Request, res: express.Response, next: express.NextFunction)=>{
+        console.log("profile executed")
         const {_id} =  req.body;
-        //console.log(email);
         UserModel.findById(_id)
         .then(
             (user)=>{

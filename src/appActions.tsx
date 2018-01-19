@@ -1,9 +1,10 @@
-//actions for reducers
+//create action
 import {REQUEST_LOGIN} from './actionsTypes';
 
-export const RequestLogin = ()=>{
+export const RequestLogin = (payload: any)=>{
     return{
-        type: REQUEST_LOGIN
+        type: REQUEST_LOGIN,
+        payload
     }
 }
 

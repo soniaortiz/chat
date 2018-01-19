@@ -47,10 +47,14 @@ interface SidebarProps{
 interface SidebarState{
 }
 interface AppStore{
-    app: { logged: boolean}
+    app: { 
+            logged: boolean,
+            userEmail: string
+        }
 }
 interface loginMapToProps{
-    isLogged: boolean
+    isLogged: boolean,
+    email: string
 }
 interface loginReducersToProps{
     login : any

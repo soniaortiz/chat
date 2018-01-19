@@ -50,8 +50,13 @@ var User = /** @class */ (function (_super) {
                     if (user) {
                         var id_token = jwt.sign({
                             _id: user._id
-                        }, process.env.SECRET_TOKEN, { expiresIn: '10d' });
-                        res.json({ id_token: id_token, user: user });
+                        }, process.env.SECRET_TOKEN);
+                        // res.json({id_token, user});
+                        console.log(id_token);
+                        res.cookie('token', id_token, {
+                            expires: new Date(Date.now() + 900000),
+                            httpOnly: true
+                        }).send();
                     }
                     else {
                         res.sendStatus(403);
@@ -84,8 +89,8 @@ var User = /** @class */ (function (_super) {
                 .catch(function (e) { return res.send(e); });
         };
         _this.profile = function (req, res, next) {
+            console.log("profile executed");
             var _id = req.body._id;
-            //console.log(email);
             userSchema_1.UserModel.findById(_id)
                 .then(function (user) {
                 !user && res.status(404).send("User not found");

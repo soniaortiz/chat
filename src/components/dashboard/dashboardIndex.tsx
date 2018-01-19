@@ -1,17 +1,21 @@
 import * as React from 'react';
-import {Sidebar} from './sidebar';
+// import {Sidebar} from './sidebar';
 import {Contacts} from './contacts';
-// import{createStore, applyMiddleware} from 'redux';
-
-// import {CircularProgress} from 'material-ui';
-
-// const store = createStore(rootReducer)
+import * as axios from 'axios';
+// import { connect } from 'react-redux'
+const request = axios.default;
 
 export class Dashboard extends React.Component<DashboardProps,DashboardState>{
+    componentDidMount(){
+        request.post('/profile', {_id: this.props})
+        .then((response)=>{
+            console.log(response)
+        })
+        .catch((e: Error)=>console.log(e))
+    }
     render(){
         // return <CircularProgress />
         return <div className="wrapper"> 
-            <Sidebar/>
             <Contacts />
         </div>
     }
