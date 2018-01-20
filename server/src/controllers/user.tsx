@@ -6,12 +6,16 @@ import * as express from 'express';
 import {Error} from 'mongoose';
 
 import * as jwt from 'jsonwebtoken';
-import { Secret } from 'jsonwebtoken';
+import { Secret, decode } from 'jsonwebtoken';
 import * as bcrypt from 'bcrypt';
+import { request } from 'http';
 
 export class User extends Controller{
     model = UserModel;
-    login = (req: express.Request, res: express.Response, next: express.NextFunction)=>{
+    login = (req: express.Request, res: express.Response, next: express.NextFunction)=>{       
+            const jwt_header = req.headers.cookie;
+            if(jwt_header){
+        console.log(decode(jwt_header.slice(6) as string));}
         const {password, email} = req.body;
         
         if(!password || !email)
@@ -43,7 +47,7 @@ export class User extends Controller{
                         res.cookie('token', id_token, {
                             expires: new Date(Date.now()+900000),
                             httpOnly: true
-                        }).send({user_id: user.id});
+                        }).send();
                     }
                 else{
                     res.sendStatus(403);
@@ -76,10 +80,19 @@ export class User extends Controller{
     }
     profile=(req: express.Request, res: express.Response, next: express.NextFunction)=>{
         console.log("profile executed")
-        const {_id} =  req.body;
-        UserModel.findById(_id)
+        const jwt_header = req.headers.cookie;
+        let user_id;
+        if(jwt_header){
+            user_id = (decode(jwt_header.slice(6) as string));
+        }
+   
+        if(user_id)
+        UserModel.findById(user_id)
+        .populate("contacts")
+        .populate("conversations")
         .then(
             (user)=>{
+                console.log(user)
                 !user && res.status(404).send("User not found");
                 res.json(user);//send the user
             })

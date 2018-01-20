@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var mongoose = require("mongoose");
 var bcrypt = require("bcrypt");
 var Schema = mongoose.Schema;
-var userSchema = new Schema({
+exports.userSchema = new Schema({
     email: { type: String, unique: true, lowercase: true },
     name: String,
     middleName: String,
@@ -16,14 +16,14 @@ var userSchema = new Schema({
     friendRequests: [{ type: Schema.Types.ObjectId, ref: 'User' }],
     avatar: String
 });
-userSchema.set('toJSON', {
+exports.userSchema.set('toJSON', {
     transform: function (doc, user, options) {
         delete user.password;
         console.log('transform');
         return user;
     }
 });
-userSchema.pre('save', function (next) {
+exports.userSchema.pre('save', function (next) {
     var user = this;
     bcrypt.genSalt(10, function (err, salt) {
         bcrypt.hash(user.password, salt, function (err, hash) {
@@ -32,5 +32,5 @@ userSchema.pre('save', function (next) {
         });
     });
 });
-exports.UserModel = mongoose.model('User', userSchema);
+exports.UserModel = mongoose.model('User', exports.userSchema);
 //# sourceMappingURL=userSchema.js.map

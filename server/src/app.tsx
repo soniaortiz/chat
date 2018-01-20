@@ -8,8 +8,9 @@ import * as validator from 'express-validator';
 import * as routes from './controllers/routes';
 import {Strategy, StrategyOptions, ExtractJwt} from 'passport-jwt';
 import * as passport from 'passport'
-import {UserModel} from './models/userSchema';
+import {UserModel, userSchema} from './models/userSchema';
 import { Error } from 'mongoose'; 
+import * as cookieParser from 'cookie-parser'
 
 const opts: StrategyOptions ={
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -23,8 +24,10 @@ const opts: StrategyOptions ={
     app.use(bodyParser.json());
     app.use(validator());
     app.use(errorHandler());
+    app.use(cookieParser());
 
     passport.use(new Strategy(opts, (jwt_payload, done)=>{
+        console.log("jwt :", jwt_payload);
         UserModel.findOne({_id: jwt_payload._id})
         .then((user)=>{
             !user && done(null, false)
@@ -33,6 +36,7 @@ const opts: StrategyOptions ={
         .catch((e:Error)=>done(e, false))
     }));
     app.use(passport.initialize());
+
 
     (mongoose as any).Promise = global.Promise; //Overwrite mongoose promise
 //DB connection

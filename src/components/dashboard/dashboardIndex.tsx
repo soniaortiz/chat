@@ -9,7 +9,7 @@ export class Dashboard extends React.Component<DashboardProps,DashboardState>{
     componentDidMount(){
         request.post('/profile', {_id: this.props})
         .then((response)=>{
-            console.log(response)
+            console.log("response: ", response)
         })
         .catch((e: Error)=>console.log(e))
     }

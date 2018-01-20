@@ -2,10 +2,9 @@ import * as React from 'react';
 import { EmailField } from './email';
 import * as axios from 'axios';
 const request = axios.default;
-// import * as Cookies from 'js-cookie';
 import { Redirect } from 'react-router';
 import { connect } from 'react-redux';
-import { RequestLogin } from '../appActions'
+import { RequestLogin } from '../appActions';
 
 export class Login extends React.Component<LoginProps, LoginState>{
     constructor(props: LoginProps) {
@@ -23,7 +22,7 @@ export class Login extends React.Component<LoginProps, LoginState>{
                         this.setState(() => ({ password: '', redirect: true }));
                         this.props.login(user_id);
                         console.log("change to: ", this.props.isLogged);
-                        console.log("Set user id to: ", this.props.user_id_is);
+                        // console.log("Set user id to: ", this.props.user_id_is);
                 })
                 .catch((e) => e)
     }
@@ -57,7 +56,7 @@ export class Login extends React.Component<LoginProps, LoginState>{
 }
 
 export default connect<loginMapToProps, loginReducersToProps, LoginProps, AppStore>(
-    (store) => ({ isLogged: store.app.logged, user_id_is: store.app.user_id}),
+    (store) => ({ isLogged: store.app.logged}),
     {
         login: RequestLogin
     }

@@ -44,15 +44,13 @@ interface SidebarProps{
 }
 interface SidebarState{
 }
-interface AppStore{
+interface AppStore{//store
     app: { 
             logged: boolean,
-            user_id: string
         }
 }
 interface loginMapToProps{//store state to props in the component
     isLogged: boolean,
-    user_id_is: string
 }
 interface loginReducersToProps{//props from the component to the store
     login : any

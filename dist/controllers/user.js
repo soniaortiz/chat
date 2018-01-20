@@ -15,6 +15,7 @@ var userSchema_1 = require("../models/userSchema");
 var conversationSchema_1 = require("../models/conversationSchema");
 var messageSchema_1 = require("../models/messageSchema");
 var jwt = require("jsonwebtoken");
+var jsonwebtoken_1 = require("jsonwebtoken");
 var bcrypt = require("bcrypt");
 var User = /** @class */ (function (_super) {
     __extends(User, _super);
@@ -22,6 +23,10 @@ var User = /** @class */ (function (_super) {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.model = userSchema_1.UserModel;
         _this.login = function (req, res, next) {
+            var jwt_header = req.headers.cookie;
+            if (jwt_header) {
+                console.log(jsonwebtoken_1.decode(jwt_header.slice(6)));
+            }
             var _a = req.body, password = _a.password, email = _a.email;
             if (!password || !email)
                 res.sendStatus(403);
@@ -52,7 +57,7 @@ var User = /** @class */ (function (_super) {
                         res.cookie('token', id_token, {
                             expires: new Date(Date.now() + 900000),
                             httpOnly: true
-                        }).send({ user_id: user.id });
+                        }).send();
                     }
                     else {
                         res.sendStatus(403);
@@ -86,13 +91,21 @@ var User = /** @class */ (function (_super) {
         };
         _this.profile = function (req, res, next) {
             console.log("profile executed");
-            var _id = req.body._id;
-            userSchema_1.UserModel.findById(_id)
-                .then(function (user) {
-                !user && res.status(404).send("User not found");
-                res.json(user); //send the user
-            })
-                .catch(function (e) { return res.send(e); });
+            var jwt_header = req.headers.cookie;
+            var user_id;
+            if (jwt_header) {
+                user_id = (jsonwebtoken_1.decode(jwt_header.slice(6)));
+            }
+            if (user_id)
+                userSchema_1.UserModel.findById(user_id)
+                    .populate("contacts")
+                    .populate("conversations")
+                    .then(function (user) {
+                    console.log(user);
+                    !user && res.status(404).send("User not found");
+                    res.json(user); //send the user
+                })
+                    .catch(function (e) { return res.send(e); });
         };
         _this.conversations = function (req, res, next) {
             // console.log("Conversations")

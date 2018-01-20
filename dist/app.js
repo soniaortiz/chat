@@ -11,6 +11,7 @@ var routes = require("./controllers/routes");
 var passport_jwt_1 = require("passport-jwt");
 var passport = require("passport");
 var userSchema_1 = require("./models/userSchema");
+var cookieParser = require("cookie-parser");
 var opts = {
     jwtFromRequest: passport_jwt_1.ExtractJwt.fromAuthHeaderAsBearerToken(),
     secretOrKey: process.env.SECRET_TOKEN
@@ -23,7 +24,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(validator());
 app.use(errorHandler());
+app.use(cookieParser());
 passport.use(new passport_jwt_1.Strategy(opts, function (jwt_payload, done) {
+    console.log("jwt :", jwt_payload);
     userSchema_1.UserModel.findOne({ _id: jwt_payload._id })
         .then(function (user) {
         !user && done(null, false);

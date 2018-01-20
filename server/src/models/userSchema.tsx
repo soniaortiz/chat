@@ -3,7 +3,7 @@ import * as bcrypt from 'bcrypt';
 
 const Schema = mongoose.Schema;
 
-    const userSchema = new Schema({
+    export const userSchema = new Schema({
         email: {type: String, unique: true, lowercase: true},
         name: String,
         middleName: String,
