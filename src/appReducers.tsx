@@ -10,7 +10,7 @@ const appState : appState={//initial state
 }
 export const Reducer = handleActions({
     [REQUEST_LOGIN]: (state: appState, action)=>{
-        console.log('state changed from  : ', state);
+        console.log('state changed from  : ', state, action.payload);
         return {...state, logged:true, user_id: action.payload}; //test action.payload.email not null
     }
 }, appState)

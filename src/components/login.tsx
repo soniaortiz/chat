@@ -17,10 +17,10 @@ export class Login extends React.Component<LoginProps, LoginState>{
             flag = false : flag = true;
         if (flag)
             request.post('/login', { email: this.state.email, password: this.state.password }, {withCredentials: true})
-                    .then(({data:{user_id}}) => {
-                        console.log(user_id);
+                    .then(({data:{user}}) => {
+                        console.log(user);
                         this.setState(() => ({ password: '', redirect: true }));
-                        this.props.login(user_id);
+                        this.props.login(user._id);
                         console.log("change to: ", this.props.isLogged);
                         // console.log("Set user id to: ", this.props.user_id_is);
                 })

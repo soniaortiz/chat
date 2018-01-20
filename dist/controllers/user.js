@@ -42,13 +42,6 @@ var User = /** @class */ (function (_super) {
                 .then(function () {
                 return userSchema_1.UserModel
                     .findOne({ email: email })
-                    .populate({
-                    path: 'conversations',
-                    populate: {
-                        path: 'participants',
-                        select: 'name -_id'
-                    }
-                })
                     .then(function (user) {
                     if (user) {
                         var id_token = jwt.sign({
@@ -57,7 +50,7 @@ var User = /** @class */ (function (_super) {
                         res.cookie('token', id_token, {
                             expires: new Date(Date.now() + 900000),
                             httpOnly: true
-                        }).send();
+                        }).send({ user: user });
                     }
                     else {
                         res.sendStatus(403);
@@ -98,8 +91,13 @@ var User = /** @class */ (function (_super) {
             }
             if (user_id)
                 userSchema_1.UserModel.findById(user_id)
-                    .populate("contacts")
-                    .populate("conversations")
+                    .populate({
+                    path: 'conversations',
+                    populate: {
+                        path: 'participants',
+                        select: 'name -_id'
+                    }
+                })
                     .then(function (user) {
                     console.log(user);
                     !user && res.status(404).send("User not found");

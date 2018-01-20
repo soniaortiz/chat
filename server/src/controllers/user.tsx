@@ -32,13 +32,13 @@ export class User extends Controller{
         .then(()=>{
             return UserModel
             .findOne({email})
-            .populate({
-                path: 'conversations',
-                populate: {
-                    path: 'participants',
-                    select: 'name -_id'
-                }
-            })
+            // .populate({
+            //     path: 'conversations',
+            //     populate: {
+            //         path: 'participants',
+            //         select: 'name -_id'
+            //     }
+            // })
             .then((user)=>{
                 if(user){    
                     const id_token = jwt.sign({
@@ -47,7 +47,7 @@ export class User extends Controller{
                         res.cookie('token', id_token, {
                             expires: new Date(Date.now()+900000),
                             httpOnly: true
-                        }).send();
+                        }).send({user});
                     }
                 else{
                     res.sendStatus(403);
@@ -88,8 +88,13 @@ export class User extends Controller{
    
         if(user_id)
         UserModel.findById(user_id)
-        .populate("contacts")
-        .populate("conversations")
+        .populate({
+            path: 'conversations',
+            populate: {
+                path: 'participants',
+                select: 'name -_id'
+            }
+        })
         .then(
             (user)=>{
                 console.log(user)
