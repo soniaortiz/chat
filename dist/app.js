@@ -12,18 +12,18 @@ var passport_jwt_1 = require("passport-jwt");
 var passport = require("passport");
 var userSchema_1 = require("./models/userSchema");
 var cookieParser = require("cookie-parser");
-// const cookieExtractor = (req: {cookies: string})=>{
-//     let token = null;
-//     if(req && req.cookies){
-//         token = req.cookies['jwt']
-//     }
-//     return token;
-// }
+var cookieExtractor = function (req) {
+    var token = null;
+    if (req && req.cookies) {
+        token = req.cookies['token'];
+    }
+    console.log("token: ", token);
+    return token;
+};
 var opts = {
-    jwtFromRequest: passport_jwt_1.ExtractJwt.fromAuthHeaderAsBearerToken(),
+    jwtFromRequest: cookieExtractor,
     secretOrKey: process.env.SECRET_TOKEN
 };
-console.log("opts.secretOrKey**************", opts.secretOrKey);
 //server use
 var url = 'mongodb://localhost:27017/chat';
 var app = express();
@@ -34,8 +34,7 @@ app.use(validator());
 app.use(errorHandler());
 app.use(cookieParser());
 passport.use(new passport_jwt_1.Strategy(opts, function (jwt_payload, done) {
-    console.log("****JWT**** :");
-    userSchema_1.UserModel.findOne({ _id: jwt_payload._id })
+    userSchema_1.UserModel.findOne({ _id: jwt_payload._id }, ('-password -_id'))
         .then(function (user) {
         !user && done(null, false);
         done(null, user);
@@ -44,7 +43,7 @@ passport.use(new passport_jwt_1.Strategy(opts, function (jwt_payload, done) {
 }));
 app.use(passport.initialize());
 mongoose.Promise = global.Promise; //Overwrite mongoose promise
-//DB connection
+// DB connection
 mongoose.connect(url).then(function () {
     // console.log("connection with db stablished");
     app.post('/signup', routes.user.signup);
@@ -65,7 +64,7 @@ mongoose.connect(url).then(function () {
         res.sendFile(path.join(__dirname, '../build/index.html'));
     });
 }).catch(function (e) { console.error(e); });
-//Create and boot server
+// Create and boot server
 app.set('port', 8000);
 var server = http.createServer(app);
 var boot = function () {

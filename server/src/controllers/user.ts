@@ -5,29 +5,22 @@ import {MessageModel} from '../models/messageSchema';
 import * as express from 'express';
 import {Error} from 'mongoose';
 import * as jwt from 'jsonwebtoken';
-import { Secret, decode } from 'jsonwebtoken';
+import { Secret } from 'jsonwebtoken';
 import * as bcrypt from 'bcrypt';
-// import * as passport from 'passport'
 
 export class User extends Controller{
     model = UserModel;
     login = (req: express.Request, res: express.Response, next: express.NextFunction)=>{       
-            // passport.authenticate('local')            
-            const jwt_header = req.headers.cookie;
-            if(jwt_header){
-                console.log ("Token COOkies", jwt.verify(req.cookies.token, process.env.SECRET_TOKEN || ''))
-                console.log("COKIES: ", req.cookies,decode(jwt_header.slice(6) as string));}
-                const {password, email} = req.body;
+            const {password, email} = req.body;
         
         if(!password || !email)
             res.sendStatus(403);    
         UserModel.findOne({email})
         .then((user)=>{
             console.log(password, user&&user.password);
-            // console.log(user)
-            if(user)
-                {
-                return bcrypt.compare(password, user.password)}
+            if(user){
+                return bcrypt.compare(password, user.password)
+            }
             else
                 res.sendStatus(404);
         })
@@ -47,10 +40,10 @@ export class User extends Controller{
                     const id_token = jwt.sign({
                         _id: user._id
                         }, process.env.SECRET_TOKEN as Secret);  
-                        res.cookie('bearer', id_token, {
+                        res.cookie('token', id_token, {
                             expires: new Date(Date.now()+900000),
                             httpOnly: true
-                        }).send({user});
+                        }).send();
                     }
                 else{
                     res.sendStatus(403);
@@ -83,14 +76,10 @@ export class User extends Controller{
     }
     profile=(req: express.Request, res: express.Response, next: express.NextFunction)=>{
         console.log("profile executed");
-        // const jwt_header = req.headers.cookie;
-        console.log('*******************',req);
+        console.log('*******************',req.cookies);
         let user_id;
-        // if(jwt_header){
-            // user_id = req.cookies._id //(decode(jwt_header.slice(6) as string));
-        // }
-
-        console.log("user_id/////////////", user_id);
+        
+        console.log("user_id/////////////", req.user);
    
         if(user_id)
         UserModel.findById(user_id)

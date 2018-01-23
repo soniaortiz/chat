@@ -27,8 +27,6 @@ interface SignupState{
     password: string,
     enabledBtn: boolean,
 }
-interface LoginProps extends loginReducersToProps, loginMapToProps{
-}
 interface LoginState{//from child
     email: string,
     password: string,
@@ -51,9 +49,9 @@ interface AppStore{//store
         userData: any
     }
 }
-interface loginMapToProps{//store state to props in the component
-    isLogged: boolean,
-}
-interface loginReducersToProps{//props from the component to the store
-    login : any  //function to manipulate the state of the store
-}
+// interface loginMapToProps{//store state to props in the component
+//     isLogged: boolean,
+// }
+// interface loginReducersToProps{//props from the component to the store
+//     login : any  //function to manipulate the state of the store
+// }

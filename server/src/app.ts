@@ -11,19 +11,20 @@ import * as passport from 'passport';
 import {UserModel} from './models/userSchema';
 import {Error} from 'mongoose'; 
 import * as cookieParser from 'cookie-parser';
+import { json } from 'body-parser';
 
-// const cookieExtractor = (req: {cookies: string})=>{
-//     let token = null;
-//     if(req && req.cookies){
-//         token = req.cookies['jwt']
-//     }
-//     return token;
-// }
+const cookieExtractor = (req: any)=>{
+    let token = null;
+    if(req && req.cookies){
+        token = req.cookies['token']
+    }
+    console.log("token: ", token);
+    return token;
+}
 const opts: StrategyOptions = {
-    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+    jwtFromRequest: cookieExtractor,
     secretOrKey: process.env.SECRET_TOKEN
 };
-console.log("opts.secretOrKey**************", opts.secretOrKey)
 
 //server use
     const url = 'mongodb://localhost:27017/chat';
@@ -36,11 +37,10 @@ console.log("opts.secretOrKey**************", opts.secretOrKey)
     app.use(cookieParser());
 
     passport.use(new JwtStrategy(opts, (jwt_payload, done)=>{
-        console.log("****JWT**** :");
-        UserModel.findOne({_id: jwt_payload._id})
+        UserModel.findOne({_id: jwt_payload._id}, ('-password -_id'))
         .then((user)=>{
-            !user && done(null, false)
-            done(null, user)
+            !user && done(null, false);
+            done(null, user);
         })
         .catch((e:Error)=>done(e, false))
     }));
@@ -49,7 +49,7 @@ console.log("opts.secretOrKey**************", opts.secretOrKey)
 
     (mongoose as any).Promise = global.Promise; //Overwrite mongoose promise
 
-//DB connection
+// DB connection
     mongoose.connect(url).then(()=>{
         // console.log("connection with db stablished");
         app.post('/signup', routes.user.signup);
@@ -74,7 +74,7 @@ console.log("opts.secretOrKey**************", opts.secretOrKey)
         }
     ).catch((e: Error)=>{console.error(e);}); 
 
-//Create and boot server
+// Create and boot server
     app.set('port', 8000);
     const server = http.createServer(app);
     const boot =  ()=>{

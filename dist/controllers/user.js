@@ -15,28 +15,19 @@ var userSchema_1 = require("../models/userSchema");
 var conversationSchema_1 = require("../models/conversationSchema");
 var messageSchema_1 = require("../models/messageSchema");
 var jwt = require("jsonwebtoken");
-var jsonwebtoken_1 = require("jsonwebtoken");
 var bcrypt = require("bcrypt");
-// import * as passport from 'passport'
 var User = /** @class */ (function (_super) {
     __extends(User, _super);
     function User() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.model = userSchema_1.UserModel;
         _this.login = function (req, res, next) {
-            // passport.authenticate('local')            
-            var jwt_header = req.headers.cookie;
-            if (jwt_header) {
-                console.log("Token COOkies", jwt.verify(req.cookies.token, process.env.SECRET_TOKEN || ''));
-                console.log("COKIES: ", req.cookies, jsonwebtoken_1.decode(jwt_header.slice(6)));
-            }
             var _a = req.body, password = _a.password, email = _a.email;
             if (!password || !email)
                 res.sendStatus(403);
             userSchema_1.UserModel.findOne({ email: email })
                 .then(function (user) {
                 console.log(password, user && user.password);
-                // console.log(user)
                 if (user) {
                     return bcrypt.compare(password, user.password);
                 }
@@ -52,10 +43,10 @@ var User = /** @class */ (function (_super) {
                             var id_token = jwt.sign({
                                 _id: user._id
                             }, process.env.SECRET_TOKEN);
-                            res.cookie('bearer', id_token, {
+                            res.cookie('token', id_token, {
                                 expires: new Date(Date.now() + 900000),
                                 httpOnly: true
-                            }).send({ user: user });
+                            }).send();
                         }
                         else {
                             res.sendStatus(403);
@@ -89,13 +80,9 @@ var User = /** @class */ (function (_super) {
         };
         _this.profile = function (req, res, next) {
             console.log("profile executed");
-            // const jwt_header = req.headers.cookie;
-            console.log('*******************', req);
+            console.log('*******************', req.cookies);
             var user_id;
-            // if(jwt_header){
-            // user_id = req.cookies._id //(decode(jwt_header.slice(6) as string));
-            // }
-            console.log("user_id/////////////", user_id);
+            console.log("user_id/////////////", req.user);
             if (user_id)
                 userSchema_1.UserModel.findById(user_id)
                     .populate({

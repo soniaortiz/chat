@@ -1,10 +1,13 @@
 import * as React from 'react';
 import { EmailField } from './email';
-import * as axios from 'axios';
-const request = axios.default;
-import { Redirect } from 'react-router';
-import { connect } from 'react-redux';
+// import { Redirect } from 'react-router';
+import { connect, DispatchProp } from 'react-redux';
 import { RequestLogin } from '../store/appActions';
+import { RouteComponentProps } from 'react-router';
+
+interface LoginProps extends DispatchProp <{}>, RouteComponentProps<{}>{
+    login (email: string, password: string): Promise <boolean> 
+}
 
 export class Login extends React.Component<LoginProps, LoginState> {
     constructor(props: LoginProps) {
@@ -17,17 +20,26 @@ export class Login extends React.Component<LoginProps, LoginState> {
         (event.type == 'keydown' && (event as React.KeyboardEvent<HTMLInputElement>).keyCode != 13) ?
             flag = false : flag = true;
         if (flag) {
-            request.post(
-                '/login',
-                { email: this.state.email, password: this.state.password }, 
-                { withCredentials: true })
-                .then(({ data: { user } }) => {
-                    console.log(user);
-                    // this.setState(() => ({ password: '', redirect: true }));
-                    this.props.login(user._id);
-                    console.log('change to: ', this.props.isLogged);
-                })
-                .catch((e) => e); }
+            const {email, password} = this.state;
+            this.props.login(email, password)
+            .then((valid)=>{
+                if(valid){
+                    this.props.history.push('/dashboard')
+                }
+            })
+            // request.post(
+            //     '/login',
+            //     { email: this.state.email, password: this.state.password }, 
+            //     { withCredentials: true })
+            //     .then(() => {
+            //         // this.props.
+            //         // console.log(user);
+            //         // this.setState(() => ({ password: '', redirect: true }));
+            //         // this.props.login(user._id);
+            //         // console.log('change to: ', this.props.isLogged);
+            //     })
+            //     .catch((e) => e); 
+        }
     }
     getEmailValue = (mailValue: string) => {
         this.setState({ email: mailValue });
@@ -42,7 +54,7 @@ export class Login extends React.Component<LoginProps, LoginState> {
         this.setState({ password: event.target.value });
     }
     render() {
-        if (this.props.isLogged) { return <Redirect to="/dashboard" />; }
+        // if (this.props.isLogged) { return <Redirect to="/dashboard" />; }
         return (
             <div>
                 <label htmlFor="">Email</label>
@@ -58,7 +70,7 @@ export class Login extends React.Component<LoginProps, LoginState> {
     }
 }
 
-export default connect<loginMapToProps, loginReducersToProps, LoginProps, AppStore>(
+export default connect<{}, {}, LoginProps, AppStore>(
     (store) => ({ isLogged: store.app.logged }),
     {
         login: RequestLogin
