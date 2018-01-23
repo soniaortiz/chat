@@ -1,35 +1,38 @@
 import {Controller} from './base';
 import {UserModel} from '../models/userSchema';
-import {ConversationModel} from '../models/conversationSchema';
+import {ConversationModel} from '../models/conversationSchema'; 
 import {MessageModel} from '../models/messageSchema';
 import * as express from 'express';
 import {Error} from 'mongoose';
-
 import * as jwt from 'jsonwebtoken';
 import { Secret, decode } from 'jsonwebtoken';
 import * as bcrypt from 'bcrypt';
-import { request } from 'http';
+// import * as passport from 'passport'
 
 export class User extends Controller{
     model = UserModel;
     login = (req: express.Request, res: express.Response, next: express.NextFunction)=>{       
+            // passport.authenticate('local')            
             const jwt_header = req.headers.cookie;
             if(jwt_header){
-        console.log(decode(jwt_header.slice(6) as string));}
-        const {password, email} = req.body;
+                console.log ("Token COOkies", jwt.verify(req.cookies.token, process.env.SECRET_TOKEN || ''))
+                console.log("COKIES: ", req.cookies,decode(jwt_header.slice(6) as string));}
+                const {password, email} = req.body;
         
         if(!password || !email)
             res.sendStatus(403);    
         UserModel.findOne({email})
         .then((user)=>{
-            // console.log(password, user&&user.password)
+            console.log(password, user&&user.password);
+            // console.log(user)
             if(user)
                 {
                 return bcrypt.compare(password, user.password)}
             else
                 res.sendStatus(404);
         })
-        .then(()=>{
+        .then((flag)=>{
+            if(flag)
             return UserModel
             .findOne({email})
             // .populate({
@@ -44,7 +47,7 @@ export class User extends Controller{
                     const id_token = jwt.sign({
                         _id: user._id
                         }, process.env.SECRET_TOKEN as Secret);  
-                        res.cookie('token', id_token, {
+                        res.cookie('bearer', id_token, {
                             expires: new Date(Date.now()+900000),
                             httpOnly: true
                         }).send({user});
@@ -79,12 +82,15 @@ export class User extends Controller{
         .catch((e:Error)=>res.send(e))
     }
     profile=(req: express.Request, res: express.Response, next: express.NextFunction)=>{
-        console.log("profile executed")
-        const jwt_header = req.headers.cookie;
+        console.log("profile executed");
+        // const jwt_header = req.headers.cookie;
+        console.log('*******************',req);
         let user_id;
-        if(jwt_header){
-            user_id = (decode(jwt_header.slice(6) as string));
-        }
+        // if(jwt_header){
+            // user_id = req.cookies._id //(decode(jwt_header.slice(6) as string));
+        // }
+
+        console.log("user_id/////////////", user_id);
    
         if(user_id)
         UserModel.findById(user_id)

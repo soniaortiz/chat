@@ -12,7 +12,6 @@ interface emailProps{
 interface emailState{
     valid: boolean,
     expression: boolean
-
 }
 interface SignupProps{
 }
@@ -47,11 +46,14 @@ interface SidebarState{
 interface AppStore{//store
     app: { 
             logged: boolean,
-        }
+        },
+    me: {
+        userData: any
+    }
 }
 interface loginMapToProps{//store state to props in the component
     isLogged: boolean,
 }
 interface loginReducersToProps{//props from the component to the store
-    login : any
+    login : any  //function to manipulate the state of the store
 }

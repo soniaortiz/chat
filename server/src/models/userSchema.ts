@@ -34,6 +34,7 @@ const Schema = mongoose.Schema;
     userSchema.set('toJSON', {       
         transform: function(doc: IUserDocument, user:IUserDocument , options: any){
             delete user.password;
+            delete user._id;
             console.log('transform');
             return user;
         }

@@ -12,10 +12,18 @@ var passport_jwt_1 = require("passport-jwt");
 var passport = require("passport");
 var userSchema_1 = require("./models/userSchema");
 var cookieParser = require("cookie-parser");
+// const cookieExtractor = (req: {cookies: string})=>{
+//     let token = null;
+//     if(req && req.cookies){
+//         token = req.cookies['jwt']
+//     }
+//     return token;
+// }
 var opts = {
     jwtFromRequest: passport_jwt_1.ExtractJwt.fromAuthHeaderAsBearerToken(),
     secretOrKey: process.env.SECRET_TOKEN
 };
+console.log("opts.secretOrKey**************", opts.secretOrKey);
 //server use
 var url = 'mongodb://localhost:27017/chat';
 var app = express();
@@ -26,7 +34,7 @@ app.use(validator());
 app.use(errorHandler());
 app.use(cookieParser());
 passport.use(new passport_jwt_1.Strategy(opts, function (jwt_payload, done) {
-    console.log("jwt :", jwt_payload);
+    console.log("****JWT**** :");
     userSchema_1.UserModel.findOne({ _id: jwt_payload._id })
         .then(function (user) {
         !user && done(null, false);
@@ -42,6 +50,7 @@ mongoose.connect(url).then(function () {
     app.post('/signup', routes.user.signup);
     app.post('/login', routes.user.login);
     app.post('/logout', routes.user.logout);
+    app.use(passport.authenticate('jwt', { session: false }));
     app.post('/profile', routes.user.profile);
     app.get('/users', routes.user.getAll);
     app.post('/conversation/sendmessage', routes.user.sendMessage);

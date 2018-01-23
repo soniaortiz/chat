@@ -6,17 +6,26 @@ import * as bodyParser from 'body-parser';
 import * as errorHandler from 'errorhandler';
 import * as validator from 'express-validator';
 import * as routes from './controllers/routes';
-import {Strategy, StrategyOptions, ExtractJwt} from 'passport-jwt';
-import * as passport from 'passport'
-import {UserModel, userSchema} from './models/userSchema';
-import { Error } from 'mongoose'; 
-import * as cookieParser from 'cookie-parser'
+import {Strategy as JwtStrategy, StrategyOptions, ExtractJwt} from 'passport-jwt';
+import * as passport from 'passport';
+import {UserModel} from './models/userSchema';
+import {Error} from 'mongoose'; 
+import * as cookieParser from 'cookie-parser';
 
-const opts: StrategyOptions ={
+// const cookieExtractor = (req: {cookies: string})=>{
+//     let token = null;
+//     if(req && req.cookies){
+//         token = req.cookies['jwt']
+//     }
+//     return token;
+// }
+const opts: StrategyOptions = {
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
     secretOrKey: process.env.SECRET_TOKEN
- };
- //server use
+};
+console.log("opts.secretOrKey**************", opts.secretOrKey)
+
+//server use
     const url = 'mongodb://localhost:27017/chat';
     const app = express();
     app.use(express.static(path.join(__dirname, '../build/')));
@@ -26,8 +35,8 @@ const opts: StrategyOptions ={
     app.use(errorHandler());
     app.use(cookieParser());
 
-    passport.use(new Strategy(opts, (jwt_payload, done)=>{
-        console.log("jwt :", jwt_payload);
+    passport.use(new JwtStrategy(opts, (jwt_payload, done)=>{
+        console.log("****JWT**** :");
         UserModel.findOne({_id: jwt_payload._id})
         .then((user)=>{
             !user && done(null, false)
@@ -35,16 +44,18 @@ const opts: StrategyOptions ={
         })
         .catch((e:Error)=>done(e, false))
     }));
+    
     app.use(passport.initialize());
 
-
     (mongoose as any).Promise = global.Promise; //Overwrite mongoose promise
+
 //DB connection
     mongoose.connect(url).then(()=>{
         // console.log("connection with db stablished");
         app.post('/signup', routes.user.signup);
         app.post('/login', routes.user.login);
         app.post('/logout', routes.user.logout);
+        app.use(passport.authenticate('jwt', {session: false}));
         app.post('/profile', routes.user.profile);
         app.get('/users', routes.user.getAll);
         app.post('/conversation/sendmessage', routes.user.sendMessage); 

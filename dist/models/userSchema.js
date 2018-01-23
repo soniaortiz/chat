@@ -19,6 +19,7 @@ exports.userSchema = new Schema({
 exports.userSchema.set('toJSON', {
     transform: function (doc, user, options) {
         delete user.password;
+        delete user._id;
         console.log('transform');
         return user;
     }

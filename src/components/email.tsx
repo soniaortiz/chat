@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { TextField } from 'material-ui';
 
-export class EmailField extends React.Component<emailProps, emailState>{
+export class EmailField extends React.Component<emailProps, emailState> {
     constructor(props: emailProps) {
-        super(props)
-        this.state = { valid: false, expression: true }
+        super(props);
+        this.state = { valid: false, expression: true };
     }
     validateExpression = (event: React.ChangeEvent<HTMLInputElement>) => {
         const regEx = /[a-zA-Z0-9]+\@([a-zA-Z0-9]+)\.[a-zA-Z0-9]{2,5}(\.[a-zA-Z0-9]{2,5})*$/gi;
@@ -17,11 +17,11 @@ export class EmailField extends React.Component<emailProps, emailState>{
         }
     }
     render() {
-        return <div >
+        return (<div >
             <TextField name="email" onChange={this.validateExpression} ref="email" />
             <p hidden={this.state.expression}>
                 this is not a valid email, example: user@myaddress.com
             </p>
-        </div>
+        </div>);
     }
 }
