@@ -27,18 +27,7 @@ export class Login extends React.Component<LoginProps, LoginState> {
                     this.props.history.push('/dashboard')
                 }
             })
-            // request.post(
-            //     '/login',
-            //     { email: this.state.email, password: this.state.password }, 
-            //     { withCredentials: true })
-            //     .then(() => {
-            //         // this.props.
-            //         // console.log(user);
-            //         // this.setState(() => ({ password: '', redirect: true }));
-            //         // this.props.login(user._id);
-            //         // console.log('change to: ', this.props.isLogged);
-            //     })
-            //     .catch((e) => e); 
+            .catch((e)=>console.log(e))
         }
     }
     getEmailValue = (mailValue: string) => {
@@ -54,7 +43,6 @@ export class Login extends React.Component<LoginProps, LoginState> {
         this.setState({ password: event.target.value });
     }
     render() {
-        // if (this.props.isLogged) { return <Redirect to="/dashboard" />; }
         return (
             <div>
                 <label htmlFor="">Email</label>
@@ -70,9 +58,11 @@ export class Login extends React.Component<LoginProps, LoginState> {
     }
 }
 
-export default connect<{}, {}, LoginProps, AppStore>(
-    (store) => ({ isLogged: store.app.logged }),
-    {
-        login: RequestLogin
-    }
+export default connect<{}, {}, LoginProps, AppStore.app>(
+    (store) => (
+        { isLogged: store.logged }
+    ),
+        {
+            login: RequestLogin
+        }
 )(Login);

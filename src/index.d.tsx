@@ -41,17 +41,18 @@ interface SidebarProps{
 }
 interface SidebarState{
 }
-interface AppStore{//store
-    app: { 
+declare namespace AppStore{//store
+    interface app { 
             logged: boolean,
-        },
-    me: {
-        userData: any
+            loading: boolean
+        }
+    interface user{}
+    interface conversations{}
+    interface messages{}
+    interface store{
+        app: app, 
+        user: user,
+        conversations: conversations,
+        messages: messages
     }
 }
-// interface loginMapToProps{//store state to props in the component
-//     isLogged: boolean,
-// }
-// interface loginReducersToProps{//props from the component to the store
-//     login : any  //function to manipulate the state of the store
-// }

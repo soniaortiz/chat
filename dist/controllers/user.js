@@ -80,11 +80,9 @@ var User = /** @class */ (function (_super) {
         };
         _this.profile = function (req, res, next) {
             console.log("profile executed");
-            console.log('*******************', req.cookies);
-            var user_id;
-            console.log("user_id/////////////", req.user);
-            if (user_id)
-                userSchema_1.UserModel.findById(user_id)
+            var _id = req.user._id;
+            if (_id)
+                userSchema_1.UserModel.findById(_id)
                     .populate({
                     path: 'conversations',
                     populate: {
@@ -93,7 +91,7 @@ var User = /** @class */ (function (_super) {
                     }
                 })
                     .then(function (user) {
-                    console.log(user);
+                    // console.log(user)
                     !user && res.status(404).send("User not found");
                     res.json(user); //send the user
                 })

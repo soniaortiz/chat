@@ -8,7 +8,6 @@ import { MuiThemeProvider, getMuiTheme, lightBaseTheme } from 'material-ui/style
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
-
 import { store as storeReducer } from './store/reducers';
 
 const store = createStore(storeReducer, applyMiddleware(thunk));

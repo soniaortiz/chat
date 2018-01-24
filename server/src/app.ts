@@ -6,12 +6,11 @@ import * as bodyParser from 'body-parser';
 import * as errorHandler from 'errorhandler';
 import * as validator from 'express-validator';
 import * as routes from './controllers/routes';
-import {Strategy as JwtStrategy, StrategyOptions, ExtractJwt} from 'passport-jwt';
+import {Strategy as JwtStrategy, StrategyOptions} from 'passport-jwt';
 import * as passport from 'passport';
 import {UserModel} from './models/userSchema';
 import {Error} from 'mongoose'; 
 import * as cookieParser from 'cookie-parser';
-import { json } from 'body-parser';
 
 const cookieExtractor = (req: any)=>{
     let token = null;
@@ -26,7 +25,7 @@ const opts: StrategyOptions = {
     secretOrKey: process.env.SECRET_TOKEN
 };
 
-//server use
+// server use
     const url = 'mongodb://localhost:27017/chat';
     const app = express();
     app.use(express.static(path.join(__dirname, '../build/')));
@@ -57,7 +56,6 @@ const opts: StrategyOptions = {
         app.post('/logout', routes.user.logout);
         app.use(passport.authenticate('jwt', {session: false}));
         app.post('/profile', routes.user.profile);
-        app.get('/users', routes.user.getAll);
         app.post('/conversation/sendmessage', routes.user.sendMessage); 
         app.delete('/deletecontact',routes.user.deleteContact);
         app.delete('/deleteconversation', routes.user.delete);

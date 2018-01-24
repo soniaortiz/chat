@@ -1,22 +1,27 @@
 import * as React from 'react';
 // import {Sidebar} from './sidebar';
-import { Contacts } from './contacts';
-import * as axios from 'axios';
-// import { connect } from 'react-redux'
-const request = axios.default;
+// import { Contacts } from './contacts';
+import { connect, DispatchProp } from 'react-redux'
+import { RouteComponentProps } from 'react-router';
+import { CircularProgress } from 'material-ui';
+
+interface DashboardProps extends DispatchProp <{}>, RouteComponentProps<{}>{
+}
 
 export class Dashboard extends React.Component<DashboardProps, DashboardState> {
-    componentWillMount() {
-        request.post('/profile', { _id: this.props })
-            .then((response) => {
-                console.log('response: ', response);
-            })
-            .catch((e: Error) => console.log(e));
+    componentWillUnmount(){
     }
     render() {
-        // return <CircularProgress />
-        return <div className="wrapper">
-            <Contacts />
-        </div>;
+        return <CircularProgress />
+        // return <div className="wrapper">
+        //     <Contacts />
+        // </div>;
     }
 }
+
+export default connect<{}, {}, DashboardProps, AppStore.store>(
+    (store) => ({ }),
+    {
+        
+    }
+)(Dashboard);

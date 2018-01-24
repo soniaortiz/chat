@@ -28,13 +28,6 @@ export class User extends Controller{
             if(flag)
             return UserModel
             .findOne({email})
-            // .populate({
-            //     path: 'conversations',
-            //     populate: {
-            //         path: 'participants',
-            //         select: 'name -_id'
-            //     }
-            // })
             .then((user)=>{
                 if(user){    
                     const id_token = jwt.sign({
@@ -76,13 +69,9 @@ export class User extends Controller{
     }
     profile=(req: express.Request, res: express.Response, next: express.NextFunction)=>{
         console.log("profile executed");
-        console.log('*******************',req.cookies);
-        let user_id;
-        
-        console.log("user_id/////////////", req.user);
-   
-        if(user_id)
-        UserModel.findById(user_id)
+        const {_id} = req.user;
+        if(_id)
+        UserModel.findById(_id)
         .populate({
             path: 'conversations',
             populate: {
@@ -92,7 +81,7 @@ export class User extends Controller{
         })
         .then(
             (user)=>{
-                console.log(user)
+                // console.log(user)
                 !user && res.status(404).send("User not found");
                 res.json(user);//send the user
             })

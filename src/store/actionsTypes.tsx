@@ -1,2 +1,3 @@
 
 export const REQUEST_LOGIN = 'REQUEST_LOGIN';
+export const REQUEST_USER_INFO = 'REQUEST_USER_INFO';

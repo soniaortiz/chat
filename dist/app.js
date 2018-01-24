@@ -24,7 +24,7 @@ var opts = {
     jwtFromRequest: cookieExtractor,
     secretOrKey: process.env.SECRET_TOKEN
 };
-//server use
+// server use
 var url = 'mongodb://localhost:27017/chat';
 var app = express();
 app.use(express.static(path.join(__dirname, '../build/')));
@@ -51,7 +51,6 @@ mongoose.connect(url).then(function () {
     app.post('/logout', routes.user.logout);
     app.use(passport.authenticate('jwt', { session: false }));
     app.post('/profile', routes.user.profile);
-    app.get('/users', routes.user.getAll);
     app.post('/conversation/sendmessage', routes.user.sendMessage);
     app.delete('/deletecontact', routes.user.deleteContact);
     app.delete('/deleteconversation', routes.user.delete);
