@@ -31,8 +31,9 @@ var User = /** @class */ (function (_super) {
                 if (user) {
                     return bcrypt.compare(password, user.password);
                 }
-                else
+                else {
                     res.sendStatus(404);
+                }
             })
                 .then(function (flag) {
                 if (flag)
@@ -147,8 +148,10 @@ var User = /** @class */ (function (_super) {
             new conversationSchema_1.ConversationModel({})
                 .save()
                 .then(function (conversation) {
-                return (userSchema_1.UserModel.findByIdAndUpdate(user_id, { $pull: { friendRequests: request_id },
-                    $push: { contacts: request_id, conversations: conversation._id } }, { new: true }).exec(), conversation);
+                return (userSchema_1.UserModel.findByIdAndUpdate(user_id, {
+                    $pull: { friendRequests: request_id },
+                    $push: { contacts: request_id, conversations: conversation._id }
+                }, { new: true }).exec(), conversation);
             })
                 .then(function (conversation) {
                 console.log("the conversation id: ", conversation._id);
@@ -173,7 +176,8 @@ var User = /** @class */ (function (_super) {
                 conversationSchema_1.ConversationModel
                     .findOneAndUpdate({
                     _id: req.body.conversation_id
-                }, { $push: { messages: m._id }
+                }, {
+                    $push: { messages: m._id }
                 });
             })
                 .then(function (conversation) { return res.send(conversation); })

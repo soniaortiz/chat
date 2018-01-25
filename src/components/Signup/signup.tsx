@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { EmailField } from './email';
+import { EmailField } from '../Email/email';
 import * as axios from 'axios';
-import { Password } from './password';
+import { Password } from '../Password/password';
 import { TextField, RadioButtonGroup, RadioButton, DatePicker, Divider } from 'material-ui';
 import { Redirect } from 'react-router-dom';
 

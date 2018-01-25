@@ -1,9 +1,9 @@
 import * as React from 'react';
 import * as ReactRouter from 'react-router-dom';
 const { BrowserRouter, Route } = ReactRouter;
-import { Signup } from './components/signup';
-import Login from './components/login';
-import  Dashboard  from './components/dashboard/dashboardIndex';
+import { Signup } from './components/Signup/signup';
+import Login from './components/Login/login';
+import  Dashboard  from './components/Dashboard/dashboardIndex';
 import { MuiThemeProvider, getMuiTheme, lightBaseTheme } from 'material-ui/styles';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';

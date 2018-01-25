@@ -1,14 +1,14 @@
 import * as React from 'react';
-import { EmailField } from './email';
+import { EmailField } from '../Email/email';
 // import { Redirect } from 'react-router';
 import { connect, DispatchProp } from 'react-redux';
-import { RequestLogin } from '../store/appActions';
+import { RequestLogin } from '../../store/appActions';
 import { RouteComponentProps } from 'react-router';
 
-interface LoginProps extends DispatchProp <AppStore.store>, RouteComponentProps<{}>{
-    login (email: string, password: string): Promise <boolean>
+interface LoginProps extends DispatchProp<AppStore.store>, RouteComponentProps<{}> {
+    login(email: string, password: string): Promise<boolean>
     isLogged: boolean,
-    isLoading: boolean 
+    isLoading: boolean
 }
 
 export class Login extends React.Component<LoginProps, LoginState> {
@@ -22,20 +22,20 @@ export class Login extends React.Component<LoginProps, LoginState> {
         (event.type == 'keydown' && (event as React.KeyboardEvent<HTMLInputElement>).keyCode != 13) ?
             flag = false : flag = true;
         if (flag) {
-            const {email, password} = this.state;
+            const { email, password } = this.state;
             console.log(this.props.isLogged);
             // thunk
             this.props.login(email, password)
-            .then((valid)=>{
-                if(valid){
-                    console.log(this.props.isLogged);
-                    console.log(this.props.isLoading);
-                    this.props.history.push('/dashboard')
-                }else{
-                    console.log("Invalid")
-                }
-            })
-            .catch((e)=>console.log(e))
+                .then((valid) => {
+                    if (valid) {
+                        console.log(this.props.isLogged);
+                        // console.log(this.props.isLoading);
+                        this.props.history.push('/dashboard')
+                    } else {
+                        console.log("Invalid")
+                    }
+                })
+                .catch((e) => console.log(e))
         }
     }
     getEmailValue = (mailValue: string) => {
@@ -68,12 +68,12 @@ export class Login extends React.Component<LoginProps, LoginState> {
 
 export default connect<{}, {}, LoginProps, AppStore.store>(
     (store) => (
-        { 
+        {
             isLogged: store.app.logged,
             isLoading: store.app.loading
-         }
-    ),
-        {
-            login: RequestLogin
         }
+    ),
+    {
+        login: RequestLogin
+    }
 )(Login);

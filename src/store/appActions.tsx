@@ -7,8 +7,8 @@ const request = axios.default;
 const requestLoginActionCreator = () => {
     return {
         type: REQUEST_LOGIN
-    }
-}
+    };
+};
 
 export const RequestLogin = (email: string, password: string) => {
     return (dispatch: Dispatch<AppStore.store>) => {
