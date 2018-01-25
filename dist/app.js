@@ -34,7 +34,8 @@ app.use(validator());
 app.use(errorHandler());
 app.use(cookieParser());
 passport.use(new passport_jwt_1.Strategy(opts, function (jwt_payload, done) {
-    userSchema_1.UserModel.findOne({ _id: jwt_payload._id }, ('-password -_id'))
+    console.log("In jwt strategy ", jwt_payload);
+    userSchema_1.UserModel.findOne({ _id: jwt_payload._id }, ('-password '))
         .then(function (user) {
         !user && done(null, false);
         done(null, user);

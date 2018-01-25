@@ -27,7 +27,7 @@ var User = /** @class */ (function (_super) {
                 res.sendStatus(403);
             userSchema_1.UserModel.findOne({ email: email })
                 .then(function (user) {
-                console.log(password, user && user.password);
+                // console.log(password, user&&user.password);
                 if (user) {
                     return bcrypt.compare(password, user.password);
                 }
@@ -79,23 +79,26 @@ var User = /** @class */ (function (_super) {
                 .catch(function (e) { return res.send(e); });
         };
         _this.profile = function (req, res, next) {
-            console.log("profile executed");
-            var _id = req.user._id;
-            if (_id)
-                userSchema_1.UserModel.findById(_id)
-                    .populate({
-                    path: 'conversations',
-                    populate: {
-                        path: 'participants',
-                        select: 'name -_id'
-                    }
-                })
-                    .then(function (user) {
-                    // console.log(user)
-                    !user && res.status(404).send("User not found");
-                    res.json(user); //send the user
-                })
-                    .catch(function (e) { return res.send(e); });
+            console.log("profile executed", req.user);
+            var user = req.user;
+            !user && res.status(404).send("User not found");
+            res.json(user); //send the user
+            // UserModel.findById(_id)
+            // .select('-conversations -contacts')
+            // .populate({
+            //     path: 'conversations',
+            //     populate: {
+            //         path: 'participants',
+            //         select: 'name -_id'
+            //     }
+            // })
+            // .then(
+            //     (user)=>{
+            //         console.log(user)
+            //         !user && res.status(404).send("User not found");
+            //         res.json(user);//send the user
+            //     })
+            // .catch((e: Error)=>res.send(e))
         };
         _this.conversations = function (req, res, next) {
             // console.log("Conversations")

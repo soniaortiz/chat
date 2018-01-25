@@ -44,9 +44,11 @@ interface SidebarState{
 declare namespace AppStore{//store
     interface app { 
             logged: boolean,
-            loading: boolean
+            loading: boolean,
         }
-    interface user{}
+    interface user{
+        name: string
+    }
     interface conversations{}
     interface messages{}
     interface store{

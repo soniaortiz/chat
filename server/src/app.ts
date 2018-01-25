@@ -36,7 +36,8 @@ const opts: StrategyOptions = {
     app.use(cookieParser());
 
     passport.use(new JwtStrategy(opts, (jwt_payload, done)=>{
-        UserModel.findOne({_id: jwt_payload._id}, ('-password -_id'))
+        console.log("In jwt strategy ", jwt_payload)
+        UserModel.findOne({_id: jwt_payload._id}, ('-password '))
         .then((user)=>{
             !user && done(null, false);
             done(null, user);

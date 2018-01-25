@@ -11,13 +11,13 @@ import * as bcrypt from 'bcrypt';
 export class User extends Controller{
     model = UserModel;
     login = (req: express.Request, res: express.Response, next: express.NextFunction)=>{       
-            const {password, email} = req.body;
+        const {password, email} = req.body;
         
         if(!password || !email)
             res.sendStatus(403);    
         UserModel.findOne({email})
         .then((user)=>{
-            console.log(password, user&&user.password);
+            // console.log(password, user&&user.password);
             if(user){
                 return bcrypt.compare(password, user.password)
             }
@@ -68,24 +68,27 @@ export class User extends Controller{
         .catch((e:Error)=>res.send(e))
     }
     profile=(req: express.Request, res: express.Response, next: express.NextFunction)=>{
-        console.log("profile executed");
-        const {_id} = req.user;
-        if(_id)
-        UserModel.findById(_id)
-        .populate({
-            path: 'conversations',
-            populate: {
-                path: 'participants',
-                select: 'name -_id'
-            }
-        })
-        .then(
-            (user)=>{
-                // console.log(user)
-                !user && res.status(404).send("User not found");
+        console.log("profile executed", req.user);
+        const user = req.user;
+        !user && res.status(404).send("User not found");
                 res.json(user);//send the user
-            })
-        .catch((e: Error)=>res.send(e))
+        // UserModel.findById(_id)
+        // .select('-conversations -contacts')
+        
+        // .populate({
+        //     path: 'conversations',
+        //     populate: {
+        //         path: 'participants',
+        //         select: 'name -_id'
+        //     }
+        // })
+        // .then(
+        //     (user)=>{
+        //         console.log(user)
+        //         !user && res.status(404).send("User not found");
+        //         res.json(user);//send the user
+        //     })
+        // .catch((e: Error)=>res.send(e))
     }
     conversations=(req: express.Request, res: express.Response, next: express.NextFunction)=>{
         // console.log("Conversations")
