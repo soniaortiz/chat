@@ -1,12 +1,11 @@
 import * as React from 'react';
 import { EmailField } from '../Email/email';
-// import { Redirect } from 'react-router';
 import { connect, DispatchProp } from 'react-redux';
 import { RequestLogin } from '../../store/appActions';
 import { RouteComponentProps } from 'react-router';
 
 interface LoginProps extends DispatchProp<AppStore.store>, RouteComponentProps<{}> {
-    login(email: string, password: string): Promise<boolean>
+    login(email: string, password: string): Promise<boolean>,
     isLogged: boolean,
     isLoading: boolean
 }
@@ -17,25 +16,22 @@ export class Login extends React.Component<LoginProps, LoginState> {
         this.state = { email: '', password: '', redirect: false, open: false };
     }
     validateUser = (event: (React.MouseEvent<HTMLButtonElement>) | React.KeyboardEvent<HTMLInputElement>) => {
-
         let flag = true;
         (event.type == 'keydown' && (event as React.KeyboardEvent<HTMLInputElement>).keyCode != 13) ?
             flag = false : flag = true;
         if (flag) {
             const { email, password } = this.state;
-            console.log(this.props.isLogged);
+            // console.log(this.props.isLogged);
             // thunk
             this.props.login(email, password)
                 .then((valid) => {
                     if (valid) {
-                        console.log(this.props.isLogged);
+                        // console.log(this.props.isLogged);
                         // console.log(this.props.isLoading);
-                        this.props.history.push('/dashboard')
-                    } else {
-                        console.log("Invalid")
+                        this.props.history.push('/dashboard');
                     }
                 })
-                .catch((e) => console.log(e))
+                .catch((e) => console.log(e));
         }
     }
     getEmailValue = (mailValue: string) => {

@@ -47,7 +47,10 @@ declare namespace AppStore{//store
             loading: boolean,
         }
     interface user{
-        name: string
+        name: string,
+        middleName: string,
+        lastName: string,
+        email: string
     }
     interface conversations{}
     interface messages{}

@@ -3,6 +3,7 @@ import { connect, DispatchProp } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
 import { CircularProgress } from 'material-ui';
 import { RequestUserInfo } from '../../store/userActions';
+import { Sidebar } from '../Dashboard/Sidebar/sidebar';
 
 interface DashboardProps extends DispatchProp<{}>, RouteComponentProps<{}> {
     getUser: () => Promise<boolean>,
@@ -11,19 +12,18 @@ interface DashboardProps extends DispatchProp<{}>, RouteComponentProps<{}> {
 
 export class Dashboard extends React.Component<DashboardProps, DashboardState> {
     componentDidMount() {
-        console.log(this.props)
         this.props.getUser()
-            .then(() => console.log(this.props.user))
+            .then(() => console.log(this.props.user)); // ""
     }
-
     render() {
-        if(this.props.user.name)
-            return <div className="wrapper">
-               <p>loaded</p>
-            </div>;
-        return <CircularProgress />
-    
-    };
+        if (this.props.user.name)
+            return (
+                <div className="wrapper">
+                    <Sidebar />
+                </div>
+            );
+        return <CircularProgress />;
+    }
 }
 
 export default connect<{}, {}, DashboardProps, AppStore.store>(

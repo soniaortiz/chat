@@ -63,10 +63,10 @@ export class Signup extends React.Component<SignupProps, SignupState> {
     }
     validateAndEnableBtn = () => {
         const values = Object.values(this.state);
-        console.log(values.every(val => {
-            console.log(values);
-            return val != '';
-        }));
+        // console.log(values.every(val => {
+        //     console.log(values);
+        //     return val != '';
+        // }));
         (values.every(val => val != '')) ?
             this.setState((prevState) => ({ enabledBtn: false })) :
             this.setState((prevState) => ({ enabledBtn: true }));
