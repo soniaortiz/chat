@@ -52,6 +52,7 @@ const opts: StrategyOptions = {
 // DB connection
     mongoose.connect(url).then(()=>{
         // console.log("connection with db stablished");
+        app.get('/users', routes.user.getAll);
         app.post('/signup', routes.user.signup);
         app.post('/login', routes.user.login);
         app.post('/logout', routes.user.logout);

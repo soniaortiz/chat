@@ -5,7 +5,10 @@ const userData: AppStore.user = { // init state
     name: '',
     middleName: '',
     lastName: '',
-    email: ''    
+    email: '',
+    birthdate: new Date(),
+    gender: '',
+    avatar: ''
 };
 
 interface actions extends AppStore.user{};

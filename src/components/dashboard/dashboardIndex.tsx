@@ -27,11 +27,11 @@ export class Dashboard extends React.Component<DashboardProps, DashboardState> {
                         <TableRow>
                             <TableRowColumn>
                                 <Sidebar/>
-                            </TableRowColumn>
+                            </TableRowColumn> 
                             <TableRowColumn>
                                 <div>
-                                    will contain the 
-                                </div>
+                                    will contain the options
+                                </div> 
                             </TableRowColumn>
                         </TableRow>
                     </TableBody>

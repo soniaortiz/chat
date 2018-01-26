@@ -8,11 +8,12 @@ interface MeProps extends DispatchProp<{}>, RouteComponentProps<{}> {
 
 export class Me extends React.Component<MeProps> {
     render() {
-        return <div>
-            <p> {this.props.user.name}</p>
-            <p> {this.props.user.middleName}</p>
-            <p>{this.props.user.email}</p>
-        </div>
+        return (<div>
+            {
+                Object.entries(this.props.user).map((prop)=>
+                    <p>{prop[1]}</p>
+            )}
+        </div>)
     }
 }
 

@@ -1,9 +1,12 @@
 import * as React from 'react';
 import Me from '../UserInfo/userInfo';
+import {Contacts} from '../Contacts/contacts';
 import {
     Table, TableRowColumn, 
     TableHeader, TableBody, 
     TableRow, FlatButton } from 'material-ui';
+import { SearchFriend } from '../SearchFriend/searchFriend';
+
 export class Sidebar extends React.Component<SidebarProps, SidebarState>{
 
     constructor(props: SidebarProps){
@@ -23,22 +26,18 @@ export class Sidebar extends React.Component<SidebarProps, SidebarState>{
                         </TableRowColumn>
                     </TableRow>
                     <TableRow>
-                        <div>
-                            search box
-                        </div>
+                        <SearchFriend/>
                     </TableRow>
                     <TableRow>
                         <TableRowColumn>
                             <FlatButton>Contacts</FlatButton>
-                        </TableRowColumn>
-                        <TableRowColumn>
                             <FlatButton> Conversations </FlatButton>
                         </TableRowColumn>
                     </TableRow>
 
                     <TableRow>
                         <TableRowColumn>
-                            <p>list contacts/chats</p>
+                            <Contacts />
                         </TableRowColumn>
                     </TableRow>
 
@@ -46,10 +45,6 @@ export class Sidebar extends React.Component<SidebarProps, SidebarState>{
 
             </Table>
 
-
-            // <div className="sidebar"> 
-            //     <Me />
-            // </div>
-        )
+        );
     }
 }

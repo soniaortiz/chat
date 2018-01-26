@@ -21,7 +21,10 @@ export const RequestUserInfo = () => {
                         name: data.name,
                         middleName: data.middleName,
                         lastName: data.lastName,
-                        email: data.email
+                        email: data.email,
+                        birthdate: data.birthdate,
+                        gender: data.gender,
+                        avatar: data.avatar
                     }));
                 return true;
             })

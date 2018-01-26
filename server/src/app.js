@@ -4,7 +4,7 @@ var express = require("express");
 var http = require("http");
 var mongoose = require("mongoose");
 var app = express();
-var url = 'mongodb://localhost:27017/chat';
+var url = 'mongodb://localhost:27017/chat'; 
 var port = 3000;
 mongoose.connect(url).then(function () {
     console.log("connection with db stablished");

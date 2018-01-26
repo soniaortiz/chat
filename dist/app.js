@@ -47,6 +47,7 @@ mongoose.Promise = global.Promise; //Overwrite mongoose promise
 // DB connection
 mongoose.connect(url).then(function () {
     // console.log("connection with db stablished");
+    app.get('/users', routes.user.getAll);
     app.post('/signup', routes.user.signup);
     app.post('/login', routes.user.login);
     app.post('/logout', routes.user.logout);
