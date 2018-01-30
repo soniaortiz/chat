@@ -41,6 +41,14 @@ interface SidebarProps{
 }
 interface SidebarState{
 }
+interface contact{
+    contact_id: string,
+    contactName: string
+}
+interface conversation{
+    conversation_id: string
+    conversationName: string
+}
 declare namespace AppStore{//store
     interface app { 
             logged: boolean,
@@ -55,12 +63,15 @@ declare namespace AppStore{//store
         gender: String,
         avatar: String
     }
-    interface conversations{}
+    interface contacts extends Array <contact>{
+    }
+    interface conversations extends Array<conversation>{}
     interface messages{}
     interface store{
         app: app, 
         user: user,
         conversations: conversations,
-        messages: messages
+        messages: messages,
+        contacts: contacts
     }
 }

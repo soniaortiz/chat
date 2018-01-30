@@ -71,7 +71,7 @@ export class User extends Controller {
         console.log("profile executed", req.user);
         const user = req.user;
         !user && res.status(404).send("User not found");
-        res.json(user);//send the user
+        res.json(user);// send the user
         // UserModel.findById(_id)
         // .select('-conversations -contacts')
 
@@ -91,25 +91,27 @@ export class User extends Controller {
         // .catch((e: Error)=>res.send(e))
     }
     conversations = (req: express.Request, res: express.Response, next: express.NextFunction) => {
-        // console.log("Conversations")
-        const { user_id } = req.body;
-        UserModel.findById({ _id: user_id })
-            .populate("conversations")
+        // console.log("Conversations");
+        const { _id } = req.user;
+        UserModel.findById({ _id })
+            // .populate("conversations")
             .then((user) => {
                 if (user) {
-                    console.log(user.email)
-                    res.send(user.conversations)
+                    // console.log(user.email);
+                    res.send(user.conversations);
                 }
             })
     }
     friendlist = (req: express.Request, res: express.Response, next: express.NextFunction) => {
-        const { user_id } = req.body;
-        UserModel.findById({ _id: user_id }).populate("contacts")
-            .then((user) => {
-                if (user) {
-                    res.send(user.contacts);
-                }
-            })
+        // console.log("*** The user id *** ", req.user._id);
+        const { _id } = req.user;
+        UserModel.findById({ _id })
+        .populate("contacts")
+        .then((user) => {
+            if (user) {
+                res.send(user.contacts);
+            }
+        });
     }
     sendFriendRequest = (req: express.Request, res: express.Response, next: express.NextFunction) => {//Incomplete
         //find the friend
@@ -131,7 +133,7 @@ export class User extends Controller {
                     res.send(user.friendRequests)
                 }
             })
-            .catch((e: Error) => res.send(e))
+            .catch((e: Error) => res.send(e));
     }
     acceptFriendRequest = (req: express.Request, res: express.Response, next: express.NextFunction) => {
         const { user_id, request_id } = req.body;
@@ -166,7 +168,7 @@ export class User extends Controller {
         })
             .save()
             .then(
-            (m) => {//after the message is created then the reference is passed to the conversation
+            (m) => { // after the message is created then the reference is passed to the conversation
                 ConversationModel
                     .findOneAndUpdate({
                         _id: req.body.conversation_id

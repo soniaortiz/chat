@@ -83,7 +83,7 @@ var User = /** @class */ (function (_super) {
             console.log("profile executed", req.user);
             var user = req.user;
             !user && res.status(404).send("User not found");
-            res.json(user); //send the user
+            res.json(user); // send the user
             // UserModel.findById(_id)
             // .select('-conversations -contacts')
             // .populate({
@@ -102,20 +102,21 @@ var User = /** @class */ (function (_super) {
             // .catch((e: Error)=>res.send(e))
         };
         _this.conversations = function (req, res, next) {
-            // console.log("Conversations")
-            var user_id = req.body.user_id;
-            userSchema_1.UserModel.findById({ _id: user_id })
-                .populate("conversations")
+            // console.log("Conversations");
+            var _id = req.user._id;
+            userSchema_1.UserModel.findById({ _id: _id })
                 .then(function (user) {
                 if (user) {
-                    console.log(user.email);
+                    // console.log(user.email);
                     res.send(user.conversations);
                 }
             });
         };
         _this.friendlist = function (req, res, next) {
-            var user_id = req.body.user_id;
-            userSchema_1.UserModel.findById({ _id: user_id }).populate("contacts")
+            // console.log("*** The user id *** ", req.user._id);
+            var _id = req.user._id;
+            userSchema_1.UserModel.findById({ _id: _id })
+                .populate("contacts")
                 .then(function (user) {
                 if (user) {
                     res.send(user.contacts);

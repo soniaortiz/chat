@@ -53,6 +53,8 @@ mongoose.connect(url).then(function () {
     app.post('/logout', routes.user.logout);
     app.use(passport.authenticate('jwt', { session: false }));
     app.post('/profile', routes.user.profile);
+    app.post('/friendlist', routes.user.friendlist);
+    app.post('/conversations', routes.user.conversations);
     app.post('/conversation/sendmessage', routes.user.sendMessage);
     app.delete('/deletecontact', routes.user.deleteContact);
     app.delete('/deleteconversation', routes.user.delete);

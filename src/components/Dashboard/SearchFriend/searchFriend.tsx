@@ -1,11 +1,19 @@
 import * as React from 'react';
 import { TextField } from 'material-ui';
-export class SearchFriend extends React.Component {
+
+export class SearchFriend extends React.Component <{}, {}>{
+
+    constructor(props: {}){
+        super({});
+    }
+
+    searchUser = ( event: React.ChangeEvent<HTMLInputElement>) =>{
+        // console.log(event.target.value);
+    }
+
     render() {
         return (
-        <div>
-            <TextField />
-        </div>
+            <TextField onChange={this.searchUser}/>
         );
     }
 }

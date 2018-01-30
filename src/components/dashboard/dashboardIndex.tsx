@@ -5,16 +5,17 @@ import { CircularProgress, Table, TableBody, TableHeader,  TableRowColumn } from
 import { RequestUserInfo } from '../../store/userActions';
 import { TableRow } from 'material-ui/Table';
 import { Sidebar } from '../Dashboard/Sidebar/sidebar';
-
+import {Panel} from './Panel/panel';
 interface DashboardProps extends DispatchProp<{}>, RouteComponentProps<{}> {
     getUser: () => Promise<boolean>,
-    user: AppStore.user
+    user: AppStore.user,
+
 }
 
 export class Dashboard extends React.Component<DashboardProps, DashboardState> {
     componentDidMount() {
         this.props.getUser()
-            .then(() => console.log(this.props.user)); // ""
+            .then(() => console.log(this.props.user)); 
     }
     render() {
         if (this.props.user.name)
@@ -29,9 +30,7 @@ export class Dashboard extends React.Component<DashboardProps, DashboardState> {
                                 <Sidebar/>
                             </TableRowColumn> 
                             <TableRowColumn>
-                                <div>
-                                    will contain the options
-                                </div> 
+                                    <Panel />
                             </TableRowColumn>
                         </TableRow>
                     </TableBody>
@@ -44,9 +43,9 @@ export class Dashboard extends React.Component<DashboardProps, DashboardState> {
 
 export default connect<{}, {}, DashboardProps, AppStore.store>(
     (store) => ({
-        user: store.user
+        user: store.user,
     }),
     {
-        getUser: RequestUserInfo
+        getUser: RequestUserInfo,
     }
 )(Dashboard);
