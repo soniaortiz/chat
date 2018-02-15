@@ -196,7 +196,7 @@ export class User extends Controller {
     }
     findUsers = (req: any, res: express.Response, next: express.NextFunction) => {
         console.log('Execueted  axios ,' req.query.userName);
-        UserModel.find({ 'name': req.query.userName })
+        UserModel.find({ 'name': {$regex:  req.query.userName, $options: 'i, ^'}})
             .then((users) => {
                 console.log(users);
                 res.send(users);
