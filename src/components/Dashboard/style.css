@@ -1,0 +1,13 @@
+.Sidebar{
+    width: 35%;
+    /* height: 100%; */
+    /* border: dotted; */
+
+}
+
+.Panel{
+    border: solid;
+    width: 65%;
+    border-radius: 15%
+}
+

@@ -12,8 +12,7 @@ export class User extends Controller {
     model = UserModel;
     login = (req: express.Request, res: express.Response, next: express.NextFunction) => {
         const { password, email } = req.body;
-        if (!password || !email)
-            res.sendStatus(403);
+        if (!password || !email) { res.sendStatus(403); }
         UserModel.findOne({ email })
             .then((user) => {
                 // console.log(password, user&&user.password);
@@ -49,10 +48,11 @@ export class User extends Controller {
             })
     }
     signup = (req: express.Request, res: express.Response, next: express.NextFunction) => {
-        const { email } = req.body; console.log(req.body)
+        const { email } = req.body;
+        console.log(req.body);
         UserModel.findOne({ email: email })
             .then((doc) => {
-                console.log(doc)
+                console.log(doc);
                 if (doc) {
                     const id_token = jwt.sign({
                         email: email
@@ -60,7 +60,7 @@ export class User extends Controller {
                     console.log(id_token);
                     res.json(id_token);
                 }
-                return new UserModel(req.body).save()
+                return new UserModel(req.body).save();
             })
             .then((newUser) => {
                 res.sendStatus(200);
@@ -106,14 +106,14 @@ export class User extends Controller {
         // console.log("*** The user id *** ", req.user._id);
         const { _id } = req.user;
         UserModel.findById({ _id })
-        .populate("contacts")
-        .then((user) => {
-            if (user) {
-                res.send(user.contacts);
-            }
-        });
+            .populate("contacts")
+            .then((user) => {
+                if (user) {
+                    res.send(user.contacts);
+                }
+            });
     }
-    sendFriendRequest = (req: express.Request, res: express.Response, next: express.NextFunction) => {//Incomplete
+    sendFriendRequest = (req: express.Request, res: express.Response, next: express.NextFunction) => {// Incomplete
         //find the friend
         UserModel.findOneAndUpdate({ _id: req.body.friend_id },
             { $push: { friendRequests: req.body.sender_id } })//
@@ -122,7 +122,8 @@ export class User extends Controller {
                 res.send(200);
             }).catch((e: Error) => res.send(e))
     }
-    friendRequestList = (req: express.Request, res: express.Response, next: express.NextFunction) => {//see friend request list
+    friendRequestList = (req: express.Request, res: express.Response, next: express.NextFunction) => {
+        // see friend request list
         UserModel.findById(req.query._id)
             .then((user) => {
                 if (user) {
@@ -130,7 +131,7 @@ export class User extends Controller {
                     // friendList.forEach((i)=>{
                     //     console.log(i)
                     // })
-                    res.send(user.friendRequests)
+                    res.send(user.friendRequests);
                 }
             })
             .catch((e: Error) => res.send(e));
@@ -168,14 +169,14 @@ export class User extends Controller {
         })
             .save()
             .then(
-            (m) => { // after the message is created then the reference is passed to the conversation
-                ConversationModel
-                    .findOneAndUpdate({
-                        _id: req.body.conversation_id
-                    }, {
-                        $push: { messages: m._id }
-                    });
-            }
+                (m) => { // after the message is created then the reference is passed to the conversation
+                    ConversationModel
+                        .findOneAndUpdate({
+                            _id: req.body.conversation_id
+                        }, {
+                                $push: { messages: m._id }
+                            });
+                }
             )
             .then((conversation) => res.send(conversation))
             .catch((e: Error) => res.send(e));
@@ -188,10 +189,18 @@ export class User extends Controller {
         const { user_id, contact_id } = req.body;
         UserModel.findByIdAndUpdate(user_id, { $pull: { contacts: contact_id } })
             .then(() => {
-                return UserModel.findByIdAndUpdate(contact_id, { $pull: { contacts: user_id } }).exec()
+                return UserModel.findByIdAndUpdate(contact_id, { $pull: { contacts: user_id } }).exec();
             })
             .then((user) => res.json(user))
-            .catch((e: Error) => res.send(e))
+            .catch((e: Error) => res.send(e));
     }
-
+    findUsers = (req: any, res: express.Response, next: express.NextFunction) => {
+        console.log('Execueted  axios ,' req.query.userName);
+        UserModel.find({ 'name': req.query.userName })
+            .then((users) => {
+                console.log(users);
+                res.send(users);
+            })
+            .catch((e) => e);
+    }
 }

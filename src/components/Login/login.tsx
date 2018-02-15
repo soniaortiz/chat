@@ -3,6 +3,7 @@ import { EmailField } from '../Email/email';
 import { connect, DispatchProp } from 'react-redux';
 import { RequestLogin } from '../../store/appActions';
 import { RouteComponentProps } from 'react-router';
+import { Dialog } from 'material-ui';
 
 interface LoginProps extends DispatchProp<AppStore.store>, RouteComponentProps<{}> {
     login(email: string, password: string): Promise<boolean>,
@@ -15,6 +16,7 @@ export class Login extends React.Component<LoginProps, LoginState> {
         super(props);
         this.state = { email: '', password: '', redirect: false, open: false };
     }
+
     validateUser = (event: (React.MouseEvent<HTMLButtonElement>) | React.KeyboardEvent<HTMLInputElement>) => {
         let flag = true;
         (event.type == 'keydown' && (event as React.KeyboardEvent<HTMLInputElement>).keyCode != 13) ?
@@ -29,8 +31,8 @@ export class Login extends React.Component<LoginProps, LoginState> {
                         // console.log(this.props.isLogged);
                         // console.log(this.props.isLoading);
                         this.props.history.push('/dashboard');
-                    }else{
-                        console.log("invalid user")
+                    } else {
+                        console.log("invalid user");
                     }
                 })
                 .catch((e) => console.log(e));
@@ -51,14 +53,16 @@ export class Login extends React.Component<LoginProps, LoginState> {
     render() {
         return (
             <div>
-                <label htmlFor="">Email</label>
-                < EmailField setEmailValue={this.getEmailValue} />
-                <label htmlFor="">Password</label>
-                <input type="password" required={true} id="passwordfield"
-                    onChange={this.setPasswordValue} ref="password"
-                    onKeyDown={this.validateUser}
-                />
-                <button onClick={this.validateUser}>Login</button>
+                <Dialog open={true}>
+                    <label htmlFor="">Email</label>
+                    < EmailField setEmailValue={this.getEmailValue} />
+                    <label htmlFor="">Password</label>
+                    <input type="password" required={true} id="passwordfield"
+                        onChange={this.setPasswordValue} ref="password"
+                        onKeyDown={this.validateUser}
+                    />
+                    <button onClick={this.validateUser}>Login</button>
+                </Dialog>
             </div>
         );
     }

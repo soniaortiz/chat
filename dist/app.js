@@ -43,7 +43,7 @@ passport.use(new passport_jwt_1.Strategy(opts, function (jwt_payload, done) {
         .catch(function (e) { return done(e, false); });
 }));
 app.use(passport.initialize());
-mongoose.Promise = global.Promise; //Overwrite mongoose promise
+mongoose.Promise = global.Promise; // Overwrite mongoose promise
 // DB connection
 mongoose.connect(url).then(function () {
     // console.log("connection with db stablished");
@@ -63,6 +63,7 @@ mongoose.connect(url).then(function () {
     app.get('/conversations/:_id', routes.conversation.getConversation);
     app.post('/user/conversations/sendmessage', routes.conversation.sendMessage);
     app.get('/deletenullconversation', routes.conversation.findnull);
+    app.get('/findUsers', routes.user.findUsers);
     app.get('*', function (req, res, next) {
         res.sendFile(path.join(__dirname, '../build/index.html'));
     });

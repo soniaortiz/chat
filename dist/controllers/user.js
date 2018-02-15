@@ -23,8 +23,9 @@ var User = /** @class */ (function (_super) {
         _this.model = userSchema_1.UserModel;
         _this.login = function (req, res, next) {
             var _a = req.body, password = _a.password, email = _a.email;
-            if (!password || !email)
+            if (!password || !email) {
                 res.sendStatus(403);
+            }
             userSchema_1.UserModel.findOne({ email: email })
                 .then(function (user) {
                 // console.log(password, user&&user.password);
@@ -132,6 +133,7 @@ var User = /** @class */ (function (_super) {
             }).catch(function (e) { return res.send(e); });
         };
         _this.friendRequestList = function (req, res, next) {
+            // see friend request list
             userSchema_1.UserModel.findById(req.query._id)
                 .then(function (user) {
                 if (user) {
@@ -196,6 +198,15 @@ var User = /** @class */ (function (_super) {
             })
                 .then(function (user) { return res.json(user); })
                 .catch(function (e) { return res.send(e); });
+        };
+        _this.findUsers = function (req, res, next) {
+            console.log('Execueted  axios ,', req.query.userName);
+            userSchema_1.UserModel.find({ 'name': req.query.userName })
+                .then(function (users) {
+                console.log(users);
+                res.send(users);
+            })
+                .catch(function (e) { return e; });
         };
         return _this;
     }
