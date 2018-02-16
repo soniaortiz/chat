@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {  AutoComplete } from 'material-ui';
 import request from 'axios';
+// import MobileTearSheet from '../../../other/MobileTearSheet';
 
 interface SearchFriendProps {
     // searchUser(name: string): Promise<boolean>;
@@ -18,12 +19,12 @@ export class SearchFriend extends React.Component<SearchFriendProps, SearchFrien
         this.users = [];
     }
 
-    handleUpdateInput = (searchText: React.ChangeEvent<HTMLInputElement>) => {
-        this.setState(
-            { userName: searchText.target.value }
-        );
-    }
-
+    // handleUpdateInput = (searchText: React.ChangeEvent<HTMLInputElement>) => {
+    //     this.setState(
+    //         { userName: searchText.target.value }
+    //     );
+    // }
+  
     handleNewRequest = (searchText: any) => {
         this.setState({ userName: searchText});
         // console.log('"user name: "', searchText);
@@ -48,7 +49,7 @@ export class SearchFriend extends React.Component<SearchFriendProps, SearchFrien
                     hintText="Name of the person"
                     searchText={this.state.userName}
                     onUpdateInput={this.handleNewRequest}
-                    onNewRequest={this.handleNewRequest}
+                    // onNewRequest={this.handleNewRequest}
                     dataSource={this.users}
                     filter={(searchText, key) => (key.indexOf(searchText) !== -1)}
                     openOnFocus={true}
