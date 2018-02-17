@@ -3,7 +3,7 @@ import { EmailField } from '../Email/email';
 import { connect, DispatchProp } from 'react-redux';
 import { RequestLogin } from '../../store/appActions';
 import { RouteComponentProps } from 'react-router';
-import { Dialog } from 'material-ui';
+import { Dialog, Paper } from 'material-ui';
 
 interface LoginProps extends DispatchProp<AppStore.store>, RouteComponentProps<{}> {
     login(email: string, password: string): Promise<boolean>,
@@ -52,18 +52,19 @@ export class Login extends React.Component<LoginProps, LoginState> {
     }
     render() {
         return (
-            <div>
-                <Dialog open={true}>
-                    <label htmlFor="">Email</label>
-                    < EmailField setEmailValue={this.getEmailValue} />
-                    <label htmlFor="">Password</label>
-                    <input type="password" required={true} id="passwordfield"
-                        onChange={this.setPasswordValue} ref="password"
-                        onKeyDown={this.validateUser}
-                    />
-                    <button onClick={this.validateUser}>Login</button>
-                </Dialog>
-            </div>
+            <Paper>
+                    <Dialog open={true}>
+                        <label htmlFor="">Email</label>
+                        < EmailField setEmailValue={this.getEmailValue} />
+                        <label htmlFor="">Password</label>
+                        <input type="password" required={true} id="passwordfield"
+                            onChange={this.setPasswordValue} ref="password"
+                            onKeyDown={this.validateUser}
+                        />
+                        <button onClick={this.validateUser}>Login</button>
+                    </Dialog>
+
+            </Paper>
         );
     }
 }

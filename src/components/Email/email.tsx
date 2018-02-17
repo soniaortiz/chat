@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { TextField } from 'material-ui';
+import { TextField, Paper } from 'material-ui';
 
 export class EmailField extends React.Component<emailProps, emailState> {
     constructor(props: emailProps) {
@@ -17,11 +17,13 @@ export class EmailField extends React.Component<emailProps, emailState> {
         }
     }
     render() {
-        return (<div >
-            <TextField name="email" onChange={this.validateExpression} ref="email" />
-            <p hidden={this.state.expression}>
-                this is not a valid email, example: user@myaddress.com
-            </p>
-        </div>);
+        return (
+            <Paper>
+                <TextField name="email" onChange={this.validateExpression} ref="email" />
+                <p hidden={this.state.expression}>
+                    this is not a valid email, example: user@myaddress.com
+                    </p>
+            </Paper>
+        );
     }
 }

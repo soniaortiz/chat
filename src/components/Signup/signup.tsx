@@ -2,7 +2,7 @@ import * as React from 'react';
 import { EmailField } from '../Email/email';
 import * as axios from 'axios';
 import { Password } from '../Password/password';
-import { TextField, RadioButtonGroup, RadioButton, DatePicker, Divider } from 'material-ui';
+import { TextField, RadioButtonGroup, RadioButton, DatePicker, Divider, Paper } from 'material-ui';
 import { Redirect } from 'react-router-dom';
 import './style.css';
 
@@ -77,48 +77,51 @@ export class Signup extends React.Component<SignupProps, SignupState> {
             return <Redirect to="/login" />;
         }
         return (
-            <div id="signup" className={'form'}>
-                <label htmlFor="nameField">First Name </label>
-                <TextField type="text" id="name" name="name" required
-                    onChange={this.handleInputChange} />
-                <Divider />
+            <Paper>
+                <div id="signup" className={'form'}>
+                    <label htmlFor="nameField">First Name </label>
+                    <TextField type="text" id="name" name="name" required
+                        onChange={this.handleInputChange} />
+                    <Divider />
 
-                <label htmlFor="middleNameField">Middle name </label>
-                <TextField type="text" id="middleName" name="middleName"
-                    onChange={this.handleInputChange} />
-                <Divider />
+                    <label htmlFor="middleNameField">Middle name </label>
+                    <TextField type="text" id="middleName" name="middleName"
+                        onChange={this.handleInputChange} />
+                    <Divider />
 
-                <label htmlFor="lastNameField">Lastname </label>
-                <TextField type="text" id="lastName" name="lastName"
-                    required onChange={this.handleInputChange} />
-                <Divider />
+                    <label htmlFor="lastNameField">Lastname </label>
+                    <TextField type="text" id="lastName" name="lastName"
+                        required onChange={this.handleInputChange} />
+                    <Divider />
 
-                <label htmlFor="userNameField">Username </label>
-                <TextField type="text" id="userNameField" name="username" required={true}
-                    onChange={this.handleInputChange} />
-                <Divider />
+                    <label htmlFor="userNameField">Username </label>
+                    <TextField type="text" id="userNameField" name="username" required={true}
+                        onChange={this.handleInputChange} />
+                    <Divider />
 
-                <label htmlFor="birthdateField" >Birthdate </label>
-                <DatePicker name="birthdate"
-                    onChange={this.handleBirthdate} />
-                <Divider />
-                <label htmlFor="">Gender</label>
-                <RadioButtonGroup name="gender" onChange={this.handleInputChange}>
-                    <RadioButton value="male" id="maleOpt" label="male" />
-                    <RadioButton value="female" id="femaleOpt" label="female" />
-                </RadioButtonGroup>
-                <Divider />
+                    <label htmlFor="birthdateField" >Birthdate </label>
+                    <DatePicker name="birthdate"
+                        onChange={this.handleBirthdate} />
+                    <Divider />
+                    <label htmlFor="">Gender</label>
+                    <RadioButtonGroup name="gender" onChange={this.handleInputChange}>
+                        <RadioButton value="male" id="maleOpt" label="male" />
+                        <RadioButton value="female" id="femaleOpt" label="female" />
+                    </RadioButtonGroup>
+                    <Divider />
 
-                <label htmlFor="">email </label>
-                <EmailField setEmailValue={this.getEmailValue} />
-                <Divider />
+                    <label htmlFor="">email </label>
+                    <EmailField setEmailValue={this.getEmailValue} />
+                    <Divider />
 
-                <label htmlFor="">Password </label>
-                <Password passwordValidation={this.setPassword} />
-                <Divider />
+                    <label htmlFor="">Password </label>
+                    <Password passwordValidation={this.setPassword} />
+                    <Divider />
 
-                <button onClick={this.register} disabled={this.state.enabledBtn}>Register </button>
-            </div>
+                    <button onClick={this.register} disabled={this.state.enabledBtn}>Register </button>
+                </div>
+
+            </Paper>
         );
     }
 }

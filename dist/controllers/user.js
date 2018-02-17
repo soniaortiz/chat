@@ -201,7 +201,9 @@ var User = /** @class */ (function (_super) {
         };
         _this.findUsers = function (req, res, next) {
             console.log('Execueted  axios ,', req.query.userName);
-            userSchema_1.UserModel.find({ 'name': { $regex: req.query.userName, $options: 'i, ^' } })
+            userSchema_1.UserModel.find(
+            // { 'name': {$regex:  req.query.userName, $options: 'i'}}
+            { $or: [{ name: { $regex: req.query.userName } }, { email: { $regex: req.query.userName } }] }, '-id')
                 .then(function (users) {
                 console.log(users);
                 res.send(users);

@@ -1,7 +1,6 @@
 import * as React from 'react';
-import {  AutoComplete } from 'material-ui';
-import request from 'axios';
-// import MobileTearSheet from '../../../other/MobileTearSheet';
+import request, { AxiosResponse } from 'axios';
+import { AutoComplete, MenuItem, Paper } from 'material-ui';
 
 interface SearchFriendProps {
     // searchUser(name: string): Promise<boolean>;
@@ -9,52 +8,76 @@ interface SearchFriendProps {
 
 interface SearchFriendState {
     userName: string;
+    userEmail: string;
+    selected: boolean;
+    users: any[]
 }
 export class SearchFriend extends React.Component<SearchFriendProps, SearchFriendState> {
 
-    users: Array<string>;
+    // users: Array<AppStore.user>;
     constructor(props: SearchFriendProps) {
         super(props);
-        this.state = { userName: '' };
-        this.users = [];
+        this.state = { userName: '', userEmail: '', selected: false, users: [] };
+        // this.users = [];
     }
 
-    // handleUpdateInput = (searchText: React.ChangeEvent<HTMLInputElement>) => {
-    //     this.setState(
-    //         { userName: searchText.target.value }
-    //     );
-    // }
-  
-    handleNewRequest = (searchText: any) => {
-        this.setState({ userName: searchText});
-        // console.log('"user name: "', searchText);
-        request.get('/findUsers', {
-            params: {
-                userName: searchText
-            }
-        })
+    handleNewRequest = (value: string) => {
+        if (!value) { return; }
+        this.setState({ userName: value });
+        console.log(value);
+        // setTimeout(() => {
+        // console.log("hello");
+        request
+            .get('/findUsers', {
+                params: {
+                    userName: value
+                }
+            })
+            .then((response) => new Promise<AxiosResponse>((res, rej) => setTimeout(() => { res(response); }, 1000)))
             .then((response) => {
-                this.users = response.data.map((user: AppStore.user) => {
-                    return user.name;
-                });
-                console.log(this.users);
+                console.log(response.data); // the object array 
+                // this.users = response.data.map((user: AppStore.user) => {
+                //     return user.name;
+                // });
+                // this.state.users = response.data;
+                this.setState({ users: response.data, selected: true }); // to display list
+
             })
             .catch((e) => console.log(e));
+        // }, 1000);
     }
     render() {
         return (
-            // <TextField onChange={this.handleNewRequest} />
-            <div>
+            <Paper>
                 <AutoComplete
-                    hintText="Name of the person"
-                    searchText={this.state.userName}
                     onUpdateInput={this.handleNewRequest}
-                    // onNewRequest={this.handleNewRequest}
-                    dataSource={this.users}
-                    filter={(searchText, key) => (key.indexOf(searchText) !== -1)}
-                    openOnFocus={true}
+                    dataSource={
+                        this.state.users.map((user, index) => {
+                            return ({
+                                text: user.name,
+                                value: (
+                                    < MenuItem
+                                        onClick={() => (console.log(user.email))}
+                                        key={index}
+                                        id={index.toString()}
+                                        primaryText={user.name}
+                                    />
+                                )
+                            });
+                        })
+                    }
                 />
-            </div>
+            </Paper>
         );
+        // const p = {
+        //     users: this.state.users,
+        //     onChange: this.handleNewRequest
+        // };
+        // if (!this.state.selected) {
+        //     return (
+        //         <TextField onChange={this.handleNewRequest} />
+        //     );
+        // }
+        // return <UsersList  {...p} />;
     }
 }

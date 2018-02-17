@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect, DispatchProp } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
-import { CircularProgress, Table, TableBody, TableHeader, TableRowColumn } from 'material-ui';
+import { CircularProgress, Table, TableBody, TableHeader, TableRowColumn, Paper } from 'material-ui';
 import { RequestUserInfo } from '../../store/userActions';
 import { TableRow } from 'material-ui/Table';
 import { Sidebar } from '../Dashboard/Sidebar/sidebar';
@@ -20,23 +20,25 @@ export class Dashboard extends React.Component<DashboardProps, DashboardState> {
     render() {
         if (this.props.user.name) {
             return (
-                <Table selectable={false}  >
-                    <TableHeader displaySelectAll={false}>
-                    </TableHeader>
+                <Paper>
+                    <Table selectable={false}  >
+                        <TableHeader displaySelectAll={false}>
+                        </TableHeader>
 
-                    <TableBody displayRowCheckbox={false} >
-                        <TableRow>
-                            <TableRowColumn className="Sidebar">
-                                <Sidebar />
-                            </TableRowColumn >
-                            <TableRowColumn className="Panel">
-                                <Panel />
-                            </TableRowColumn>
-                        </TableRow>
-                    </TableBody>
-
-                </Table>
-            ); }
+                        <TableBody displayRowCheckbox={false} >
+                            <TableRow>
+                                <TableRowColumn className="Sidebar">
+                                    <Sidebar />
+                                </TableRowColumn >
+                                <TableRowColumn className="Panel">
+                                    <Panel />
+                                </TableRowColumn>
+                            </TableRow>
+                        </TableBody>
+                    </Table>
+                </Paper>
+            );
+        }
         return <CircularProgress />;
     }
 }

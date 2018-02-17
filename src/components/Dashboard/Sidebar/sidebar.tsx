@@ -6,6 +6,7 @@ import './style.css';
 import {
     TableRowColumn,
     TableRow,
+    Paper,
 } from 'material-ui';
 import { SearchFriend } from '../SearchFriend/searchFriend';
 // import Conversations from '../Conversations/conversations';
@@ -19,19 +20,20 @@ export class Sidebar extends React.Component<SidebarProps, SidebarState> {
 
     render() {
         return (
-            <div>
-                <TableRow>
-                    <TableRowColumn>
-                        <Me />
-                    </TableRowColumn>
-                </TableRow>
-                <TableRow>
-                    <SearchFriend />
-                </TableRow>
-                <TableRow>
-                    <ContactsConversations />
-                </TableRow>
-            </div>
+            <Paper>
+                    <TableRow>
+                        <TableRowColumn>
+                            <Me />
+                        </TableRowColumn>
+                    </TableRow>
+                    <TableRow>
+                        <SearchFriend />
+                    </TableRow>
+                    <TableRow>
+                        <ContactsConversations />
+                    </TableRow>
+
+            </Paper>
 
         );
     }

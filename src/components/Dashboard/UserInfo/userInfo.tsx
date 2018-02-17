@@ -11,15 +11,16 @@ interface MeProps extends DispatchProp<{}>, RouteComponentProps<{}> {
 export class Me extends React.Component<MeProps> {
     render() {
         return (
-            <div>
-                <Avatar src="" size={100} className="Avatar" />
-                <List>
-                    {
-                        Object.entries(this.props.user).map((prop) => (
-                            <ListItem key={prop[0]}>{prop[1]}</ListItem>))
-                    }
-                </List>
-            </div>
+                <div>
+                    <Avatar src="" size={100} className="Avatar" />
+                    <List>
+                        {
+                            Object.entries(this.props.user).map((prop) => (
+                                <ListItem key={prop[0]}>{prop[1]}</ListItem>))
+                        }
+                    </List>
+                </div>
+
         );
     }
 }

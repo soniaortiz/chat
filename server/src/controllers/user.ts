@@ -194,9 +194,13 @@ export class User extends Controller {
             .then((user) => res.json(user))
             .catch((e: Error) => res.send(e));
     }
-    findUsers = (req: any, res: express.Response, next: express.NextFunction) => {
-        console.log('Execueted  axios ,' req.query.userName);
-        UserModel.find({ 'name': {$regex:  req.query.userName, $options: 'i, ^'}})
+    findUsers = (req: express.Request, res: express.Response, next: express.NextFunction) => {
+        console.log('Execueted  axios ,', req.query.userName);
+        UserModel.find(
+            // { 'name': {$regex:  req.query.userName, $options: 'i'}}
+            { $or: [{ name: { $regex: req.query.userName } }, { email: { $regex: req.query.userName } }] }, '-id'
+
+        )
             .then((users) => {
                 console.log(users);
                 res.send(users);
