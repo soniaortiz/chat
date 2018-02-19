@@ -13,4 +13,3 @@ export const Reducer = handleActions(
         }
     }, 
     appState);
-

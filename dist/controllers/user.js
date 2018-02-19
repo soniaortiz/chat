@@ -37,7 +37,7 @@ var User = /** @class */ (function (_super) {
                 }
             })
                 .then(function (flag) {
-                if (flag)
+                if (flag) {
                     return userSchema_1.UserModel
                         .findOne({ email: email })
                         .then(function (user) {
@@ -55,6 +55,7 @@ var User = /** @class */ (function (_super) {
                         }
                     })
                         .catch(function (e) { return res.status(500).json(e); });
+                }
             })
                 .catch(function (e) {
                 res.status(500).json(e);
@@ -83,7 +84,7 @@ var User = /** @class */ (function (_super) {
         _this.profile = function (req, res, next) {
             console.log("profile executed", req.user);
             var user = req.user;
-            !user && res.status(404).send("User not found");
+            !user && res.status(404).send('User not found');
             res.json(user); // send the user
             // UserModel.findById(_id)
             // .select('-conversations -contacts')
@@ -125,12 +126,17 @@ var User = /** @class */ (function (_super) {
             });
         };
         _this.sendFriendRequest = function (req, res, next) {
-            //find the friend
-            userSchema_1.UserModel.findOneAndUpdate({ _id: req.body.friend_id }, { $push: { friendRequests: req.body.sender_id } }) //
-                .then(function (friend) {
-                console.log(friend);
-                res.send(200);
-            }).catch(function (e) { return res.send(e); });
+            console.log("Sending contact request **", req.body.email);
+            // console.log("Sending contact request **", req.body.emailContact);
+            // UserModel.findOneAndUpdate(
+            //     { email: req.body.emailContact },
+            //     { $push: { friendRequests: req.body.email } }
+            // )//
+            // .then((friend) => {
+            //     console.log(friend);
+            //     res.send(200);
+            // }).catch((e: Error) => res.send(e));
+            res.sendStatus(200);
         };
         _this.friendRequestList = function (req, res, next) {
             // see friend request list
@@ -201,9 +207,11 @@ var User = /** @class */ (function (_super) {
         };
         _this.findUsers = function (req, res, next) {
             console.log('Execueted  axios ,', req.query.userName);
-            userSchema_1.UserModel.find(
-            // { 'name': {$regex:  req.query.userName, $options: 'i'}}
-            { $or: [{ name: { $regex: req.query.userName } }, { email: { $regex: req.query.userName } }] }, '-id')
+            // const query = UserModel.find();
+            userSchema_1.UserModel.find({
+                $or: [{ name: { $regex: req.query.userName, $options: 'gim' } },
+                    { email: { $regex: req.query.userName, $options: 'gim' } }]
+            }, '-id ')
                 .then(function (users) {
                 console.log(users);
                 res.send(users);

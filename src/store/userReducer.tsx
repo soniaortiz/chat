@@ -11,7 +11,9 @@ const userData: AppStore.user = { // init state
     avatar: ''
 };
 
-interface actions extends AppStore.user{};
+interface actions extends AppStore.user {
+
+}
 
 export const Reducer = handleActions<AppStore.user, actions>(
     {

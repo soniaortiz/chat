@@ -10,12 +10,11 @@ const RequestUserInfoAction = (payload: AppStore.user) => {
     };
 };
 
-
 export const RequestUserInfo = () => {
     return (dispatch: Dispatch<AppStore.user>) => {
         // console.log("Request user info");
         return request.post('/profile', { withCredentials: true })
-            .then(({data}) => {
+            .then(({ data }) => {
                 console.log('response: ', data);
                 dispatch(RequestUserInfoAction(
                     {

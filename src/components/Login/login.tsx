@@ -6,9 +6,9 @@ import { RouteComponentProps } from 'react-router';
 import { Dialog, Paper } from 'material-ui';
 
 interface LoginProps extends DispatchProp<AppStore.store>, RouteComponentProps<{}> {
-    login(email: string, password: string): Promise<boolean>,
-    isLogged: boolean,
-    isLoading: boolean
+    isLogged: boolean;
+    isLoading: boolean;
+    login(email: string, password: string): Promise<boolean>;
 }
 
 export class Login extends React.Component<LoginProps, LoginState> {
@@ -19,7 +19,7 @@ export class Login extends React.Component<LoginProps, LoginState> {
 
     validateUser = (event: (React.MouseEvent<HTMLButtonElement>) | React.KeyboardEvent<HTMLInputElement>) => {
         let flag = true;
-        (event.type == 'keydown' && (event as React.KeyboardEvent<HTMLInputElement>).keyCode != 13) ?
+        (event.type === 'keydown' && (event as React.KeyboardEvent<HTMLInputElement>).keyCode !== 13) ?
             flag = false : flag = true;
         if (flag) {
             const { email, password } = this.state;
@@ -32,7 +32,7 @@ export class Login extends React.Component<LoginProps, LoginState> {
                         // console.log(this.props.isLoading);
                         this.props.history.push('/dashboard');
                     } else {
-                        console.log("invalid user");
+                        console.log('invalid user');
                     }
                 })
                 .catch((e) => console.log(e));

@@ -5,7 +5,7 @@ import {
 } from 'material-ui';
 // import { Contacts } from '../Contacts/contacts';
 
-export class ContactsConversations extends React.Component{
+export class ContactsConversations extends React.Component {
 
     render() {
         return (

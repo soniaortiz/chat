@@ -68,7 +68,7 @@ export class Signup extends React.Component<SignupProps, SignupState> {
         //     console.log(values);
         //     return val != '';
         // }));
-        (values.every(val => val != '')) ?
+        (values.every(val => val !== '')) ?
             this.setState((prevState) => ({ enabledBtn: false })) :
             this.setState((prevState) => ({ enabledBtn: true }));
     }

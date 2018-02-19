@@ -24,28 +24,29 @@ export class User extends Controller {
                 }
             })
             .then((flag) => {
-                if (flag) // TO CREATE THE TOKEN
+                if (flag) { // TO CREATE THE TOKEN
                     return UserModel
-                        .findOne({ email })
-                        .then((user) => {
-                            if (user) {
-                                const id_token = jwt.sign({
-                                    _id: user._id
-                                }, process.env.SECRET_TOKEN as Secret);
-                                res.cookie('token', id_token, {
-                                    expires: new Date(Date.now() + 900000),
-                                    httpOnly: true
-                                }).send();
-                            }
-                            else {
-                                res.sendStatus(403);
-                            }
-                        })
-                        .catch((e: Error) => res.status(500).json(e))
+                    .findOne({ email })
+                    .then((user) => {
+                        if (user) {
+                            const id_token = jwt.sign({
+                                _id: user._id
+                            }, process.env.SECRET_TOKEN as Secret);
+                            res.cookie('token', id_token, {
+                                expires: new Date(Date.now() + 900000),
+                                httpOnly: true
+                            }).send();
+                        }
+                        else {
+                            res.sendStatus(403);
+                        }
+                    })
+                    .catch((e: Error) => res.status(500).json(e));
+                }
             })
             .catch((e: Error) => {
                 res.status(500).json(e);
-            })
+            });
     }
     signup = (req: express.Request, res: express.Response, next: express.NextFunction) => {
         const { email } = req.body;
@@ -70,7 +71,7 @@ export class User extends Controller {
     profile = (req: express.Request, res: express.Response, next: express.NextFunction) => {
         console.log("profile executed", req.user);
         const user = req.user;
-        !user && res.status(404).send("User not found");
+        !user && res.status(404).send('User not found');
         res.json(user);// send the user
         // UserModel.findById(_id)
         // .select('-conversations -contacts')
@@ -114,13 +115,19 @@ export class User extends Controller {
             });
     }
     sendFriendRequest = (req: express.Request, res: express.Response, next: express.NextFunction) => {// Incomplete
-        //find the friend
-        UserModel.findOneAndUpdate({ _id: req.body.friend_id },
-            { $push: { friendRequests: req.body.sender_id } })//
-            .then((friend) => {
-                console.log(friend)
-                res.send(200);
-            }).catch((e: Error) => res.send(e))
+
+        console.log("Sending contact request **", req.body.email);
+        // console.log("Sending contact request **", req.body.emailContact);
+
+        // UserModel.findOneAndUpdate(
+        //     { email: req.body.emailContact },
+        //     { $push: { friendRequests: req.body.email } }
+        // )//
+        // .then((friend) => {
+        //     console.log(friend);
+        //     res.send(200);
+        // }).catch((e: Error) => res.send(e));
+        res.sendStatus(200);
     }
     friendRequestList = (req: express.Request, res: express.Response, next: express.NextFunction) => {
         // see friend request list
@@ -196,10 +203,12 @@ export class User extends Controller {
     }
     findUsers = (req: express.Request, res: express.Response, next: express.NextFunction) => {
         console.log('Execueted  axios ,', req.query.userName);
+        // const query = UserModel.find();
         UserModel.find(
-            // { 'name': {$regex:  req.query.userName, $options: 'i'}}
-            { $or: [{ name: { $regex: req.query.userName } }, { email: { $regex: req.query.userName } }] }, '-id'
-
+            {
+                $or: [{ name: { $regex: req.query.userName, $options: 'gim' } },
+                { email: { $regex: req.query.userName, $options: 'gim' } }]
+            }, '-id '
         )
             .then((users) => {
                 console.log(users);

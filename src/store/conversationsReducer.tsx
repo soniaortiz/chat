@@ -8,7 +8,8 @@ interface actions extends AppStore.conversations { }
 export const Reducer = handleActions<AppStore.conversations, actions>(
     {
         [REQUEST_USER_CONVERSATIONS_LIST]: (state, action) => {
-            return (action.payload)?{ ...action.payload } : { ...state }
-        }        
-    }, conversationsData
-)
+            return (action.payload) ? { ...action.payload } : { ...state };
+        }
+    }, 
+    conversationsData
+);

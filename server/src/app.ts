@@ -64,7 +64,7 @@ mongoose.connect(url).then(() => {
     app.delete('/deletecontact', routes.user.deleteContact);
     app.delete('/deleteconversation', routes.user.delete);
     app.post('/user/acceptfriendrequest', routes.user.acceptFriendRequest);
-    app.post('/user/sendfriendrequest', routes.user.sendFriendRequest);
+    app.post('/sendfriendrequest', routes.user.sendFriendRequest);
     app.get('/conversations/:_id', routes.conversation.getConversation);
     app.post('/user/conversations/sendmessage', routes.conversation.sendMessage);
     app.get('/deletenullconversation', routes.conversation.findnull);
