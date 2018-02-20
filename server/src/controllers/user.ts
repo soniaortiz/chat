@@ -19,29 +19,27 @@ export class User extends Controller {
                 if (user) {
                     return bcrypt.compare(password, user.password);
                 }
-                else {
-                    res.sendStatus(404);
-                }
+                res.sendStatus(404);
             })
             .then((flag) => {
                 if (flag) { // TO CREATE THE TOKEN
                     return UserModel
-                    .findOne({ email })
-                    .then((user) => {
-                        if (user) {
-                            const id_token = jwt.sign({
-                                _id: user._id
-                            }, process.env.SECRET_TOKEN as Secret);
-                            res.cookie('token', id_token, {
-                                expires: new Date(Date.now() + 900000),
-                                httpOnly: true
-                            }).send();
-                        }
-                        else {
+                        .findOne({ email })
+                        .then((user) => {
+                            if (user) {
+                                const id_token = jwt.sign(
+                                    {
+                                        _id: user._id
+                                    },
+                                    process.env.SECRET_TOKEN as Secret);
+                                res.cookie('token', id_token, {
+                                    expires: new Date(Date.now() + 900000),
+                                    httpOnly: true
+                                }).send();
+                            }
                             res.sendStatus(403);
-                        }
-                    })
-                    .catch((e: Error) => res.status(500).json(e));
+                        })
+                        .catch((e: Error) => res.status(500).json(e));
                 }
             })
             .catch((e: Error) => {
@@ -55,9 +53,11 @@ export class User extends Controller {
             .then((doc) => {
                 console.log(doc);
                 if (doc) {
-                    const id_token = jwt.sign({
-                        email: email
-                    }, process.env.SECRET_TOKEN as Secret, { expiresIn: '10d' });
+                    const id_token = jwt.sign(
+                        {
+                            email: email
+                        },
+                        process.env.SECRET_TOKEN as Secret, { expiresIn: '10d' });
                     console.log(id_token);
                     res.json(id_token);
                 }
@@ -66,30 +66,13 @@ export class User extends Controller {
             .then((newUser) => {
                 res.sendStatus(200);
             })
-            .catch((e: Error) => res.send(e))
+            .catch((e: Error) => res.send(e));
     }
     profile = (req: express.Request, res: express.Response, next: express.NextFunction) => {
-        console.log("profile executed", req.user);
+        console.log('profile executed', req.user);
         const user = req.user;
         !user && res.status(404).send('User not found');
-        res.json(user);// send the user
-        // UserModel.findById(_id)
-        // .select('-conversations -contacts')
-
-        // .populate({
-        //     path: 'conversations',
-        //     populate: {
-        //         path: 'participants',
-        //         select: 'name -_id'
-        //     }
-        // })
-        // .then(
-        //     (user)=>{
-        //         console.log(user)
-        //         !user && res.status(404).send("User not found");
-        //         res.json(user);//send the user
-        //     })
-        // .catch((e: Error)=>res.send(e))
+        res.json(user); // send the user
     }
     conversations = (req: express.Request, res: express.Response, next: express.NextFunction) => {
         // console.log("Conversations");
@@ -101,13 +84,13 @@ export class User extends Controller {
                     // console.log(user.email);
                     res.send(user.conversations);
                 }
-            })
+            });
     }
     friendlist = (req: express.Request, res: express.Response, next: express.NextFunction) => {
         // console.log("*** The user id *** ", req.user._id);
         const { _id } = req.user;
         UserModel.findById({ _id })
-            .populate("contacts")
+            .populate('contacts')
             .then((user) => {
                 if (user) {
                     res.send(user.contacts);
@@ -115,19 +98,15 @@ export class User extends Controller {
             });
     }
     sendFriendRequest = (req: express.Request, res: express.Response, next: express.NextFunction) => {// Incomplete
-
-        console.log("Sending contact request **", req.body.email);
+        console.log('Sending contact request **');
         // console.log("Sending contact request **", req.body.emailContact);
 
-        // UserModel.findOneAndUpdate(
-        //     { email: req.body.emailContact },
-        //     { $push: { friendRequests: req.body.email } }
-        // )//
-        // .then((friend) => {
-        //     console.log(friend);
-        //     res.send(200);
-        // }).catch((e: Error) => res.send(e));
-        res.sendStatus(200);
+        const { userEmail, contactEmail } = req.body;
+
+        UserModel
+            .findOneAndUpdate({ email: contactEmail }, {$push: {friendRequests: userEmail}})
+            .then((user) => res.send(user))
+            .catch((e) => res.send(e));
     }
     friendRequestList = (req: express.Request, res: express.Response, next: express.NextFunction) => {
         // see friend request list
@@ -148,24 +127,35 @@ export class User extends Controller {
         new ConversationModel({})
             .save()
             .then((conversation) => {
-                return (UserModel.findByIdAndUpdate(user_id,
+                return (UserModel.findByIdAndUpdate(
+                    user_id,
                     {
                         $pull: { friendRequests: request_id },
                         $push: { contacts: request_id, conversations: conversation._id }
-                    }, { new: true }).exec(), conversation);
+                    },
+                    { new: true }).exec(),
+                    conversation);
             })
             .then((conversation) => {
-                console.log("the conversation id: ", conversation._id);
-                return (ConversationModel.findByIdAndUpdate(conversation._id,
-                    { $set: { participants: [user_id, request_id], conversationName: req.body.conversation_id } }).exec(), conversation)
+                console.log('the conversation id: ', conversation._id);
+                return (ConversationModel.findByIdAndUpdate(
+                    conversation._id,
+                    {
+                        $set: {
+                            participants: [user_id, request_id],
+                            conversationName: req.body.conversation_id
+                        }
+                    }).exec(),
+                    conversation);
             })
             .then((conversation) => {
-                return UserModel.findByIdAndUpdate(request_id,
+                return UserModel.findByIdAndUpdate(
+                    request_id,
                     { $push: { contacts: user_id, conversations: conversation._id } }, { new: true })
                     .exec();
             })
             .then((user) => {
-                res.send(user)
+                res.send(user);
             })
             .catch((e) => res.send(e));
     }
@@ -178,19 +168,20 @@ export class User extends Controller {
             .then(
                 (m) => { // after the message is created then the reference is passed to the conversation
                     ConversationModel
-                        .findOneAndUpdate({
-                            _id: req.body.conversation_id
-                        }, {
+                        .findOneAndUpdate(
+                            { _id: req.body.conversation_id },
+                            {
                                 $push: { messages: m._id }
-                            });
+                            }
+                        );
                 }
             )
             .then((conversation) => res.send(conversation))
             .catch((e: Error) => res.send(e));
     }
     logout = (req: express.Request, res: express.Response, next: express.NextFunction) => {
-        //close session
-        //or close connection
+        // close session
+        // or close connection
     }
     deleteContact = (req: express.Request, res: express.Response, next: express.NextFunction) => {
         const { user_id, contact_id } = req.body;
@@ -208,7 +199,8 @@ export class User extends Controller {
             {
                 $or: [{ name: { $regex: req.query.userName, $options: 'gim' } },
                 { email: { $regex: req.query.userName, $options: 'gim' } }]
-            }, '-id '
+            },
+            '-id -contacts -conversations -birthdate'
         )
             .then((users) => {
                 console.log(users);

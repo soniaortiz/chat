@@ -13,7 +13,7 @@ exports.userSchema = new Schema({
     gender: String,
     contacts: [{ type: Schema.Types.ObjectId, ref: 'User' }],
     conversations: [{ type: Schema.Types.ObjectId, ref: 'Conversation' }],
-    friendRequests: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+    friendRequests: [String],
     avatar: String
 });
 exports.userSchema.set('toJSON', {

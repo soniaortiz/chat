@@ -41,6 +41,15 @@ interface SidebarProps {
 }
 interface SidebarState {
 }
+
+interface UserContact {
+    name: string;
+    middleName: string;
+    lastName: string;
+    gender: string;
+    email: string;
+}
+
 interface contact {
     contact_id: string;
     contactName: string;

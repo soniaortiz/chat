@@ -1,7 +1,7 @@
 import * as React from 'react';
 import request, { AxiosResponse } from 'axios';
 import { AutoComplete, MenuItem, Paper } from 'material-ui';
-import { ContactRequestDialog } from '../ContactRequestDialog/contactRequestDialog';
+import ContactRequestDialog  from '../ContactRequestDialog/contactRequestDialog';
 
 interface SearchFriendProps {
     // searchUser(name: string): Promise<boolean>;
@@ -10,8 +10,8 @@ interface SearchFriendProps {
 interface SearchFriendState {
     userName: string;
     userEmail: string;
-    selected: string;
-    users: any[];
+    selected: UserContact;
+    users: UserContact[];
     viewUser: boolean;
 }
 export class SearchFriend extends React.Component<SearchFriendProps, SearchFriendState> {
@@ -20,7 +20,14 @@ export class SearchFriend extends React.Component<SearchFriendProps, SearchFrien
         super(props);
         this.state = {
             userName: '', userEmail: '',
-            selected: '', users: [],
+            selected: {
+                name: '',
+                middleName: '',
+                lastName: '',
+                gender: '',
+                email: ''            
+            },
+            users: [],
             viewUser: false
         };
         // this.users = [];
@@ -30,6 +37,7 @@ export class SearchFriend extends React.Component<SearchFriendProps, SearchFrien
         // console.dir(event.target);
         // console.dir(event.currentTarget);
         const emailUser = this.state.users[Number(event.currentTarget.id)];
+        console.log("Emailuser: ", emailUser);
         this.setState({ viewUser: true, selected: emailUser });
 
     }
@@ -63,8 +71,11 @@ export class SearchFriend extends React.Component<SearchFriendProps, SearchFrien
         return (
             <Paper>
                 {
-                    this.state.viewUser ? <ContactRequestDialog onCloseDialog={this.onCloseDialog}
-                        user={this.state.selected} /> : false
+                    this.state.viewUser ? 
+                    <ContactRequestDialog 
+                        user={this.state.selected}
+                        onCloseDialog={this.onCloseDialog}
+                    /> : false
                 }
 
                 <AutoComplete

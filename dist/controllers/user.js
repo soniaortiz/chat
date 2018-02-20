@@ -32,9 +32,7 @@ var User = /** @class */ (function (_super) {
                 if (user) {
                     return bcrypt.compare(password, user.password);
                 }
-                else {
-                    res.sendStatus(404);
-                }
+                res.sendStatus(404);
             })
                 .then(function (flag) {
                 if (flag) {
@@ -50,9 +48,7 @@ var User = /** @class */ (function (_super) {
                                 httpOnly: true
                             }).send();
                         }
-                        else {
-                            res.sendStatus(403);
-                        }
+                        res.sendStatus(403);
                     })
                         .catch(function (e) { return res.status(500).json(e); });
                 }
@@ -82,26 +78,10 @@ var User = /** @class */ (function (_super) {
                 .catch(function (e) { return res.send(e); });
         };
         _this.profile = function (req, res, next) {
-            console.log("profile executed", req.user);
+            console.log('profile executed', req.user);
             var user = req.user;
             !user && res.status(404).send('User not found');
             res.json(user); // send the user
-            // UserModel.findById(_id)
-            // .select('-conversations -contacts')
-            // .populate({
-            //     path: 'conversations',
-            //     populate: {
-            //         path: 'participants',
-            //         select: 'name -_id'
-            //     }
-            // })
-            // .then(
-            //     (user)=>{
-            //         console.log(user)
-            //         !user && res.status(404).send("User not found");
-            //         res.json(user);//send the user
-            //     })
-            // .catch((e: Error)=>res.send(e))
         };
         _this.conversations = function (req, res, next) {
             // console.log("Conversations");
@@ -118,7 +98,7 @@ var User = /** @class */ (function (_super) {
             // console.log("*** The user id *** ", req.user._id);
             var _id = req.user._id;
             userSchema_1.UserModel.findById({ _id: _id })
-                .populate("contacts")
+                .populate('contacts')
                 .then(function (user) {
                 if (user) {
                     res.send(user.contacts);
@@ -126,17 +106,13 @@ var User = /** @class */ (function (_super) {
             });
         };
         _this.sendFriendRequest = function (req, res, next) {
-            console.log("Sending contact request **", req.body.email);
+            console.log('Sending contact request **');
             // console.log("Sending contact request **", req.body.emailContact);
-            // UserModel.findOneAndUpdate(
-            //     { email: req.body.emailContact },
-            //     { $push: { friendRequests: req.body.email } }
-            // )//
-            // .then((friend) => {
-            //     console.log(friend);
-            //     res.send(200);
-            // }).catch((e: Error) => res.send(e));
-            res.sendStatus(200);
+            var _a = req.body, userEmail = _a.userEmail, contactEmail = _a.contactEmail;
+            userSchema_1.UserModel
+                .findOneAndUpdate({ email: contactEmail }, { $push: { friendRequests: userEmail } })
+                .then(function (user) { return res.send(user); })
+                .catch(function (e) { return res.send(e); });
         };
         _this.friendRequestList = function (req, res, next) {
             // see friend request list
@@ -160,11 +136,18 @@ var User = /** @class */ (function (_super) {
                 return (userSchema_1.UserModel.findByIdAndUpdate(user_id, {
                     $pull: { friendRequests: request_id },
                     $push: { contacts: request_id, conversations: conversation._id }
-                }, { new: true }).exec(), conversation);
+                }, { new: true }).exec(),
+                    conversation);
             })
                 .then(function (conversation) {
-                console.log("the conversation id: ", conversation._id);
-                return (conversationSchema_1.ConversationModel.findByIdAndUpdate(conversation._id, { $set: { participants: [user_id, request_id], conversationName: req.body.conversation_id } }).exec(), conversation);
+                console.log('the conversation id: ', conversation._id);
+                return (conversationSchema_1.ConversationModel.findByIdAndUpdate(conversation._id, {
+                    $set: {
+                        participants: [user_id, request_id],
+                        conversationName: req.body.conversation_id
+                    }
+                }).exec(),
+                    conversation);
             })
                 .then(function (conversation) {
                 return userSchema_1.UserModel.findByIdAndUpdate(request_id, { $push: { contacts: user_id, conversations: conversation._id } }, { new: true })
@@ -183,9 +166,7 @@ var User = /** @class */ (function (_super) {
                 .save()
                 .then(function (m) {
                 conversationSchema_1.ConversationModel
-                    .findOneAndUpdate({
-                    _id: req.body.conversation_id
-                }, {
+                    .findOneAndUpdate({ _id: req.body.conversation_id }, {
                     $push: { messages: m._id }
                 });
             })
@@ -193,8 +174,8 @@ var User = /** @class */ (function (_super) {
                 .catch(function (e) { return res.send(e); });
         };
         _this.logout = function (req, res, next) {
-            //close session
-            //or close connection
+            // close session
+            // or close connection
         };
         _this.deleteContact = function (req, res, next) {
             var _a = req.body, user_id = _a.user_id, contact_id = _a.contact_id;
@@ -211,7 +192,7 @@ var User = /** @class */ (function (_super) {
             userSchema_1.UserModel.find({
                 $or: [{ name: { $regex: req.query.userName, $options: 'gim' } },
                     { email: { $regex: req.query.userName, $options: 'gim' } }]
-            }, '-id ')
+            }, '-id -contacts -conversations -birthdate')
                 .then(function (users) {
                 console.log(users);
                 res.send(users);
