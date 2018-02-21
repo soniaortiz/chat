@@ -4,15 +4,14 @@ import NotificationSms from 'material-ui/svg-icons/notification/sms';
 import SocialPerson from 'material-ui/svg-icons/social/person';
 import { connect } from 'react-redux';
 
-interface NotificationsBarProps {
-    // userMessages: any;
-    userContactRequest: any;
+interface NotificationsBarProps extends MapDispatchToProps, MapStateToProps, OwnProps {
+    // getNumberOfRequests: () => number;
 }
 
 export class NotificationsBar extends React.Component<NotificationsBarProps, {}> {
 
     displayRequests = () => {
-        console.log(this.props.userContactRequest);
+        console.log(this.props.userContactRequests);
     }
     render() {
         return (
@@ -28,13 +27,13 @@ export class NotificationsBar extends React.Component<NotificationsBarProps, {}>
                 <Tab />
 
                 <Tab
-                    label={'Contact requests'}
+                    label={'Contact requests ' + this.props.userContactRequests.length}
                     icon={
-                        <SocialPerson />
+                        <SocialPerson
+                        />
                     }
                     onActive={this.displayRequests}
                 >
-
                 </Tab>
 
             </Tabs>
@@ -42,12 +41,25 @@ export class NotificationsBar extends React.Component<NotificationsBarProps, {}>
     }
 }
 
-export default connect<NotificationsBarProps, {}, {}, AppStore.store>(
+interface MapDispatchToProps {
+    // getNumberOfRequests: () => number;
+}
+
+interface MapStateToProps {
+    userContactRequests: any;
+
+}
+
+interface OwnProps {
+
+}
+
+export default connect< MapStateToProps, MapDispatchToProps , OwnProps, AppStore.store>(
     (store) => ({
         // userMessages: store
-        userContactRequest: store.user.friendRequests
+        userContactRequests: store.user.friendRequests
     }),
     {
-
+    
     }
 )(NotificationsBar);

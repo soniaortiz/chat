@@ -69,9 +69,9 @@ declare namespace AppStore {//store
         lastName: string;
         email: string;
         birthdate: Date;
-        gender: String;
-        avatar: String;
-        friendRequests: String[];
+        gender: string;
+        avatar: string;
+        friendRequests: string[];
     }
     interface contacts extends Array<contact> {
     }

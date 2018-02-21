@@ -12,11 +12,9 @@ const userData: AppStore.user = { // init state
     friendRequests: []
 };
 
-interface actions extends AppStore.user {
+type payload = AppStore.user;
 
-}
-
-export const Reducer = handleActions<AppStore.user, actions>(
+export const Reducer = handleActions < AppStore.user, payload > (
     {
         [REQUEST_USER_INFO]: (state, action) => {
             return (action.payload) ?
@@ -24,8 +22,13 @@ export const Reducer = handleActions<AppStore.user, actions>(
         },
 
         [SEND_CONTACT_REQUEST]: (state, action) => {
+            // console.log('in send contact reducer', state, action);
             return (action.payload) ?
-                { ...action.payload } : { ...state };
+                {
+                    ...state,
+                    friendRequests: action.payload.friendRequests
+                } :
+                { ...state };
         }
     },
     userData

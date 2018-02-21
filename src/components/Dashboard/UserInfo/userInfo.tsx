@@ -16,7 +16,7 @@ export class Me extends React.Component<MeProps> {
                 <List>
                     {
                         Object.entries(this.props.user)
-                            .filter(([key]) => key !== 'avatar')
+                            .filter(([key]) => key !== 'avatar' && key !== 'friendRequests')
                             .map(([key, value], index) => (
                                 <ListItem key={index} id={key}>{value}</ListItem>)
                             )

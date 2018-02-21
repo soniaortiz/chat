@@ -104,7 +104,7 @@ export class User extends Controller {
         const { userEmail, contactEmail } = req.body;
 
         UserModel
-            .findOneAndUpdate({ email: contactEmail }, {$push: {friendRequests: userEmail}})
+            .findOneAndUpdate({ email: contactEmail }, {$push: {friendRequests: userEmail}}, {new: true})
             .then((user) => res.send(user))
             .catch((e) => res.send(e));
     }

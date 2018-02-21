@@ -110,7 +110,7 @@ var User = /** @class */ (function (_super) {
             // console.log("Sending contact request **", req.body.emailContact);
             var _a = req.body, userEmail = _a.userEmail, contactEmail = _a.contactEmail;
             userSchema_1.UserModel
-                .findOneAndUpdate({ email: contactEmail }, { $push: { friendRequests: userEmail } })
+                .findOneAndUpdate({ email: contactEmail }, { $push: { friendRequests: userEmail } }, { new: true })
                 .then(function (user) { return res.send(user); })
                 .catch(function (e) { return res.send(e); });
         };
