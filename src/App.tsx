@@ -10,25 +10,22 @@ import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import { store as storeReducer } from './store/reducers';
 
+import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
+// import * as Colors from 'material-ui/styles/colors';
+// import { fade } from 'material-ui/utils/colorManipulator';
+
+const getTheme = () => {
+  let overwrites = {};
+  return getMuiTheme(baseTheme, overwrites);
+};
+
 const store = createStore(storeReducer, applyMiddleware(thunk));
 
 class App extends React.Component {
   render() {
     return (
       < Provider store={store}>
-        <MuiThemeProvider muiTheme={getMuiTheme({
-          palette: {
-            primary1Color: '#e91e63',
-            primary2Color: '#00bcd4',
-            primary3Color: '#fafafa'
-          },
-          avatar: {
-            color: '#ffffff'
-          },
-          badge: {
-            textColor: '#000000'
-          }
-        })}>
+        <MuiThemeProvider muiTheme={getTheme()}>
           <BrowserRouter>
             <div>
               <Route exact path="/" component={Login} />

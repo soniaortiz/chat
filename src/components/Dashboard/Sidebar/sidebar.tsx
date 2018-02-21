@@ -3,11 +3,7 @@ import Me from '../UserInfo/userInfo';
 // import Contacts from '../Contacts/contacts';
 import './style.css';
 
-import {
-    // TableRowColumn,
-    // TableRow,
-    Paper,
-} from 'material-ui';
+import { Paper } from 'material-ui';
 import { SearchFriend } from '../SearchFriend/searchFriend';
 // import Conversations from '../Conversations/conversations';
 import { ContactsConversations } from '../ContactsConversations/contacsConversationsViews';

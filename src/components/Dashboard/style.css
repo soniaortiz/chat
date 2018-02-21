@@ -1,8 +1,14 @@
 .Sidebar{
-    width: 35%;
+    width: 25%;
+    flex-grow: 1;
 }
 
 .Panel{
     width: 65%;
+    flex-grow: 1;
 }
 
+.Dashboard{
+    display: flex;
+    flex-flow: row nowrap;
+}

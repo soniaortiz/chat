@@ -1,9 +1,8 @@
 import * as React from 'react';
 import { connect, DispatchProp } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
-import { CircularProgress, Paper, Drawer } from 'material-ui';
+import { CircularProgress } from 'material-ui';
 import { RequestUserInfo } from '../../store/userActions';
-// import { TableRow } from 'material-ui/Table';
 import { Sidebar } from '../Dashboard/Sidebar/sidebar';
 import { Panel } from './Panel/panel';
 import './style.css';
@@ -20,12 +19,14 @@ export class Dashboard extends React.Component<DashboardProps, DashboardState> {
     render() {
         if (this.props.user.name) {
             return (
-                <Paper>
-                    <Drawer width={'30%'} open={true} >
+                <div className={'Dashboard'}>
+                    <div className="Sidebar">
                         <Sidebar />
-                    </Drawer>
-                    <Panel />
-                </Paper>
+                    </div>
+                    <div className="Panel">
+                        <Panel />
+                    </div>
+                </div>
             );
         }
         return <CircularProgress />;
