@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { connect, DispatchProp } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
-import { CircularProgress, Table, TableBody, TableHeader, TableRowColumn, Paper } from 'material-ui';
+import { CircularProgress, Paper, Drawer } from 'material-ui';
 import { RequestUserInfo } from '../../store/userActions';
-import { TableRow } from 'material-ui/Table';
+// import { TableRow } from 'material-ui/Table';
 import { Sidebar } from '../Dashboard/Sidebar/sidebar';
 import { Panel } from './Panel/panel';
 import './style.css';
@@ -21,21 +21,10 @@ export class Dashboard extends React.Component<DashboardProps, DashboardState> {
         if (this.props.user.name) {
             return (
                 <Paper>
-                    <Table selectable={false}  >
-                        <TableHeader displaySelectAll={false}>
-                        </TableHeader>
-
-                        <TableBody displayRowCheckbox={false} >
-                            <TableRow>
-                                <TableRowColumn className="Sidebar">
-                                    <Sidebar />
-                                </TableRowColumn >
-                                <TableRowColumn className="Panel">
-                                    <Panel />
-                                </TableRowColumn>
-                            </TableRow>
-                        </TableBody>
-                    </Table>
+                    <Drawer width={'30%'} open={true} >
+                        <Sidebar />
+                    </Drawer>
+                    <Panel />
                 </Paper>
             );
         }

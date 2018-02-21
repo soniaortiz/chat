@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { DispatchProp, connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
-import { Avatar, List, ListItem } from 'material-ui';
+import { Avatar, List, ListItem, Paper } from 'material-ui';
 import './style.css';
 
 interface MeProps extends DispatchProp<{}>, RouteComponentProps<{}> {
@@ -11,15 +11,18 @@ interface MeProps extends DispatchProp<{}>, RouteComponentProps<{}> {
 export class Me extends React.Component<MeProps> {
     render() {
         return (
-                <div>
-                    <Avatar src="" size={100} className="Avatar" />
-                    <List>
-                        {
-                            Object.entries(this.props.user).map((prop) => (
-                                <ListItem key={prop[0]}>{prop[1]}</ListItem>))
-                        }
-                    </List>
-                </div>
+            <Paper>
+                <Avatar src="http://via.placeholder.com/350x150" size={100} className="Avatar" />
+                <List>
+                    {
+                        Object.entries(this.props.user)
+                            .filter(([key]) => key !== 'avatar')
+                            .map(([key, value], index) => (
+                                <ListItem key={index} id={key}>{value}</ListItem>)
+                            )
+                    }
+                </List>
+            </Paper>
 
         );
     }

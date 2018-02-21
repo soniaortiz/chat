@@ -4,8 +4,8 @@ import Me from '../UserInfo/userInfo';
 import './style.css';
 
 import {
-    TableRowColumn,
-    TableRow,
+    // TableRowColumn,
+    // TableRow,
     Paper,
 } from 'material-ui';
 import { SearchFriend } from '../SearchFriend/searchFriend';
@@ -21,18 +21,9 @@ export class Sidebar extends React.Component<SidebarProps, SidebarState> {
     render() {
         return (
             <Paper>
-                    <TableRow>
-                        <TableRowColumn>
-                            <Me />
-                        </TableRowColumn>
-                    </TableRow>
-                    <TableRow>
-                        <SearchFriend />
-                    </TableRow>
-                    <TableRow>
-                        <ContactsConversations />
-                    </TableRow>
-
+                <Me />
+                <SearchFriend />
+                <ContactsConversations />
             </Paper>
 
         );

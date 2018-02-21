@@ -5,4 +5,4 @@ export const CircularProgressExampleSimple = () => (
     <div>
         <CircularProgress size={60} thickness={7} />
     </div>
-)
+);
