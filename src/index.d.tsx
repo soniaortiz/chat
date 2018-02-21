@@ -71,6 +71,7 @@ declare namespace AppStore {//store
         birthdate: Date;
         gender: String;
         avatar: String;
+        friendRequests: String[];
     }
     interface contacts extends Array<contact> {
     }

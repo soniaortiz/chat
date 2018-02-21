@@ -2,8 +2,18 @@ import * as React from 'react';
 import { Tabs, Tab } from 'material-ui';
 import NotificationSms from 'material-ui/svg-icons/notification/sms';
 import SocialPerson from 'material-ui/svg-icons/social/person';
+import { connect } from 'react-redux';
 
-export class NotificationsBar extends React.Component {
+interface NotificationsBarProps {
+    // userMessages: any;
+    userContactRequest: any;
+}
+
+export class NotificationsBar extends React.Component<NotificationsBarProps, {}> {
+
+    displayRequests = () => {
+        console.log(this.props.userContactRequest);
+    }
     render() {
         return (
             <Tabs>
@@ -20,8 +30,9 @@ export class NotificationsBar extends React.Component {
                 <Tab
                     label={'Contact requests'}
                     icon={
-                        <SocialPerson/>
+                        <SocialPerson />
                     }
+                    onActive={this.displayRequests}
                 >
 
                 </Tab>
@@ -30,3 +41,13 @@ export class NotificationsBar extends React.Component {
         );
     }
 }
+
+export default connect<NotificationsBarProps, {}, {}, AppStore.store>(
+    (store) => ({
+        // userMessages: store
+        userContactRequest: store.user.friendRequests
+    }),
+    {
+
+    }
+)(NotificationsBar);

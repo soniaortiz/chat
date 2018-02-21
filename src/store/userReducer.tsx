@@ -8,7 +8,8 @@ const userData: AppStore.user = { // init state
     email: '',
     birthdate: new Date(),
     gender: '',
-    avatar: ''
+    avatar: '',
+    friendRequests: []
 };
 
 interface actions extends AppStore.user {

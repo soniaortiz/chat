@@ -24,7 +24,8 @@ export const RequestUserInfo = () => {
                         email: data.email,
                         birthdate: data.birthdate,
                         gender: data.gender,
-                        avatar: data.avatar
+                        avatar: data.avatar,
+                        friendRequests: data.friendRequests
                     }));
                 return true;
             })

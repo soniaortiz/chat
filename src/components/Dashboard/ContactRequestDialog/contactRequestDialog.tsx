@@ -1,13 +1,11 @@
 import * as React from 'react';
-import { Dialog, FlatButton, } from 'material-ui';
+import { Dialog, FlatButton, Paper, } from 'material-ui';
 import { connect, DispatchProp } from 'react-redux';
-// import request from 'axios';
 import { SendContactRequest } from '../../../store/userActionSendContactRequest';
-
+import SocialPersonAdd from 'material-ui/svg-icons/social/person-add';
 interface ContactRequestProps extends DispatchProp<AppStore.user> {
     user: UserContact; // AppStore.user;
     onCloseDialog: () => void;
-    // sendfriendrequest(email: string, emailContact: string): Promise<boolean>;
 }
 
 interface ContactRequestState {
@@ -29,21 +27,28 @@ export class ContactRequestDialog extends React.Component<connectedComponentProp
     handleContactRequest = () => {
         console.log('send request to user ', this.props.user.email);
         this.props.sendfriendrequest(this.props.emailSender, this.props.user.email);
+        this.setState({ open: false });
     }
 
     render() {
         return (
             <Dialog open={this.state.open}>
-                <div>
+                <Paper >
                     user email: {this.props.user.email}
-                </div>
-                <FlatButton onClick={this.handleContactRequest}>
-                    send request
-                </FlatButton>
 
-                <FlatButton onClick={this.handleClose}>
-                    close
-                </FlatButton>
+                </Paper>
+                <FlatButton
+                    onClick={this.handleContactRequest}
+                    icon={
+                        <SocialPersonAdd color={'blue'} />
+                    }
+                    label={'send request'}
+                />
+
+                <FlatButton
+                    onClick={this.handleClose}
+                    label={'close'}
+                />
 
             </Dialog>
         );
