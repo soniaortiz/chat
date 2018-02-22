@@ -12,7 +12,6 @@ const styleToolBar = {
 };
 
 interface NotificationsBarProps extends MapDispatchToProps, MapStateToProps, OwnProps {
-    // getNumberOfRequests: () => number;
 }
 
 interface NotificationsBarState {
@@ -28,8 +27,6 @@ export class NotificationsBar extends React.Component<NotificationsBarProps, Not
         console.log(this.props.userContactRequests);
         this.setState({ displayRequestsList: !this.state.displayRequestsList });
     }
-
-
     render() {
         return (
             <Paper>
@@ -80,7 +77,7 @@ interface MapDispatchToProps {
 }
 
 interface MapStateToProps {
-    userContactRequests: any;
+    userContactRequests: string[];
 
 }
 
