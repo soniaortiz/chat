@@ -2,10 +2,9 @@ import { Dispatch } from 'react-redux';
 import { SEND_CONTACT_REQUEST } from './actionsTypes';
 import request from 'axios';
 
-const SendContactRequestAction = (user: {friendRequests: Array<string>}) => {
+const SendContactRequestAction = () => {
     return {
-        type: SEND_CONTACT_REQUEST,
-        payload: user
+        type: SEND_CONTACT_REQUEST
     };
 };
 
@@ -15,7 +14,7 @@ export const SendContactRequest = (userEmail: string, contactEmail: string) => {
         return request.post('/sendfriendrequest', { withCredentials: true, userEmail, contactEmail })
             .then(({ data }) => {
                 console.log('Data', data);
-                dispatch(SendContactRequestAction({friendRequests: data.friendRequests}));
+                dispatch(SendContactRequestAction());
             })
             .catch((e) => e);
     };

@@ -25,7 +25,9 @@ export const RequestUserInfo = () => {
                         birthdate: data.birthdate,
                         gender: data.gender,
                         avatar: data.avatar,
-                        friendRequests: data.friendRequests
+                        friendRequests: data.friendRequests,
+                        contactList: data.contacts,
+                        conversations: data.conversations
                     }));
                 return true;
             })

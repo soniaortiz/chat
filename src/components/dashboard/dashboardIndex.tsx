@@ -3,7 +3,7 @@ import { connect, DispatchProp } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
 import { CircularProgress } from 'material-ui';
 import { RequestUserInfo } from '../../store/userActions';
-import { Sidebar } from '../Dashboard/Sidebar/sidebar';
+import  Sidebar  from '../Dashboard/Sidebar/sidebar';
 import { Panel } from './Panel/panel';
 import './style.css';
 interface DashboardProps extends DispatchProp<{}>, RouteComponentProps<{}> {

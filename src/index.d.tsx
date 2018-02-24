@@ -72,8 +72,8 @@ declare namespace AppStore {//store
         gender: string;
         avatar: string;
         friendRequests: string[];
-    }
-    interface contacts extends Array<contact> {
+        contactList: Array<contact>;
+        conversations: Array<conversation>;
     }
     interface conversations extends Array<conversation> { }
     interface messages { }
@@ -82,6 +82,6 @@ declare namespace AppStore {//store
         user: user;
         conversations: conversations;
         messages: messages;
-        contacts: contacts;
+        // contacts: contacts;
     }
 }

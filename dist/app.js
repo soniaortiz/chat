@@ -58,12 +58,13 @@ mongoose.connect(url).then(function () {
     app.post('/conversation/sendmessage', routes.user.sendMessage);
     app.delete('/deletecontact', routes.user.deleteContact);
     app.delete('/deleteconversation', routes.user.delete);
-    app.post('/user/acceptfriendrequest', routes.user.acceptFriendRequest);
+    app.post('/acceptfriendrequest', routes.user.acceptFriendRequest);
     app.post('/sendfriendrequest', routes.user.sendFriendRequest);
     app.get('/conversations/:_id', routes.conversation.getConversation);
     app.post('/user/conversations/sendmessage', routes.conversation.sendMessage);
     app.get('/deletenullconversation', routes.conversation.findnull);
     app.get('/findUsers', routes.user.findUsers);
+    app.post('/rejectContactRequest', routes.user.rejectContactRequest);
     app.get('*', function (req, res, next) {
         res.sendFile(path.join(__dirname, '../build/index.html'));
     });

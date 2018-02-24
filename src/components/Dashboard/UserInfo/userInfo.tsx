@@ -16,9 +16,16 @@ export class Me extends React.Component<MeProps> {
                 <List>
                     {
                         Object.entries(this.props.user)
-                            .filter(([key]) => key !== 'avatar' && key !== 'friendRequests')
+                            .filter(
+                                ([key]) => key !== 'avatar' && 
+                                key !== 'friendRequests' &&
+                                key !== 'contactList' &&
+                                key !== 'conversations'
+
+                            ) 
                             .map(([key, value], index) => (
-                                <ListItem key={index} id={key}>{value}</ListItem>)
+                                <ListItem key={index} id={key}>{value}</ListItem>
+                            )
                             )
                     }
                 </List>

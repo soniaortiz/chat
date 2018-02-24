@@ -1,44 +1,34 @@
 import * as React from 'react';
-import { connect, DispatchProp } from 'react-redux';
-import { RouteComponentProps } from 'react-router';
-import { TableRowColumn } from 'material-ui';
-import { RequestConversations } from '../../../store/conversationsActions';
+import { connect } from 'react-redux';
 
-interface ConversationsProps extends RouteComponentProps<{}>, DispatchProp<{}> {
-    conversationsList: AppStore.conversations,
-    getConversations: () => Promise<boolean>,
+interface ConversationsProps {
 }
 
-export class Conversations extends React.Component<ConversationsProps> {
+export class Conversations extends React.Component<ConversationsProps & ConversationsMapStateToProps> {
 
-    componentDidMount() {
-        console.log("Conversations executed ");
-        this.props.getConversations()
-            .then((response) => console.log(response));
-    }
     render() {
-        return (<TableRowColumn>
-               {
-                <ul id="Contacts">
-                    {
-                        this.props.conversationsList ?
-                            this.props.conversationsList.map((element) => (
-                                <li key={Math.random() + 100}>
-                                    {element}
-                                </li>
-                            )) : <li>j</li>
-                    }
-                </ul>
-            }        </TableRowColumn>
-        );
+        return <React.Fragment>
+            {this.props.conversationsList ?
+                this.props.conversationsList.map((element) => (
+                    <li key={Math.random() + 100}>
+                        {element}
+                    </li>
+                )) : {}
+            }}
+        </ React.Fragment>;
+
     }
 }
 
-export default connect<{}, {}, ConversationsProps, AppStore.store>(
+interface ConversationsMapStateToProps {
+    conversationsList: Array<conversation>;
+}
+
+export default connect<ConversationsMapStateToProps, {}, ConversationsProps, AppStore.store>(
     (store) => ({
-        conversationsList: store.conversations
+        conversationsList: store.user.conversations
     }),
     {
-        getConversations: RequestConversations
+        //  getConversations: RequestConversations
     }
 )(Conversations) as React.ComponentClass;

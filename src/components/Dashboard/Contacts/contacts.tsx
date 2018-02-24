@@ -1,50 +1,42 @@
 import * as React from 'react';
-import { connect, DispatchProp } from 'react-redux';
-import { RouteComponentProps } from 'react-router';
-import { TableRowColumn } from 'material-ui';
-import {RequestContacts} from '../../../store/contactsActions';
+import { connect } from 'react-redux';
+import { MenuItem } from 'material-ui';
+// import { RequestContacts } from '../../../store/contactsActions';
 
-
-interface ContactsProps extends DispatchProp<{}>, RouteComponentProps<{}> {
-    contactsList: AppStore.contacts,
-    getContacts: () => Promise<boolean>,
-    contacts: AppStore.contacts
+interface ContactsProps {
 
 }
 
-export class Contacts extends React.Component<ContactsProps> {
-    componentDidMount() {
-        console.log("Contacs executed");
-        // console.log(this.props.contactsList);
-        this.props.getContacts()
-        .then((response)=>console.log(response));
-    }
+export class Contacts extends React.Component<ContactsProps&ContactsMapStateToProps&ContactsMapDispatchToProps> {
     render() {
+        console.log(this.props.contactsList);
         return (
-            <TableRowColumn>
+            <React.Fragment>
                 {
-                    <ul id="Contacts">
-                        {
-                            this.props.contactsList ?
-                                this.props.contactsList.map((element) => (
-                                    <li key={element.contact_id + Math.random() + 100}>
-                                        {element.contactName}
-                                    </li>
-                                )) : <li></li>
-                        }
-                    </ul>
+                    this.props.contactsList.map((contact, index) => (
+                        <MenuItem key={index}>
+                            {contact}
+                        </MenuItem>
+                    ))
                 }
-
-            </TableRowColumn>
+            </React.Fragment>
+            // <div></div>
         );
     }
 }
 
-export default connect<{}, {}, ContactsProps, AppStore.store>(
+interface ContactsMapStateToProps {
+    contactsList: Array <contact>;
+}
+interface ContactsMapDispatchToProps {
+    // getContacts: () => void
+}
+
+export default connect<ContactsMapStateToProps, ContactsMapDispatchToProps, ContactsProps, AppStore.store>(
     (store) => ({
-        contactsList: store.contacts
+        contactsList: store.user.contactList
     }),
     {
-        getContacts: RequestContacts
+        // getContacts: RequestContacts
     }
-)(Contacts) as React.ComponentClass;
+)(Contacts);

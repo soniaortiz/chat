@@ -5,7 +5,8 @@ import NotificationSms from 'material-ui/svg-icons/notification/sms';
 import {
      Tabs, Tab
 } from 'material-ui';
-// import { Contacts } from '../Contacts/contacts';
+import  Contacts  from '../Contacts/Contacts';
+import Conversations from '../Conversations/conversations';
 
 export class ContactsConversations extends React.Component {
 
@@ -16,12 +17,13 @@ export class ContactsConversations extends React.Component {
                         label="Conversations"
                         icon={<NotificationSms />}
                     >
-                       
+                       <Conversations/>
                     </Tab>
                     <Tab 
                         label="Contacts" 
                         icon={<SocialPerson/>}
                     >
+                    <Contacts/>
                     </Tab>
                 </Tabs>
         );

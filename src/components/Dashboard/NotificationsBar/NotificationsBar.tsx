@@ -12,6 +12,7 @@ const styleToolBar = {
 };
 
 interface NotificationsBarProps extends MapDispatchToProps, MapStateToProps, OwnProps {
+    // getNumberOfRequests: () => number;
 }
 
 interface NotificationsBarState {
@@ -33,7 +34,7 @@ export class NotificationsBar extends React.Component<NotificationsBarProps, Not
                 <Toolbar>
                     <ToolbarGroup style={styleToolBar}
                     >
-                        Welcome 
+                        Welcome
                     </ToolbarGroup>
                     <ToolbarGroup >
                         {this.props.userContactRequests.length}
@@ -47,13 +48,12 @@ export class NotificationsBar extends React.Component<NotificationsBarProps, Not
                         </IconMenu >
                     </ToolbarGroup>
                     <ToolbarGroup >
-                    {this.props.userContactRequests.length}
+                        {this.props.userContactRequests.length}
                         <IconMenu
                             iconButtonElement={
                                 <SocialPeople
                                     hoverColor={'blue'}
                                 />
-
                             }
                         >
                             {/* {this.props.userContactRequests.length} */}

@@ -87,7 +87,6 @@ export class User extends Controller {
             });
     }
     friendlist = (req: express.Request, res: express.Response, next: express.NextFunction) => {
-        // console.log("*** The user id *** ", req.user._id);
         const { _id } = req.user;
         UserModel.findById({ _id })
             .populate('contacts')
@@ -100,12 +99,10 @@ export class User extends Controller {
     sendFriendRequest = (req: express.Request, res: express.Response, next: express.NextFunction) => {// Incomplete
         console.log('Sending contact request **');
         // console.log("Sending contact request **", req.body.emailContact);
-
         const { userEmail, contactEmail } = req.body;
-
         UserModel
-            .findOneAndUpdate({ email: contactEmail }, {$push: {friendRequests: userEmail}}, {new: true})
-            .then((user) => res.send(user))
+            .findOneAndUpdate({ email: contactEmail }, { $push: { friendRequests: userEmail } }) // websockets
+            .then(() => res.sendStatus(200))
             .catch((e) => res.send(e));
     }
     friendRequestList = (req: express.Request, res: express.Response, next: express.NextFunction) => {
@@ -123,35 +120,39 @@ export class User extends Controller {
             .catch((e: Error) => res.send(e));
     }
     acceptFriendRequest = (req: express.Request, res: express.Response, next: express.NextFunction) => {
-        const { user_id, request_id } = req.body;
+        console.log('*******************************************************************************  ');
+        const { contactEmail } = req.body;
+        const email = req.user.email;
+        console.log("emailContact", contactEmail);
+        console.log("email", email);
         new ConversationModel({})
             .save()
             .then((conversation) => {
-                return (UserModel.findByIdAndUpdate(
-                    user_id,
+                return (UserModel.findOneAndUpdate(
+                    { email },
                     {
-                        $pull: { friendRequests: request_id },
-                        $push: { contacts: request_id, conversations: conversation._id }
+                        $pull: { friendRequests: contactEmail },
+                        $push: { contacts: contactEmail, conversations: conversation._id }
                     },
                     { new: true }).exec(),
                     conversation);
             })
             .then((conversation) => {
                 console.log('the conversation id: ', conversation._id);
-                return (ConversationModel.findByIdAndUpdate(
+                return (ConversationModel.findOneAndUpdate(
                     conversation._id,
                     {
                         $set: {
-                            participants: [user_id, request_id],
+                            participants: [email, contactEmail],
                             conversationName: req.body.conversation_id
                         }
                     }).exec(),
                     conversation);
             })
             .then((conversation) => {
-                return UserModel.findByIdAndUpdate(
-                    request_id,
-                    { $push: { contacts: user_id, conversations: conversation._id } }, { new: true })
+                return UserModel.findOneAndUpdate(
+                    email,
+                    { $push: { contacts: email, conversations: conversation._id } }, { new: true })
                     .exec();
             })
             .then((user) => {
@@ -207,5 +208,9 @@ export class User extends Controller {
                 res.send(users);
             })
             .catch((e) => e);
+    }
+    rejectContactRequest = (req: express.Request, res: express.Response, next: express.NextFunction) => {
+        console.log(req.user);
+        res.sendStatus(200);
     }
 }
