@@ -203,8 +203,25 @@ var User = /** @class */ (function (_super) {
                 .catch(function (e) { return e; });
         };
         _this.rejectContactRequest = function (req, res, next) {
-            console.log(req.user);
-            res.sendStatus(200);
+            console.log('Rejecting contact*********************************');
+            var email = req.user.email;
+            var contactEmail = req.body.contactEmail;
+            console.log('useremail', email);
+            console.log(contactEmail);
+            userSchema_1.UserModel
+                .findOneAndUpdate({ email: email }, {
+                $pull: {
+                    friendRequests: contactEmail
+                }
+            }, { new: true })
+                .then(function (user) {
+                console.log('***user***: ', user);
+                res.send(user);
+            })
+                .catch(function (e) {
+                console.log(e);
+                res.send(e);
+            });
         };
         return _this;
     }

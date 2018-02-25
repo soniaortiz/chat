@@ -32,12 +32,11 @@ export class NotificationsBar extends React.Component<NotificationsBarProps, Not
         return (
             <Paper>
                 <Toolbar>
-                    <ToolbarGroup style={styleToolBar}
-                    >
+                    <ToolbarGroup style={styleToolBar}>
                         Welcome
                     </ToolbarGroup>
                     <ToolbarGroup >
-                        {this.props.userContactRequests.length}
+                        {/* {this.props.userContactRequests.length} */}
                         <IconMenu
                             iconButtonElement={
                                 <NotificationSms
@@ -48,7 +47,8 @@ export class NotificationsBar extends React.Component<NotificationsBarProps, Not
                         </IconMenu >
                     </ToolbarGroup>
                     <ToolbarGroup >
-                        {this.props.userContactRequests.length}
+                        {this.props.userContactRequests ?
+                            this.props.userContactRequests.length : 0}
                         <IconMenu
                             iconButtonElement={
                                 <SocialPeople

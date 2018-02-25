@@ -15,7 +15,6 @@ const RejectContactRequestAction = (user: { friendRequests: Array<string> }) => 
 
 export const RejectContactRequest = (contactEmail: string) => {
     return (dispatch: Dispatch<AppStore.user>) => {
-        console.log('Rejecting request');
         request.post('/rejectContactRequest', { withCredentials: true, contactEmail })
             .then(
                 ({ data }) => {

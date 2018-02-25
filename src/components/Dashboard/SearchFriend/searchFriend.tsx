@@ -37,13 +37,13 @@ export class SearchFriend extends React.Component<SearchFriendProps, SearchFrien
         // console.dir(event.target);
         // console.dir(event.currentTarget);
         const emailUser = this.state.users[Number(event.currentTarget.id)];
-        console.log("Emailuser: ", emailUser);
+        console.log('Emailuser: ', emailUser);
         this.setState({ viewUser: true, selected: emailUser });
 
     }
 
     onCloseDialog = () => {
-        console.log("Dialog closed");
+        console.log('Dialog closed');
         this.setState({ viewUser: false });
     }
 

@@ -2,10 +2,12 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { MenuItem, FlatButton } from 'material-ui';
 import { AceptContactRequest } from '../../../store/userAceptContactRequest';
+import { RejectContactRequest } from '../../../store/userRejectContactRequest';
 interface ContactRequestListProps {
 }
 
-export class ContactRequestList extends React.Component<ContactRequestListProps & MapStateToProps & MapDispatchToProps> {
+export class ContactRequestList extends React.Component
+    <ContactRequestListProps&MapStateToProps&MapDispatchToProps> {
 
     aceptContactRequest = (email: string) => {
         return (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -17,10 +19,9 @@ export class ContactRequestList extends React.Component<ContactRequestListProps 
     rejectContactRequest = (email: string) => {
         return (event: React.MouseEvent<HTMLButtonElement>) => {
             console.dir(email);
-
-        }
-
-    };
+            this.props.rejectContactRequest(email);
+        };
+    }
 
     render() {
         return (
@@ -29,7 +30,7 @@ export class ContactRequestList extends React.Component<ContactRequestListProps 
                     <MenuItem key={user} id={index.toString()}>
                         {user}
                         <FlatButton label={'Acept'} onClick={this.aceptContactRequest(user)} />
-                        <FlatButton label={'Reject'} />
+                        <FlatButton label={'Reject'} onClick={this.rejectContactRequest(user)}/>
                     </MenuItem>
                 ))}
             </React.Fragment>
@@ -43,14 +44,14 @@ interface MapStateToProps {
 
 interface MapDispatchToProps {
     aceptContactRequest: (contactEmail: string) => void;
-    // rejectContactRequest: (contactEmail: string) => void;
+    rejectContactRequest: (contactEmail: string) => void;
 }
 export default connect<MapStateToProps, MapDispatchToProps, {}, AppStore.store>(
     (store) => ({
         requestList: store.user.friendRequests
     }),
     {
-        aceptContactRequest: AceptContactRequest
-        // rejectContactRequest: ('fadsfasd')=> {};
+        aceptContactRequest: AceptContactRequest,
+        rejectContactRequest: RejectContactRequest
     }
 )(ContactRequestList);

@@ -1,5 +1,5 @@
 import { handleActions } from 'redux-actions';
-import { REQUEST_USER_INFO, SEND_CONTACT_REQUEST, ACEPT_CONTACT_REQUEST } from './actionsTypes';
+import { REQUEST_USER_INFO, SEND_CONTACT_REQUEST, ACEPT_CONTACT_REQUEST, REJECT_CONTACT_REQUEST } from './actionsTypes';
 
 const userData: AppStore.user = { // init state
     name: '',
@@ -39,6 +39,12 @@ export const Reducer = handleActions<AppStore.user, payload>(
                     friendRequests: action.payload.friendRequests
                 } :
                 { ...state };
+        },
+        [REJECT_CONTACT_REQUEST]: (state, action) => {
+            return (action.payload) ? {
+                ...state,
+                friendRequests: action.payload.friendRequests
+            } : { ...state };
         }
     },
     userData

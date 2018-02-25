@@ -3,7 +3,7 @@ import { UserModel } from '../models/userSchema';
 import { ConversationModel } from '../models/conversationSchema';
 import { MessageModel } from '../models/messageSchema';
 import * as express from 'express';
-import { Error } from 'mongoose';
+import { Error, Model } from 'mongoose';
 import * as jwt from 'jsonwebtoken';
 import { Secret } from 'jsonwebtoken';
 import * as bcrypt from 'bcrypt';
@@ -210,7 +210,29 @@ export class User extends Controller {
             .catch((e) => e);
     }
     rejectContactRequest = (req: express.Request, res: express.Response, next: express.NextFunction) => {
-        console.log(req.user);
-        res.sendStatus(200);
+        console.log('Rejecting contact*********************************');
+        const { email } = req.user;
+        const { contactEmail } = req.body;
+        console.log('useremail', email);
+        console.log(contactEmail);
+
+        UserModel
+            .findOneAndUpdate(
+                { email }, 
+                {
+                    $pull: {
+                        friendRequests: contactEmail
+                    }            
+                }, 
+                {new: true}
+            )
+            .then((user) => {
+                console.log('***user***: ', user);
+                res.send(user);
+            })
+            .catch((e) => {
+                console.log(e);
+                res.send(e);
+            });
     }
 }

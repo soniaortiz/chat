@@ -10,7 +10,10 @@ export class Password extends React.Component<PasswordProps, passwordState> {
             disable: true
         };
     }
-    enableSecondPasswordInput = ({ target: { value: { length } }, target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
+    enableSecondPasswordInput = (
+        { target: { value: { length } }, target: { value } }: 
+        React.ChangeEvent<HTMLInputElement>
+    ) => {
         if (length < 8) {
             this.setState({ disable: true, password: value, confirmationPassword: '' });
             this.props.passwordValidation('');
