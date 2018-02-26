@@ -50,7 +50,6 @@ mongoose.connect(url).then(function () {
     app.get('/users', routes.user.getAll);
     app.post('/signup', routes.user.signup);
     app.post('/login', routes.user.login);
-    app.post('/logout', routes.user.logout);
     app.use(passport.authenticate('jwt', { session: false }));
     app.post('/profile', routes.user.profile);
     app.post('/friendlist', routes.user.friendlist);
@@ -65,6 +64,7 @@ mongoose.connect(url).then(function () {
     app.get('/deletenullconversation', routes.conversation.findnull);
     app.get('/findUsers', routes.user.findUsers);
     app.post('/rejectContactRequest', routes.user.rejectContactRequest);
+    app.post('/logout', routes.user.logout);
     app.get('*', function (req, res, next) {
         res.sendFile(path.join(__dirname, '../build/index.html'));
     });

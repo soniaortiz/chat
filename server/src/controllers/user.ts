@@ -181,8 +181,11 @@ export class User extends Controller {
             .catch((e: Error) => res.send(e));
     }
     logout = (req: express.Request, res: express.Response, next: express.NextFunction) => {
-        // close session
-        // or close connection
+        // console.log('Loging out');
+        res.clearCookie('token'); // Deletes the cookie it sets the expiration date to an old one
+        req.logOut(); // erases the logged user from the requests
+        // console.log(req.user);
+        res.sendStatus(200);
     }
     deleteContact = (req: express.Request, res: express.Response, next: express.NextFunction) => {
         const { user_id, contact_id } = req.body;
@@ -218,13 +221,13 @@ export class User extends Controller {
 
         UserModel
             .findOneAndUpdate(
-                { email }, 
+                { email },
                 {
                     $pull: {
                         friendRequests: contactEmail
-                    }            
-                }, 
-                {new: true}
+                    }
+                },
+                { new: true }
             )
             .then((user) => {
                 console.log('***user***: ', user);

@@ -177,8 +177,11 @@ var User = /** @class */ (function (_super) {
                 .catch(function (e) { return res.send(e); });
         };
         _this.logout = function (req, res, next) {
-            // close session
-            // or close connection
+            // console.log('Loging out');
+            res.clearCookie('token'); // Deletes the cookie it sets the expiration date to an old one
+            req.logOut(); // erases the logged user from the requests
+            // console.log(req.user);
+            res.sendStatus(200);
         };
         _this.deleteContact = function (req, res, next) {
             var _a = req.body, user_id = _a.user_id, contact_id = _a.contact_id;

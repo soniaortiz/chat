@@ -23,13 +23,11 @@ export class Login extends React.Component<LoginProps, LoginState> {
             flag = false : flag = true;
         if (flag) {
             const { email, password } = this.state;
-            // console.log(this.props.isLogged);
+            console.log(this.props.isLogged);
             // thunk
             this.props.login(email, password)
                 .then((valid) => {
                     if (valid) {
-                        // console.log(this.props.isLogged);
-                        // console.log(this.props.isLoading);
                         this.props.history.push('/dashboard');
                     } else {
                         console.log('invalid user');

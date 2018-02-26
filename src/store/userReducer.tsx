@@ -1,6 +1,9 @@
 import { handleActions } from 'redux-actions';
-import { REQUEST_USER_INFO, SEND_CONTACT_REQUEST, ACEPT_CONTACT_REQUEST, REJECT_CONTACT_REQUEST } from './actionsTypes';
-
+import {
+    REQUEST_USER_INFO, SEND_CONTACT_REQUEST,
+    ACEPT_CONTACT_REQUEST, REJECT_CONTACT_REQUEST,
+    LOG_OUT
+} from './actionsTypes';
 const userData: AppStore.user = { // init state
     name: '',
     middleName: '',
@@ -45,6 +48,9 @@ export const Reducer = handleActions<AppStore.user, payload>(
                 ...state,
                 friendRequests: action.payload.friendRequests
             } : { ...state };
+        },
+        [LOG_OUT]: (state) => { // why to always pass a state
+            return state;
         }
     },
     userData

@@ -5,24 +5,35 @@ import NotificationSms from 'material-ui/svg-icons/notification/sms';
 import SocialPeople from 'material-ui/svg-icons/social/people';
 import { connect } from 'react-redux';
 import ContactRequestList from '../ContactRequestList/ContactRequestList';
+import { LogOutRequest } from '../../../store/logOut';
+import { RouteComponentProps } from 'react-router';
+// import { Dispatch } from 'redux';
+// import { ThunkAction } from 'redux-thunk'; 
+import * as H from 'history';
 
 const styleToolBar = {
     color: 'red',
     width: '65%'
 };
 
-interface NotificationsBarProps extends MapDispatchToProps, MapStateToProps, OwnProps {
+interface NotificationsBarProps extends RouteComponentProps<{}> {
     // getNumberOfRequests: () => number;
 }
 
 interface NotificationsBarState {
     displayRequestsList: boolean;
 }
-export class NotificationsBar extends React.Component<NotificationsBarProps, NotificationsBarState> {
+export class NotificationsBar extends React.Component<NotificationsBarProps
+    & MapDispatchToPropsNB & MapStateToPropsNB, NotificationsBarState> {
 
-    constructor(props: NotificationsBarProps) {
+    constructor(props: NotificationsBarProps & MapDispatchToPropsNB & MapStateToPropsNB) {
         super(props);
         this.state = { displayRequestsList: false };
+    }
+    logOut = () => {
+        console.log('Login out');
+        this.props.logOut(this.props.history);
+        // document.cookie = 'token' + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
     }
     displayRequests = () => {
         console.log(this.props.userContactRequests);
@@ -62,7 +73,7 @@ export class NotificationsBar extends React.Component<NotificationsBarProps, Not
                     </ToolbarGroup>
 
                     <ToolbarGroup >
-                        <FlatButton label={'Logout'} />
+                        <FlatButton label={'Logout'} onClick={this.logOut} />
                     </ToolbarGroup>
 
                 </Toolbar>
@@ -72,25 +83,21 @@ export class NotificationsBar extends React.Component<NotificationsBarProps, Not
     }
 }
 
-interface MapDispatchToProps {
-    // getNumberOfRequests: () => number;
+interface MapDispatchToPropsNB {
+    // tslint:disable-next-line:no-any
+    logOut: (history: H.History) => void;
 }
 
-interface MapStateToProps {
+interface MapStateToPropsNB {
     userContactRequests: string[];
-
 }
 
-interface OwnProps {
-
-}
-
-export default connect<MapStateToProps, MapDispatchToProps, OwnProps, AppStore.store>(
+export default connect<MapStateToPropsNB, MapDispatchToPropsNB, NotificationsBarProps, AppStore.store>(
     (store) => ({
         // userMessages: store
         userContactRequests: store.user.friendRequests
     }),
     {
-
+        logOut: LogOutRequest
     }
 )(NotificationsBar);
