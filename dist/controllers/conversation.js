@@ -24,7 +24,7 @@ var Conversation = /** @class */ (function (_super) {
                 .catch(function (e) { return res.send(e); });
         };
         _this.getConversation = function (req, res, next) {
-            console.log(req.query._id);
+            // console.log(req.query._id)
             conversationSchema_1.ConversationModel.findOne({ _id: req.query._id })
                 .then(function (conversation) {
                 console.log(conversation);
@@ -37,7 +37,7 @@ var Conversation = /** @class */ (function (_super) {
             new messageSchema_1.MessageModel({ date: new Date(), sender: req.body.sender_id, messageContent: req.body.message_content })
                 .save()
                 .then(function (message) {
-                console.log("The message ", message);
+                // console.log("The message ", message);
                 return conversationSchema_1.ConversationModel.findByIdAndUpdate(conversation_id, { $push: { messages: message._id } }, { new: true }).exec();
             })
                 .then(function (conversation) {

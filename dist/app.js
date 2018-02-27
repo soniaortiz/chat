@@ -12,12 +12,14 @@ var passport_jwt_1 = require("passport-jwt");
 var passport = require("passport");
 var userSchema_1 = require("./models/userSchema");
 var cookieParser = require("cookie-parser");
+var SocketIO = require("socket.io");
+var sockets_1 = require("./sockets");
 var cookieExtractor = function (req) {
     var token = null;
     if (req && req.cookies) {
         token = req.cookies['token'];
     }
-    console.log("token: ", token);
+    // console.log('token: ', token);
     return token;
 };
 var opts = {
@@ -34,7 +36,7 @@ app.use(validator());
 app.use(errorHandler());
 app.use(cookieParser());
 passport.use(new passport_jwt_1.Strategy(opts, function (jwt_payload, done) {
-    console.log("In jwt strategy ", jwt_payload);
+    // console.log('In jwt strategy ', jwt_payload);
     userSchema_1.UserModel.findOne({ _id: jwt_payload._id }, ('-password '))
         .then(function (user) {
         !user && done(null, false);
@@ -76,6 +78,9 @@ var boot = function () {
     server.listen(app.listen(app.get('port'), function () {
         console.info('Express server listening on port ' + app.get('port'));
     }));
+    sockets_1.sockets();
 };
+exports.io = SocketIO(server);
+exports.nsp = exports.io.of('/user');
 boot();
 //# sourceMappingURL=app.js.map

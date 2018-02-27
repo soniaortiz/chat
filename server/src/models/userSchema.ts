@@ -35,7 +35,7 @@ userSchema.set('toJSON', {
     transform: function (doc: IUserDocument, user: IUserDocument, options: any) {
         delete user.password;
         delete user._id;
-        console.log('TRANSFORMMM', user);
+        // console.log('TRANSFORMMM', user);
         return user;
     }
 })

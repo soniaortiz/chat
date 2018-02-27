@@ -5,6 +5,7 @@ import { CircularProgress } from 'material-ui';
 import { RequestUserInfo } from '../../store/userActions';
 import Sidebar from '../Dashboard/Sidebar/sidebar';
 import { Panel } from './Panel/panel';
+import { socketListeners } from '../../socketsClient';
 import './style.css';
 
 interface DashboardProps extends DispatchProp<{}>, RouteComponentProps<{}> {
@@ -14,6 +15,10 @@ interface DashboardProps extends DispatchProp<{}>, RouteComponentProps<{}> {
 }
 
 export class Dashboard extends React.Component<DashboardProps, DashboardState> {
+    constructor(props: DashboardProps) {
+        super(props);
+        socketListeners();
+    }
     componentDidMount() {
         console.log(this.props.logged);
         this.props.getUser()

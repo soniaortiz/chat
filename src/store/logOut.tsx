@@ -24,4 +24,4 @@ export function LogOutRequest (history: H.History) {
             })
             .catch((e) => console.log(e));
     };
-};
+}

@@ -23,5 +23,5 @@ export const RejectContactRequest = (contactEmail: string) => {
                 }
             )
             .catch((e) => e);
-    }
-}
+    };
+};

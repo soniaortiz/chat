@@ -11,15 +11,17 @@ import * as passport from 'passport';
 import { UserModel } from './models/userSchema';
 import { Error } from 'mongoose';
 import * as cookieParser from 'cookie-parser';
+import * as SocketIO from 'socket.io';
+import { sockets } from './sockets';
 
 const cookieExtractor = (req: any) => {
     let token = null;
     if (req && req.cookies) {
         token = req.cookies['token']
     }
-    console.log("token: ", token);
+    // console.log('token: ', token);
     return token;
-}
+};
 const opts: StrategyOptions = {
     jwtFromRequest: cookieExtractor,
     secretOrKey: process.env.SECRET_TOKEN
@@ -36,13 +38,13 @@ app.use(errorHandler());
 app.use(cookieParser());
 
 passport.use(new JwtStrategy(opts, (jwt_payload, done) => {
-    console.log("In jwt strategy ", jwt_payload)
+    // console.log('In jwt strategy ', jwt_payload);
     UserModel.findOne({ _id: jwt_payload._id }, ('-password '))
         .then((user) => {
             !user && done(null, false);
             done(null, user);
         })
-        .catch((e: Error) => done(e, false))
+        .catch((e: Error) => done(e, false));
 }));
 
 app.use(passport.initialize());
@@ -84,5 +86,8 @@ const boot = () => {
     server.listen(app.listen(app.get('port'), () => {
         console.info('Express server listening on port ' + app.get('port'));
     }));
+    sockets();
 };
+export const io = SocketIO(server);
+export const nsp = io.of('/user');
 boot();

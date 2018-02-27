@@ -7,6 +7,7 @@ import { Error, Model } from 'mongoose';
 import * as jwt from 'jsonwebtoken';
 import { Secret } from 'jsonwebtoken';
 import * as bcrypt from 'bcrypt';
+import { io } from '../app';
 
 export class User extends Controller {
     model = UserModel;
@@ -48,17 +49,17 @@ export class User extends Controller {
     }
     signup = (req: express.Request, res: express.Response, next: express.NextFunction) => {
         const { email } = req.body;
-        console.log(req.body);
+        // console.log(req.body);
         UserModel.findOne({ email: email })
             .then((doc) => {
-                console.log(doc);
+                // console.log(doc);
                 if (doc) {
                     const id_token = jwt.sign(
                         {
                             email: email
                         },
                         process.env.SECRET_TOKEN as Secret, { expiresIn: '10d' });
-                    console.log(id_token);
+                    // console.log(id_token);
                     res.json(id_token);
                 }
                 return new UserModel(req.body).save();
@@ -69,7 +70,7 @@ export class User extends Controller {
             .catch((e: Error) => res.send(e));
     }
     profile = (req: express.Request, res: express.Response, next: express.NextFunction) => {
-        console.log('profile executed', req.user);
+        // console.log('profile executed', req.user);
         const user = req.user;
         !user && res.status(404).send('User not found');
         res.json(user); // send the user
@@ -101,8 +102,17 @@ export class User extends Controller {
         // console.log("Sending contact request **", req.body.emailContact);
         const { userEmail, contactEmail } = req.body;
         UserModel
-            .findOneAndUpdate({ email: contactEmail }, { $push: { friendRequests: userEmail } }) // websockets
-            .then(() => res.sendStatus(200))
+            .findOneAndUpdate(
+                { email: contactEmail }, 
+                { $push: 
+                    { friendRequests: userEmail } 
+                }, 
+                {new: true}) // websockets
+            .then((user) => {
+                // io.in(user.id).emmit('send request', { hello: 'world' });
+                io.emit('send request', { hello: 'world' });
+                res.sendStatus(200);
+            })
             .catch((e) => res.send(e));
     }
     friendRequestList = (req: express.Request, res: express.Response, next: express.NextFunction) => {
@@ -120,11 +130,11 @@ export class User extends Controller {
             .catch((e: Error) => res.send(e));
     }
     acceptFriendRequest = (req: express.Request, res: express.Response, next: express.NextFunction) => {
-        console.log('*******************************************************************************  ');
+        // console.log('*******************************************************************************  ');
         const { contactEmail } = req.body;
         const email = req.user.email;
-        console.log("emailContact", contactEmail);
-        console.log("email", email);
+        // console.log("emailContact", contactEmail);
+        // console.log("email", email);
         new ConversationModel({})
             .save()
             .then((conversation) => {
@@ -138,7 +148,7 @@ export class User extends Controller {
                     conversation);
             })
             .then((conversation) => {
-                console.log('the conversation id: ', conversation._id);
+                // console.log('the conversation id: ', conversation._id);
                 return (ConversationModel.findOneAndUpdate(
                     conversation._id,
                     {
@@ -197,7 +207,7 @@ export class User extends Controller {
             .catch((e: Error) => res.send(e));
     }
     findUsers = (req: express.Request, res: express.Response, next: express.NextFunction) => {
-        console.log('Execueted  axios ,', req.query.userName);
+        // console.log('Execueted  axios ,', req.query.userName);
         // const query = UserModel.find();
         UserModel.find(
             {
@@ -207,17 +217,17 @@ export class User extends Controller {
             '-id -contacts -conversations -birthdate'
         )
             .then((users) => {
-                console.log(users);
+                // console.log(users);
                 res.send(users);
             })
             .catch((e) => e);
     }
     rejectContactRequest = (req: express.Request, res: express.Response, next: express.NextFunction) => {
-        console.log('Rejecting contact*********************************');
+        // console.log('Rejecting contact*********************************');
         const { email } = req.user;
         const { contactEmail } = req.body;
-        console.log('useremail', email);
-        console.log(contactEmail);
+        // console.log('useremail', email);
+        // console.log(contactEmail);
 
         UserModel
             .findOneAndUpdate(
@@ -230,11 +240,11 @@ export class User extends Controller {
                 { new: true }
             )
             .then((user) => {
-                console.log('***user***: ', user);
+                // console.log('***user***: ', user);
                 res.send(user);
             })
             .catch((e) => {
-                console.log(e);
+                // console.log(e);
                 res.send(e);
             });
     }

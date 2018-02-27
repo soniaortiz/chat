@@ -43,6 +43,7 @@
     "@types/redux-actions": "^2.2.3",
     "@types/redux-thunk": "^2.1.0",
     "@types/socket.io": "^1.4.31",
+    "@types/socket.io-client": "^1.4.32",
     "cookie-parser": "^1.4.3",
     "passport-local-mongoose": "^4.4.0",
     "react": "^16.2.0",

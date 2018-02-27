@@ -1,14 +1,11 @@
 import * as React from 'react';
 import { Paper, Toolbar, IconMenu, ToolbarGroup, FlatButton } from 'material-ui';
 import NotificationSms from 'material-ui/svg-icons/notification/sms';
-// import SocialPerson from 'material-ui/svg-icons/social/person';
 import SocialPeople from 'material-ui/svg-icons/social/people';
 import { connect } from 'react-redux';
 import ContactRequestList from '../ContactRequestList/ContactRequestList';
 import { LogOutRequest } from '../../../store/logOut';
 import { RouteComponentProps } from 'react-router';
-// import { Dispatch } from 'redux';
-// import { ThunkAction } from 'redux-thunk'; 
 import * as H from 'history';
 
 const styleToolBar = {
@@ -33,7 +30,6 @@ export class NotificationsBar extends React.Component<NotificationsBarProps
     logOut = () => {
         console.log('Login out');
         this.props.logOut(this.props.history);
-        // document.cookie = 'token' + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
     }
     displayRequests = () => {
         console.log(this.props.userContactRequests);

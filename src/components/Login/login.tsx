@@ -4,6 +4,8 @@ import { connect, DispatchProp } from 'react-redux';
 import { RequestLogin } from '../../store/appActions';
 import { RouteComponentProps } from 'react-router';
 import { Dialog, Paper } from 'material-ui';
+// import * as io from 'socket.io-client';
+// const socket = io('http://localhost:8000');
 
 interface LoginProps extends DispatchProp<AppStore.store>, RouteComponentProps<{}> {
     isLogged: boolean;
@@ -17,6 +19,9 @@ export class Login extends React.Component<LoginProps, LoginState> {
         this.state = { email: '', password: '', redirect: false, open: false };
     }
 
+    componentDidMount() {
+        // const data = { name: 'this is the data' }
+    }
     validateUser = (event: (React.MouseEvent<HTMLButtonElement>) | React.KeyboardEvent<HTMLInputElement>) => {
         let flag = true;
         (event.type === 'keydown' && (event as React.KeyboardEvent<HTMLInputElement>).keyCode !== 13) ?
@@ -51,16 +56,16 @@ export class Login extends React.Component<LoginProps, LoginState> {
     render() {
         return (
             <Paper>
-                    <Dialog open={true}>
-                        <label htmlFor="">Email</label>
-                        < EmailField setEmailValue={this.getEmailValue} />
-                        <label htmlFor="">Password</label>
-                        <input type="password" required={true} id="passwordfield"
-                            onChange={this.setPasswordValue} ref="password"
-                            onKeyDown={this.validateUser}
-                        />
-                        <button onClick={this.validateUser}>Login</button>
-                    </Dialog>
+                <Dialog open={true}>
+                    <label htmlFor="">Email</label>
+                    < EmailField setEmailValue={this.getEmailValue} />
+                    <label htmlFor="">Password</label>
+                    <input type="password" required={true} id="passwordfield"
+                        onChange={this.setPasswordValue} ref="password"
+                        onKeyDown={this.validateUser}
+                    />
+                    <button onClick={this.validateUser}>Login</button>
+                </Dialog>
 
             </Paper>
         );

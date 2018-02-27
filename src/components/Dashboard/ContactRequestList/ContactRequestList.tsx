@@ -3,6 +3,10 @@ import { connect } from 'react-redux';
 import { MenuItem, FlatButton } from 'material-ui';
 import { AceptContactRequest } from '../../../store/userAceptContactRequest';
 import { RejectContactRequest } from '../../../store/userRejectContactRequest';
+
+// import * as io from 'socket.io-client';
+// const socket = io('http://localhost:8000');
+
 interface ContactRequestListProps {
 }
 
@@ -30,7 +34,7 @@ export class ContactRequestList extends React.Component
                     <MenuItem key={user} id={index.toString()}>
                         {user}
                         <FlatButton label={'Acept'} onClick={this.aceptContactRequest(user)} />
-                        <FlatButton label={'Reject'} onClick={this.rejectContactRequest(user)}/>
+                        <FlatButton label={'Reject'} onClick={this.rejectContactRequest(user)} />
                     </MenuItem>
                 ))}
             </React.Fragment>

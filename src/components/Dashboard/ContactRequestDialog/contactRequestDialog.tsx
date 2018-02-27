@@ -3,6 +3,7 @@ import { Dialog, FlatButton, Paper, } from 'material-ui';
 import { connect, DispatchProp } from 'react-redux';
 import { SendContactRequest } from '../../../store/userActionSendContactRequest';
 import SocialPersonAdd from 'material-ui/svg-icons/social/person-add';
+import { nspUser } from '../../../socketsClient';
 interface ContactRequestProps extends DispatchProp<AppStore.user> {
     user: UserContact; // AppStore.user;
     onCloseDialog: () => void;
@@ -27,6 +28,7 @@ export class ContactRequestDialog extends React.Component<connectedComponentProp
     handleContactRequest = () => {
         console.log('send request to user ', this.props.user.email);
         this.props.sendfriendrequest(this.props.emailSender, this.props.user.email);
+        nspUser.emit('a', { data: 3 });
         this.setState({ open: false });
     }
 
