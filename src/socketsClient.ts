@@ -13,6 +13,5 @@ export function socketListeners (){
     socket.on('send request', (s: any) => {
         // s.emit('my other event', { my: 'data*/' });
         console.log(s);
-    });
-   
+    });   
 }

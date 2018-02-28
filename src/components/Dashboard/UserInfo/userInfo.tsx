@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { DispatchProp, connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
-import { Avatar, List, ListItem, Paper } from 'material-ui';
+import { Avatar, List,  Paper, ListItem } from 'material-ui';
 import './style.css';
 
 interface MeProps extends DispatchProp<{}>, RouteComponentProps<{}> {
@@ -14,7 +14,9 @@ export class Me extends React.Component<MeProps> {
             <Paper>
                 <Avatar src="http://via.placeholder.com/350x150" size={100} className="Avatar" />
                 <List>
+
                     {
+
                         Object.entries(this.props.user)
                             .filter(
                                 ([key]) => key !== 'avatar' && 
@@ -24,11 +26,13 @@ export class Me extends React.Component<MeProps> {
 
                             ) 
                             .map(([key, value], index) => (
-                                <ListItem key={index} id={key}>{value}</ListItem>
+                                <ListItem key={index} primaryText={value.toString()}/>
                             )
                             )
+
                     }
                 </List>
+
             </Paper>
 
         );

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
+import { MenuItem } from 'material-ui';
 
 interface ConversationsProps {
 }
@@ -9,12 +10,12 @@ export class Conversations extends React.Component<ConversationsProps & Conversa
     render() {
         return <React.Fragment>
             {this.props.conversationsList ?
-                this.props.conversationsList.map((element) => (
-                    <li key={Math.random() + 100}>
+                this.props.conversationsList.map((element, index) => (
+                    <MenuItem key={index}>
                         {element}
-                    </li>
+                    </MenuItem>
                 )) : {}
-            }}
+            }
         </ React.Fragment>;
 
     }
