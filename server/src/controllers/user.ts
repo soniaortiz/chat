@@ -3,7 +3,7 @@ import { UserModel } from '../models/userSchema';
 import { ConversationModel } from '../models/conversationSchema';
 import { MessageModel } from '../models/messageSchema';
 import * as express from 'express';
-import { Error, Model } from 'mongoose';
+import { Error } from 'mongoose';
 import * as jwt from 'jsonwebtoken';
 import { Secret } from 'jsonwebtoken';
 import * as bcrypt from 'bcrypt';
@@ -192,7 +192,7 @@ export class User extends Controller {
     }
     logout = (req: express.Request, res: express.Response, next: express.NextFunction) => {
         // console.log('Loging out');
-        res.clearCookie('token'); // Deletes the cookie it sets the expiration date to an old one
+        res.clearCookie('token', {httpOnly: true}); // Deletes the cookie it sets the expiration date to an old one
         req.logOut(); // erases the logged user from the requests
         // console.log(req.user);
         res.sendStatus(200);

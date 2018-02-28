@@ -14,5 +14,5 @@ export function socketListeners (){
         // s.emit('my other event', { my: 'data*/' });
         console.log(s);
     });
-
+   
 }

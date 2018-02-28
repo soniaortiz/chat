@@ -184,7 +184,7 @@ var User = /** @class */ (function (_super) {
         };
         _this.logout = function (req, res, next) {
             // console.log('Loging out');
-            res.clearCookie('token'); // Deletes the cookie it sets the expiration date to an old one
+            res.clearCookie('token', { httpOnly: true }); // Deletes the cookie it sets the expiration date to an old one
             req.logOut(); // erases the logged user from the requests
             // console.log(req.user);
             res.sendStatus(200);
