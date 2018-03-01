@@ -1,9 +1,11 @@
 import { Dispatch } from 'react-redux';
 import { REQUEST_USER_INFO } from './actionsTypes';
 import * as axios from 'axios';
+// import {nspUser} from '../socketsClient';
+
 const request = axios.default;
 
-const RequestUserInfoAction = (payload: AppStore.user) => {
+export const RequestUserInfoAction = (payload: AppStore.user) => {
     return {
         type: REQUEST_USER_INFO,
         payload
@@ -15,20 +17,21 @@ export const RequestUserInfo = () => {
         // console.log("Request user info");
         return request.post('/profile', { withCredentials: true })
             .then(({ data }) => {
-                console.log('response: ', data);
-                dispatch(RequestUserInfoAction(
-                    {
-                        name: data.name,
-                        middleName: data.middleName,
-                        lastName: data.lastName,
-                        email: data.email,
-                        birthdate: data.birthdate,
-                        gender: data.gender,
-                        avatar: data.avatar,
-                        friendRequests: data.friendRequests,
-                        contactList: data.contacts,
-                        conversations: data.conversations
-                    }));
+                // console.log('response: ', data);
+                // dispatch(RequestUserInfoAction(
+                //     {
+                //         name: data.name,
+                //         middleName: data.middleName,
+                //         lastName: data.lastName,
+                //         email: data.email,
+                //         birthdate: data.birthdate,
+                //         gender: data.gender,
+                //         avatar: data.avatar,
+                //         friendRequests: data.friendRequests,
+                //         contactList: data.contacts,
+                //         conversations: data.conversations
+                //     }
+                // ));
                 return true;
             })
             .catch(() => false);

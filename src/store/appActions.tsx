@@ -2,6 +2,7 @@
 import { REQUEST_LOGIN } from './actionsTypes';
 import { Dispatch } from 'react-redux';
 import * as axios from 'axios';
+import { nspUser } from '../socketsClient';
 const request = axios.default;
 
 const requestLoginActionCreator = () => {
@@ -17,6 +18,8 @@ export const RequestLogin = (email: string, password: string) => {
             { email, password },
             { withCredentials: true })
             .then((response) => {
+                nspUser.emit('joinUserSocket', email);
+                console.log('email: ', email);
                 dispatch(requestLoginActionCreator());
                 return response.status === 200;
             })

@@ -19,8 +19,8 @@ const getTheme = () => {
   return getMuiTheme(baseTheme, overwrites);
 };
 
-const store = createStore(storeReducer, applyMiddleware(thunk));
-
+export const store = createStore(storeReducer, applyMiddleware(thunk));
+// store.dispatch
 class App extends React.Component {
   render() {
     return (

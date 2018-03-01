@@ -2,7 +2,7 @@ import * as React from 'react';
 import request, { AxiosResponse } from 'axios';
 import { AutoComplete, MenuItem, Paper } from 'material-ui';
 import ContactRequestDialog from '../ContactRequestDialog/contactRequestDialog';
-import ActionSearch  from 'material-ui/svg-icons/action/search';
+import ActionSearch from 'material-ui/svg-icons/action/search';
 import SvgIcon from 'material-ui/SvgIcon';
 interface SearchFriendProps {
     // searchUser(name: string): Promise<boolean>;
@@ -50,6 +50,7 @@ export class SearchFriend extends React.Component<SearchFriendProps, SearchFrien
 
     handleNewRequest = (value: string) => {
         if (!value) { return; }
+        console.log(this.state.viewUser);
         this.setState({ userName: value });
         console.log(value);
         request
@@ -61,7 +62,7 @@ export class SearchFriend extends React.Component<SearchFriendProps, SearchFrien
             .then((response) => new Promise<AxiosResponse>((res, rej) => setTimeout(() => { res(response); }, 500)))
             .then((response) => {
                 console.log(response.data); // the object array 
-                this.setState({ users: response.data }); // to display list
+                this.setState({ users: response.data}); // to display list
 
             })
             .catch((e) => console.log(e));
@@ -71,16 +72,16 @@ export class SearchFriend extends React.Component<SearchFriendProps, SearchFrien
     render() {
         return (
             <Paper >
-
                 {
-                    this.state.viewUser ?
+
+                this.state.viewUser ?
                         <ContactRequestDialog
-                            user={this.state.selected}
-                            onCloseDialog={this.onCloseDialog}
-                        /> : false
-                }
+                    user={this.state.selected}
+                    onCloseDialog={this.onCloseDialog}
+                /> : false
+        }
                 <SvgIcon>
-                    <ActionSearch/>
+                    <ActionSearch />
                 </SvgIcon>
                 <AutoComplete
                     onUpdateInput={this.handleNewRequest}

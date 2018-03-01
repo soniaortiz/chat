@@ -89,5 +89,5 @@ const boot = () => {
     sockets();
 };
 export const io = SocketIO(server);
-export const nsp = io.of('/user');
+export const nspUser = io.of('/user');
 boot();

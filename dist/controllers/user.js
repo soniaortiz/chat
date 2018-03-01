@@ -40,6 +40,7 @@ var User = /** @class */ (function (_super) {
                     return userSchema_1.UserModel
                         .findOne({ email: email })
                         .then(function (user) {
+                        // const expirationDate = (new Date().getTime() + 1);
                         if (user) {
                             var id_token = jwt.sign({
                                 _id: user._id
@@ -82,7 +83,9 @@ var User = /** @class */ (function (_super) {
             // console.log('profile executed', req.user);
             var user = req.user;
             !user && res.status(404).send('User not found');
-            res.json(user); // send the user
+            app_1.nspUser.to(user.email).emit('profile', user);
+            // res.json(user); // send the user
+            res.sendStatus(200);
         };
         _this.conversations = function (req, res, next) {
             // console.log("Conversations");
@@ -106,15 +109,17 @@ var User = /** @class */ (function (_super) {
             });
         };
         _this.sendFriendRequest = function (req, res, next) {
-            console.log('Sending contact request **');
+            // console.log('Sending contact request **');
             // console.log("Sending contact request **", req.body.emailContact);
             var _a = req.body, userEmail = _a.userEmail, contactEmail = _a.contactEmail;
             userSchema_1.UserModel
-                .findOneAndUpdate({ email: contactEmail }, { $push: { friendRequests: userEmail }
+                .findOneAndUpdate({ email: contactEmail }, {
+                $push: { friendRequests: userEmail }
             }, { new: true }) // websockets
                 .then(function (user) {
                 // io.in(user.id).emmit('send request', { hello: 'world' });
-                app_1.io.emit('send request', { hello: 'world' });
+                // io.emit('send request', { hello: 'world' });
+                app_1.nspUser.to(contactEmail).emit('a', { message: 'you have a new contact request ' });
                 res.sendStatus(200);
             })
                 .catch(function (e) { return res.send(e); });

@@ -20,25 +20,23 @@ export class Dashboard extends React.Component<DashboardProps, DashboardState> {
         socketListeners();
     }
     componentDidMount() {
-        console.log(this.props.logged);
+        // console.log(this.props.logged);
         this.props.getUser()
             .then(() => console.log(this.props.user));
     }
     render() {
-        return(
-                <div>
-
-                            <div className={'Dashboard'}>
-                                <div className="Sidebar">
-                                    <Sidebar />
-                                </div>
-                                <div className="Panel">
-                                    <Panel />
-                                </div>
-                            </div>
-
+        return (
+            <div>
+                <div className={'Dashboard'}>
+                    <div className="Sidebar">
+                        <Sidebar />
+                    </div>
+                    <div className="Panel">
+                        <Panel />
+                    </div>
                 </div>
-            );
+            </div>
+        );
     }
 }
 

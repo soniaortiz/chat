@@ -7,7 +7,7 @@ import { Error } from 'mongoose';
 import * as jwt from 'jsonwebtoken';
 import { Secret } from 'jsonwebtoken';
 import * as bcrypt from 'bcrypt';
-import { io } from '../app';
+import { io, nspUser } from '../app';
 
 export class User extends Controller {
     model = UserModel;
@@ -27,6 +27,7 @@ export class User extends Controller {
                     return UserModel
                         .findOne({ email })
                         .then((user) => {
+                            // const expirationDate = (new Date().getTime() + 1);
                             if (user) {
                                 const id_token = jwt.sign(
                                     {
@@ -73,7 +74,9 @@ export class User extends Controller {
         // console.log('profile executed', req.user);
         const user = req.user;
         !user && res.status(404).send('User not found');
-        res.json(user); // send the user
+        nspUser.to(user.email).emit('profile', user);
+        // res.json(user); // send the user
+        res.sendStatus(200);
     }
     conversations = (req: express.Request, res: express.Response, next: express.NextFunction) => {
         // console.log("Conversations");
@@ -98,19 +101,21 @@ export class User extends Controller {
             });
     }
     sendFriendRequest = (req: express.Request, res: express.Response, next: express.NextFunction) => {// Incomplete
-        console.log('Sending contact request **');
+        // console.log('Sending contact request **');
         // console.log("Sending contact request **", req.body.emailContact);
         const { userEmail, contactEmail } = req.body;
         UserModel
             .findOneAndUpdate(
-                { email: contactEmail }, 
-                { $push: 
-                    { friendRequests: userEmail } 
-                }, 
-                {new: true}) // websockets
+                { email: contactEmail },
+                {
+                    $push:
+                        { friendRequests: userEmail }
+                },
+                { new: true }) // websockets
             .then((user) => {
                 // io.in(user.id).emmit('send request', { hello: 'world' });
-                io.emit('send request', { hello: 'world' });
+                // io.emit('send request', { hello: 'world' });
+                nspUser.to(contactEmail).emit('a', { message: 'you have a new contact request ' });
                 res.sendStatus(200);
             })
             .catch((e) => res.send(e));
@@ -192,7 +197,7 @@ export class User extends Controller {
     }
     logout = (req: express.Request, res: express.Response, next: express.NextFunction) => {
         // console.log('Loging out');
-        res.clearCookie('token', {httpOnly: true}); // Deletes the cookie it sets the expiration date to an old one
+        res.clearCookie('token', { httpOnly: true }); // Deletes the cookie it sets the expiration date to an old one
         req.logOut(); // erases the logged user from the requests
         // console.log(req.user);
         res.sendStatus(200);

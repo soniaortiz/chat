@@ -26,9 +26,9 @@ export class ContactRequestDialog extends React.Component<connectedComponentProp
     }
 
     handleContactRequest = () => {
-        console.log('send request to user ', this.props.user.email);
+        // console.log('send request to user ', this.props.user.email);
         this.props.sendfriendrequest(this.props.emailSender, this.props.user.email);
-        nspUser.emit('a', { data: 3 });
+        nspUser.emit('send contact request', { user: this.props.user.email });
         this.setState({ open: false });
     }
 
@@ -46,12 +46,10 @@ export class ContactRequestDialog extends React.Component<connectedComponentProp
                     }
                     label={'send request'}
                 />
-
                 <FlatButton
                     onClick={this.handleClose}
                     label={'close'}
                 />
-
             </Dialog>
         );
     }

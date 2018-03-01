@@ -3,10 +3,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var app_1 = require("./app");
 function sockets() {
     console.log('in server sockets: **********************************************************');
-    app_1.nsp.on('connection', function (socket) {
+    // tslint:disable-next-line:no-any
+    app_1.nspUser.on('connection', function (client) {
         console.log('someone connected');
-        socket.on('a', function (data) {
-            console.log('The data *****^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^', data);
+        client.on('send contact request', function (user) {
+            console.log('The data *****^^^^^^^^^^^^^^^^^^^^^^^^^^^', user);
+        });
+        client.on('joinUserSocket', function (email) {
+            console.log('aaaaaa' + email + ' joined');
+            client.join(email);
+            client.emit('msg', 'chat, after joining room: ' + email);
         });
     });
 }

@@ -81,6 +81,6 @@ var boot = function () {
     sockets_1.sockets();
 };
 exports.io = SocketIO(server);
-exports.nsp = exports.io.of('/user');
+exports.nspUser = exports.io.of('/user');
 boot();
 //# sourceMappingURL=app.js.map
