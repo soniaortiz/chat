@@ -8,6 +8,7 @@ import * as jwt from 'jsonwebtoken';
 import { Secret } from 'jsonwebtoken';
 import * as bcrypt from 'bcrypt';
 import { io, nspUser } from '../app';
+import * as moment from 'moment';
 
 export class User extends Controller {
     model = UserModel;
@@ -27,7 +28,7 @@ export class User extends Controller {
                     return UserModel
                         .findOne({ email })
                         .then((user) => {
-                            // const expirationDate = (new Date().getTime() + 1);
+                            const expirationDate = new Date(moment(moment().add(7, 'days').calendar()).format());
                             if (user) {
                                 const id_token = jwt.sign(
                                     {
@@ -35,7 +36,7 @@ export class User extends Controller {
                                     },
                                     process.env.SECRET_TOKEN as Secret);
                                 res.cookie('token', id_token, {
-                                    expires: new Date(Date.now() + 900000),
+                                    expires: expirationDate,
                                     httpOnly: true
                                 }).send();
                             }

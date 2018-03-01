@@ -17,6 +17,7 @@ var messageSchema_1 = require("../models/messageSchema");
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcrypt");
 var app_1 = require("../app");
+var moment = require("moment");
 var User = /** @class */ (function (_super) {
     __extends(User, _super);
     function User() {
@@ -40,13 +41,13 @@ var User = /** @class */ (function (_super) {
                     return userSchema_1.UserModel
                         .findOne({ email: email })
                         .then(function (user) {
-                        // const expirationDate = (new Date().getTime() + 1);
+                        var expirationDate = new Date(moment(moment().add(7, 'days').calendar()).format());
                         if (user) {
                             var id_token = jwt.sign({
                                 _id: user._id
                             }, process.env.SECRET_TOKEN);
                             res.cookie('token', id_token, {
-                                expires: new Date(Date.now() + 900000),
+                                expires: expirationDate,
                                 httpOnly: true
                             }).send();
                         }

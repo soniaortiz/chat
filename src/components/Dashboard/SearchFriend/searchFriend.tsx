@@ -4,8 +4,9 @@ import { AutoComplete, MenuItem, Paper } from 'material-ui';
 import ContactRequestDialog from '../ContactRequestDialog/contactRequestDialog';
 import ActionSearch from 'material-ui/svg-icons/action/search';
 import SvgIcon from 'material-ui/SvgIcon';
+// import { connect } from 'react-redux';
+
 interface SearchFriendProps {
-    // searchUser(name: string): Promise<boolean>;
 }
 
 interface SearchFriendState {
@@ -62,7 +63,7 @@ export class SearchFriend extends React.Component<SearchFriendProps, SearchFrien
             .then((response) => new Promise<AxiosResponse>((res, rej) => setTimeout(() => { res(response); }, 500)))
             .then((response) => {
                 console.log(response.data); // the object array 
-                this.setState({ users: response.data}); // to display list
+                this.setState({ users: response.data }); // to display list
 
             })
             .catch((e) => console.log(e));
@@ -74,12 +75,12 @@ export class SearchFriend extends React.Component<SearchFriendProps, SearchFrien
             <Paper >
                 {
 
-                this.state.viewUser ?
+                    this.state.viewUser ?
                         <ContactRequestDialog
-                    user={this.state.selected}
-                    onCloseDialog={this.onCloseDialog}
-                /> : false
-        }
+                            user={this.state.selected}
+                            onCloseDialog={this.onCloseDialog}
+                        /> : false
+                }
                 <SvgIcon>
                     <ActionSearch />
                 </SvgIcon>
@@ -110,3 +111,20 @@ export class SearchFriend extends React.Component<SearchFriendProps, SearchFrien
         );
     }
 }
+
+// interface MapPropsToStoreSF {
+
+// }
+
+// interface MapDispatchToPropsSF {
+
+// }
+
+// export default connect<{}, {}, {}, AppStore.store>(
+//     () => ({
+
+//     }),
+//     {
+
+//     }
+// )
