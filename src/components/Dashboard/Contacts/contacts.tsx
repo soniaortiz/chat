@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { MenuItem } from 'material-ui';
-// import { RequestContacts } from '../../../store/contactsActions';
 
 interface ContactsProps {
 

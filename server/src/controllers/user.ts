@@ -72,7 +72,7 @@ export class User extends Controller {
             .catch((e: Error) => res.send(e));
     }
     profile = (req: express.Request, res: express.Response, next: express.NextFunction) => {
-        console.log('profile executed', req.user.email);
+        // console.log('profile executed', req.user.email);
         const user = req.user;
         !user && res.status(404).send('User not found');
         // nspUser.to(user.email).emit('profile', user);
@@ -115,7 +115,7 @@ export class User extends Controller {
             .then((user) => {
                 // io.in(user.id).emmit('send request', { hello: 'world' });
                 // io.emit('send request', { hello: 'world' });
-                console.log('---------', user);
+                // console.log('---------', user);
                 if (user) {
                     nspUser.to(contactEmail).emit('contact request', user.friendRequests);
                     res.sendStatus(200);

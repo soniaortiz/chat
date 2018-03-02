@@ -81,7 +81,7 @@ var User = /** @class */ (function (_super) {
                 .catch(function (e) { return res.send(e); });
         };
         _this.profile = function (req, res, next) {
-            console.log('profile executed', req.user.email);
+            // console.log('profile executed', req.user.email);
             var user = req.user;
             !user && res.status(404).send('User not found');
             // nspUser.to(user.email).emit('profile', user);
@@ -119,7 +119,7 @@ var User = /** @class */ (function (_super) {
                 .then(function (user) {
                 // io.in(user.id).emmit('send request', { hello: 'world' });
                 // io.emit('send request', { hello: 'world' });
-                console.log('---------', user);
+                // console.log('---------', user);
                 if (user) {
                     app_1.nspUser.to(contactEmail).emit('contact request', user.friendRequests);
                     res.sendStatus(200);

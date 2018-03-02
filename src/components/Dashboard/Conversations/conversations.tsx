@@ -7,11 +7,17 @@ interface ConversationsProps {
 
 export class Conversations extends React.Component<ConversationsProps & ConversationsMapStateToProps> {
 
+    openConversation = () => {
+        console.log('Display conversation');
+    }
     render() {
         return <React.Fragment>
             {this.props.conversationsList ?
                 this.props.conversationsList.map((element, index) => (
-                    <MenuItem key={index}>
+                    <MenuItem
+                        key={index}
+                        onClick={this.openConversation}
+                    >
                         {element}
                     </MenuItem>
                 )) : {}

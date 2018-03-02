@@ -1,5 +1,5 @@
 import { handleActions } from 'redux-actions';
-import { REQUEST_LOGIN, LOG_OUT} from './actionsTypes';
+import { REQUEST_LOGIN, LOG_OUT } from './actionsTypes';
 // import { Action } from 'redux';
 // import App from '../App';
 
