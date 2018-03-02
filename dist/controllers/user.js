@@ -81,12 +81,11 @@ var User = /** @class */ (function (_super) {
                 .catch(function (e) { return res.send(e); });
         };
         _this.profile = function (req, res, next) {
-            // console.log('profile executed', req.user);
+            console.log('profile executed', req.user.email);
             var user = req.user;
             !user && res.status(404).send('User not found');
-            app_1.nspUser.to(user.email).emit('profile', user);
-            // res.json(user); // send the user
-            res.sendStatus(200);
+            // nspUser.to(user.email).emit('profile', user);
+            res.json(user);
         };
         _this.conversations = function (req, res, next) {
             // console.log("Conversations");
@@ -120,8 +119,11 @@ var User = /** @class */ (function (_super) {
                 .then(function (user) {
                 // io.in(user.id).emmit('send request', { hello: 'world' });
                 // io.emit('send request', { hello: 'world' });
-                app_1.nspUser.to(contactEmail).emit('a', { message: 'you have a new contact request ' });
-                res.sendStatus(200);
+                console.log('---------', user);
+                if (user) {
+                    app_1.nspUser.to(contactEmail).emit('contact request', user.friendRequests);
+                    res.sendStatus(200);
+                }
             })
                 .catch(function (e) { return res.send(e); });
         };
@@ -239,6 +241,15 @@ var User = /** @class */ (function (_super) {
             });
         };
         return _this;
+        // updateContacRequests = (req: express.Request, res: express.Response, next: express.NextFunction) => {
+        //     console.log('update contac requests: ', req.user.email);
+        //     UserModel.findOne({ email: req.user.email })
+        //         .then((user) => {
+        //             // emit.to(req.user)
+        //             console.log(user);
+        //         })
+        //         .catch((e) => res.send(e));
+        // }
     }
     return User;
 }(base_1.Controller));

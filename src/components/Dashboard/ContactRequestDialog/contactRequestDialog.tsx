@@ -4,7 +4,7 @@ import { connect, DispatchProp } from 'react-redux';
 import { SendContactRequest } from '../../../store/userActionSendContactRequest';
 import SocialPersonAdd from 'material-ui/svg-icons/social/person-add';
 import { nspUser } from '../../../socketsClient';
-interface ContactRequestProps extends DispatchProp<AppStore.user> {
+interface ContactRequestProps extends DispatchProp<AppStore.User> {
     user: UserContact; // AppStore.user;
     onCloseDialog: () => void;
 }

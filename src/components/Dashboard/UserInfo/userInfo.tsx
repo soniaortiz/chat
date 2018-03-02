@@ -5,7 +5,7 @@ import { Avatar, List,  Paper, ListItem } from 'material-ui';
 import './style.css';
 
 interface MeProps extends DispatchProp<{}>, RouteComponentProps<{}> {
-    user: AppStore.user;
+    user: AppStore.User;
 }
 
 export class Me extends React.Component<MeProps> {

@@ -10,7 +10,7 @@ const AceptContactRequestAction = (user: { friendRequests: Array<string> }) => {
 };
 
 export const AceptContactRequest = (contactEmail: string) => {
-    return (dispatch: Dispatch<AppStore.user>) => {
+    return (dispatch: Dispatch<AppStore.User>) => {
         console.log('Acept the contact request: ', contactEmail);
         request.post('/acceptfriendrequest', { withCredentials: true, contactEmail })
             .then(({ data }) => {

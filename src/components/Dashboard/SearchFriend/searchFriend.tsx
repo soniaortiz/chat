@@ -16,6 +16,7 @@ interface SearchFriendState {
     users: UserContact[];
     viewUser: boolean;
 }
+
 export class SearchFriend extends React.Component<SearchFriendProps, SearchFriendState> {
 
     constructor(props: SearchFriendProps) {

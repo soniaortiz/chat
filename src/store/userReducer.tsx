@@ -2,9 +2,10 @@ import { handleActions } from 'redux-actions';
 import {
     REQUEST_USER_INFO, SEND_CONTACT_REQUEST,
     ACEPT_CONTACT_REQUEST, REJECT_CONTACT_REQUEST,
-    LOG_OUT
+    LOG_OUT,
+    UPDATE_CONTACT_REQUESTS
 } from './actionsTypes';
-const userData: AppStore.user = { // init state
+const userData: AppStore.User = { // init state
     name: '',
     middleName: '',
     lastName: '',
@@ -17,15 +18,14 @@ const userData: AppStore.user = { // init state
     conversations: []
 };
 
-type payload = AppStore.user;
+type payload = AppStore.User;
 
-export const Reducer = handleActions<AppStore.user, payload>(
+export const Reducer = handleActions<AppStore.User, payload>(
     {
         [REQUEST_USER_INFO]: (state, action) => {
             return (action.payload) ?
                 { ...action.payload } : { ...state };
         },
-
         [SEND_CONTACT_REQUEST]: (state, action) => {
             // console.log('in send contact reducer', state, action);
             return (action.payload) ?
@@ -51,6 +51,13 @@ export const Reducer = handleActions<AppStore.user, payload>(
         },
         [LOG_OUT]: (state) => { // why to always pass a state
             return state;
+        },
+        [UPDATE_CONTACT_REQUESTS]: (state, action) => {
+            return (action.payload) ? {
+                ...state,
+                friendRequests: action.payload.friendRequests
+            } : { ...state };
+
         }
     },
     userData

@@ -14,7 +14,7 @@ const RejectContactRequestAction = (user: { friendRequests: Array<string> }) => 
 // Thunk 
 
 export const RejectContactRequest = (contactEmail: string) => {
-    return (dispatch: Dispatch<AppStore.user>) => {
+    return (dispatch: Dispatch<AppStore.User>) => {
         request.post('/rejectContactRequest', { withCredentials: true, contactEmail })
             .then(
                 ({ data }) => {

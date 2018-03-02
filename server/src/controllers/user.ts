@@ -72,12 +72,11 @@ export class User extends Controller {
             .catch((e: Error) => res.send(e));
     }
     profile = (req: express.Request, res: express.Response, next: express.NextFunction) => {
-        // console.log('profile executed', req.user);
+        console.log('profile executed', req.user.email);
         const user = req.user;
         !user && res.status(404).send('User not found');
-        nspUser.to(user.email).emit('profile', user);
-        // res.json(user); // send the user
-        res.sendStatus(200);
+        // nspUser.to(user.email).emit('profile', user);
+        res.json(user);
     }
     conversations = (req: express.Request, res: express.Response, next: express.NextFunction) => {
         // console.log("Conversations");
@@ -116,8 +115,12 @@ export class User extends Controller {
             .then((user) => {
                 // io.in(user.id).emmit('send request', { hello: 'world' });
                 // io.emit('send request', { hello: 'world' });
-                nspUser.to(contactEmail).emit('a', { message: 'you have a new contact request ' });
-                res.sendStatus(200);
+                console.log('---------', user);
+                if (user) {
+                    nspUser.to(contactEmail).emit('contact request', user.friendRequests);
+                    res.sendStatus(200);
+                }
+
             })
             .catch((e) => res.send(e));
     }
@@ -254,4 +257,13 @@ export class User extends Controller {
                 res.send(e);
             });
     }
+    // updateContacRequests = (req: express.Request, res: express.Response, next: express.NextFunction) => {
+    //     console.log('update contac requests: ', req.user.email);
+    //     UserModel.findOne({ email: req.user.email })
+    //         .then((user) => {
+    //             // emit.to(req.user)
+    //             console.log(user);
+    //         })
+    //         .catch((e) => res.send(e));
+    // }
 }

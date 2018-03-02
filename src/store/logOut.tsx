@@ -13,7 +13,7 @@ const LogOut = () => {
 
 // tslint:disable-next-line:no-any
 export function LogOutRequest (history: H.History) {
-    return function (dispatch: Dispatch<AppStore.user>) {
+    return function (dispatch: Dispatch<AppStore.User>) {
         return request.post('/logout', { withCredentials: true })
             .then(() => {
                 console.log('Loging out');

@@ -62,8 +62,9 @@ declare namespace AppStore {//store
     interface app {
         logged: boolean;
         loading: boolean;
+        newContactRequests: Array<string>;
     }
-    interface user {
+    interface User {
         name: string;
         middleName: string;
         lastName: string;
@@ -79,7 +80,7 @@ declare namespace AppStore {//store
     interface messages { }
     interface store {
         app: app;
-        user: user;
+        user: User;
         conversations: conversations;
         messages: messages;
         // contacts: contacts;

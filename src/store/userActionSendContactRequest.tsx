@@ -9,7 +9,7 @@ const SendContactRequestAction = () => {
 };
 
 export const SendContactRequest = (userEmail: string, contactEmail: string) => {
-    return (dispatch: Dispatch<AppStore.user>) => {
+    return (dispatch: Dispatch<AppStore.User>) => {
         console.log('Dispatching');
         return request.post('/sendfriendrequest', { withCredentials: true, userEmail, contactEmail })
             .then(({ data }) => {
