@@ -50,11 +50,11 @@ interface UserContact {
     email: string;
 }
 
-interface contact {
+interface Contact {
     contact_id: string;
     contactName: string;
 }
-interface conversation {
+interface Conversation {
     conversation_id: string;
     conversationName: string;
 }
@@ -63,6 +63,7 @@ declare namespace AppStore {//store
         logged: boolean;
         loading: boolean;
         requestWindowOpened: boolean;
+        conversationSelected: boolean;
         newContactRequests: Array<string>;
     }
     interface User {
@@ -74,10 +75,10 @@ declare namespace AppStore {//store
         gender: string;
         avatar: string;
         friendRequests: string[];
-        contactList: Array<contact>;
-        conversations: Array<conversation>;
+        contactList: Array<Contact>;
+        conversations: Array<Conversation>;
     }
-    interface conversations extends Array<conversation> { }
+    interface conversations extends Array<Conversation> { }
     interface messages { }
     interface store {
         app: App;

@@ -9,9 +9,3 @@ export const updateContactRequestsActionCreator = (payload: Array<string>) => {
         payload: {friendRequests: payload}
     };
 };
-
-// export const updateContactRequestsAction = () => {
-//     return (dispatch: Dispatch<AppStore.app>) => {
-//         return dispatch(updateContactRequestsActionCreator(Apps));
-//     }
-// }

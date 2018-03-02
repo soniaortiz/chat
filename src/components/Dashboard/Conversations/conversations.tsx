@@ -1,42 +1,56 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { MenuItem } from 'material-ui';
-// import {Conversation} from '../../Conversation/Conversation';
-
+// import { Conversation } from '../../Conversation/Conversation';
+import { SetConversationWindow } from '../../../store/appSetConversationModalWindow';
 interface ConversationsProps {
 }
 
-export class Conversations extends React.Component<ConversationsProps & ConversationsMapStateToProps> {
+export class Conversations extends React.Component<ConversationWindowProps> {
 
     openConversation = () => {
         console.log('Display conversation');
+        this.props.dispatchConversation();
+        // user should joing the room of the conversation id
+        // should emit and receive the message
     }
     render() {
-        return <React.Fragment>
-            {this.props.conversationsList ?
-                this.props.conversationsList.map((element, index) => (
-                    <MenuItem
-                        key={index}
-                        onClick={this.openConversation}
-                    >
-                        {element}
-                    </MenuItem>
-                )) : {}
-            }
-        </ React.Fragment>;
-
+        return (
+            // this.props.conversationSelected ?
+            //     <Conversation /> :
+                <React.Fragment>
+                    {this.props.conversationsList ?
+                        this.props.conversationsList.map((element, index) => (
+                            <MenuItem
+                                key={index}
+                                onClick={this.openConversation}
+                            >
+                                {element}
+                            </MenuItem>
+                        )) : {}
+                    }
+                </ React.Fragment>
+        );
     }
 }
 
 interface ConversationsMapStateToProps {
-    conversationsList: Array<conversation>;
+    conversationsList: Array<Conversation>;
+    conversationSelected: boolean;
 }
 
-export default connect<ConversationsMapStateToProps, {}, ConversationsProps, AppStore.store>(
+interface ConversationMapDispatchToProps {
+    dispatchConversation: () => void;
+}
+
+type ConversationWindowProps = ConversationsMapStateToProps & ConversationMapDispatchToProps & ConversationsProps;
+
+export default connect<ConversationsMapStateToProps, ConversationMapDispatchToProps, ConversationsProps, AppStore.store>(
     (store) => ({
-        conversationsList: store.user.conversations
+        conversationsList: store.user.conversations,
+        conversationSelected: store.app.conversationSelected
     }),
     {
-        //  getConversations: RequestConversations
+        dispatchConversation: SetConversationWindow
     }
 )(Conversations) as React.ComponentClass;

@@ -25,7 +25,7 @@ export class Contacts extends React.Component<ContactsProps&ContactsMapStateToPr
 }
 
 interface ContactsMapStateToProps {
-    contactsList: Array <contact>;
+    contactsList: Array <Contact>;
 }
 interface ContactsMapDispatchToProps {
     // getContacts: () => void
