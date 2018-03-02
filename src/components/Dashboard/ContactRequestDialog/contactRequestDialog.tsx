@@ -4,8 +4,10 @@ import { connect, DispatchProp } from 'react-redux';
 import { SendContactRequest } from '../../../store/userActionSendContactRequest';
 import SocialPersonAdd from 'material-ui/svg-icons/social/person-add';
 import { nspUser } from '../../../socketsClient';
-interface ContactRequestProps extends DispatchProp<AppStore.User> {
-    user: UserContact; // AppStore.user;
+import { setModalWindowAction } from '../../../store/appActionRequestWindow';
+
+interface ContactRequestProps extends DispatchProp<AppStore.User> { // own props
+    user: UserContact;
     onCloseDialog: () => void;
 }
 
@@ -17,24 +19,26 @@ export class ContactRequestDialog extends React.Component<connectedComponentProp
     constructor(props: connectedComponentProps) {
         super(props);
         this.state = { open: true };
-        console.log('email in modal', this.props.user);
+        this.props.setModalRequestWindow(); // set to true
+        // console.log('email in modal', this.props.user);
     }
 
     handleClose = () => {
-        this.setState({ open: false });
+        // this.setState({ open: false });
         this.props.onCloseDialog();
+        this.props.setModalRequestWindow(); // set to false
     }
 
     handleContactRequest = () => {
-        // console.log('send request to user ', this.props.user.email);
         this.props.sendfriendrequest(this.props.emailSender, this.props.user.email);
         nspUser.emit('send contact request', { user: this.props.user.email });
-        this.setState({ open: false });
+        // this.setState({ open: false });
+        this.props.setModalRequestWindow(); // set to false        
     }
 
     render() {
         return (
-            <Dialog open={this.state.open}>
+            <Dialog open={this.props.requestWindowOpened}>
                 <Paper >
                     user email: {this.props.user.email}
 
@@ -56,20 +60,24 @@ export class ContactRequestDialog extends React.Component<connectedComponentProp
 }
 
 type mapToProps = {
-    emailSender: string
+    emailSender: string,
+    requestWindowOpened: boolean
 };
 
 type dispatchToProps = {
     sendfriendrequest(email: string, emailContact: string): void;
+    setModalRequestWindow(): void;
 };
 
 type connectedComponentProps = mapToProps & dispatchToProps & ContactRequestProps;
 
 export default connect<mapToProps, dispatchToProps, ContactRequestProps, AppStore.store>(
     (store) => ({
-        emailSender: store.user.email
+        emailSender: store.user.email,
+        requestWindowOpened: store.app.requestWindowOpened
     }),
     {
-        sendfriendrequest: SendContactRequest
+        sendfriendrequest: SendContactRequest,
+        setModalRequestWindow: setModalWindowAction
     }
 )(ContactRequestDialog);

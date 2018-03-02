@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { MenuItem } from 'material-ui';
+// import {Conversation} from '../../Conversation/Conversation';
 
 interface ConversationsProps {
 }

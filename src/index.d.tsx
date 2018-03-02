@@ -59,9 +59,10 @@ interface conversation {
     conversationName: string;
 }
 declare namespace AppStore {//store
-    interface app {
+    interface App {
         logged: boolean;
         loading: boolean;
+        requestWindowOpened: boolean;
         newContactRequests: Array<string>;
     }
     interface User {
@@ -79,7 +80,7 @@ declare namespace AppStore {//store
     interface conversations extends Array<conversation> { }
     interface messages { }
     interface store {
-        app: app;
+        app: App;
         user: User;
         conversations: conversations;
         messages: messages;

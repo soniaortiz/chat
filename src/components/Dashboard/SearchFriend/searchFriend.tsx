@@ -4,7 +4,8 @@ import { AutoComplete, MenuItem, Paper } from 'material-ui';
 import ContactRequestDialog from '../ContactRequestDialog/contactRequestDialog';
 import ActionSearch from 'material-ui/svg-icons/action/search';
 import SvgIcon from 'material-ui/SvgIcon';
-// import { connect } from 'react-redux';
+import { connect } from 'react-redux';
+import { setModalWindowAction } from '../../../store/appActionRequestWindow';
 
 interface SearchFriendProps {
 }
@@ -17,9 +18,9 @@ interface SearchFriendState {
     viewUser: boolean;
 }
 
-export class SearchFriend extends React.Component<SearchFriendProps, SearchFriendState> {
+export class SearchFriend extends React.Component<SearchFriendPropsMix, SearchFriendState> {
 
-    constructor(props: SearchFriendProps) {
+    constructor(props: SearchFriendPropsMix) {
         super(props);
         this.state = {
             userName: '', userEmail: '',
@@ -37,24 +38,25 @@ export class SearchFriend extends React.Component<SearchFriendProps, SearchFrien
     }
 
     displayUser = (event: React.MouseEvent<HTMLDivElement>) => {
-        // console.dir(event.target);
-        // console.dir(event.currentTarget);
         const emailUser = this.state.users[Number(event.currentTarget.id)];
-        console.log('Emailuser: ', emailUser);
+        // console.log('Emailuser: ', emailUser);
         this.setState({ viewUser: true, selected: emailUser });
+        console.log('Display user: ', this.props.requestWindowOpened);
+        this.props.setModalRequestWindow();
+        console.log('this.props.modal', this.props.requestWindowOpened);
 
     }
 
     onCloseDialog = () => {
         console.log('Dialog closed');
-        this.setState({ viewUser: false });
+        // this.setState({ viewUser: false });
     }
 
     handleNewRequest = (value: string) => {
         if (!value) { return; }
-        console.log(this.state.viewUser);
+        this.props.setModalRequestWindow();
         this.setState({ userName: value });
-        console.log(value);
+        // this.console.log(value);
         request
             .get('/findUsers', {
                 params: {
@@ -68,15 +70,13 @@ export class SearchFriend extends React.Component<SearchFriendProps, SearchFrien
 
             })
             .catch((e) => console.log(e));
-        // }, 1000);
     }
 
     render() {
         return (
             <Paper >
                 {
-
-                    this.state.viewUser ?
+                    this.props.requestWindowOpened ?
                         <ContactRequestDialog
                             user={this.state.selected}
                             onCloseDialog={this.onCloseDialog}
@@ -113,19 +113,21 @@ export class SearchFriend extends React.Component<SearchFriendProps, SearchFrien
     }
 }
 
-// interface MapPropsToStoreSF {
+type SearchFriendPropsMix = SearchFriendMapToProps & SearchFriendProps & SearchFriendDispatchToProps;
 
-// }
+interface SearchFriendMapToProps {
+    requestWindowOpened: boolean;
+}
 
-// interface MapDispatchToPropsSF {
-
-// }
-
-// export default connect<{}, {}, {}, AppStore.store>(
-//     () => ({
-
-//     }),
-//     {
-
-//     }
-// )
+interface SearchFriendDispatchToProps {
+    setModalRequestWindow: () => void;
+}
+export default connect<SearchFriendMapToProps, SearchFriendDispatchToProps, SearchFriendProps, AppStore.store>(
+    (store) => (
+        {
+            requestWindowOpened: store.app.requestWindowOpened
+        }),
+    {
+        setModalRequestWindow: setModalWindowAction
+    }
+)(SearchFriend);
