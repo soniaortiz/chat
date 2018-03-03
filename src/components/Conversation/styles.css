@@ -1,0 +1,7 @@
+.Conversation{
+    border-radius: 10%;
+    display: flex;
+    flex-grow: 1;
+    background: fuchsia;
+    text-decoration: underline
+}

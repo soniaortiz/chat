@@ -27,7 +27,7 @@ interface SignupState {
     password: string;
     enabledBtn: boolean;
 }
-interface LoginState {//from child
+interface LoginState { // from child
     email: string;
     password: string;
     redirect: boolean;

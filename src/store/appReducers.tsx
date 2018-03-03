@@ -28,6 +28,7 @@ export const Reducer = handleActions(
         },
         [SET_CONVERSATION_MODAL_WINDOW]: (state: AppStore.App) => {
             return { ...state, conversationSelected: !state.conversationSelected };
-        }
+        },
+
     },
     appState);

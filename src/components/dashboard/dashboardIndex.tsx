@@ -7,13 +7,11 @@ import Sidebar from '../Dashboard/Sidebar/sidebar';
 import  Panel  from './Panel/panel';
 import { socketListeners } from '../../socketsClient';
 import './style.css';
-// import { updateContactRequestsActionCreator } from '../../store/appUpdateRequestReducer';
 
 interface DashboardProps extends DispatchProp<{}>, RouteComponentProps<{}> {
     getUser: () => Promise<boolean>;
     user: AppStore.User;
     logged: boolean;
-    // getNewContactRequests: any;
 }
 
 export class Dashboard extends React.Component<DashboardProps, DashboardState> {
@@ -27,10 +25,6 @@ export class Dashboard extends React.Component<DashboardProps, DashboardState> {
         this.props.getUser()
             .then(() => console.log(this.props.user));
     }
-    // componentWillUpdate() {
-    //     console.log('component will update');
-    //     this.props.getNewContactRequests();
-    // }
     render() {
         return (
             <div>

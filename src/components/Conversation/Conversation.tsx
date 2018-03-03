@@ -1,24 +1,45 @@
 import * as React from 'react';
-import { Paper, TextField, FlatButton } from 'material-ui';
+import { Paper, TextField, FlatButton, RaisedButton } from 'material-ui';
 import { connect } from 'react-redux';
+import { UpdateConversationStatus } from '../../store/conversationAction';
 
-export class Conversation extends React.Component {
+const style = {
+    background: 'fuchsia'
+};
+
+export class Conversation extends React.Component<ConversationPropsMix> {
+    closeConversation = () => {
+        console.log('close conversation');
+        this.props.SetConversationStateOpen();
+    }
     render() {
+
         return (
-            <Paper>
-                <FlatButton label={'Close'} />
-                this is going to be the conversation
+            <Paper style={style}>
+                <Paper >
+                    <FlatButton label={'Close'} onClick={this.closeConversation} />
+                    this is going to be the conversation list conversations
                 <Paper>
-                    <TextField />
-                    <FlatButton label={'Send'} />
+                        <TextField />
+                        <RaisedButton label={'Send'} />
+                    </Paper>
                 </Paper>
+
             </Paper>
         );
     }
 }
 
-export default connect<{}, {}, {}, AppStore.Store>(
+interface ConversationMapDispatchToProps {
+    SetConversationStateOpen: () => void;
+}
+
+type ConversationPropsMix = ConversationMapDispatchToProps;
+export default connect<{}, ConversationMapDispatchToProps, {}, AppStore.Store>(
     (store) => ({
 
-    })
+    }),
+    {
+        SetConversationStateOpen: UpdateConversationStatus
+    }
 )(Conversation);
