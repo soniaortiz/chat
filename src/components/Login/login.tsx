@@ -7,7 +7,7 @@ import { Dialog, Paper } from 'material-ui';
 // import * as io from 'socket.io-client';
 // const socket = io('http://localhost:8000');
 
-interface LoginProps extends DispatchProp<AppStore.store>, RouteComponentProps<{}> {
+interface LoginProps extends DispatchProp<AppStore.Store>, RouteComponentProps<{}> {
     isLogged: boolean;
     isLoading: boolean;
     login(email: string, password: string): Promise<boolean>;
@@ -72,7 +72,7 @@ export class Login extends React.Component<LoginProps, LoginState> {
     }
 }
 
-export default connect<{}, {}, LoginProps, AppStore.store>(
+export default connect<{}, {}, LoginProps, AppStore.Store>(
     (store) => (
         {
             isLogged: store.app.logged,

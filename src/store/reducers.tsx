@@ -4,7 +4,7 @@ import { Reducer as user } from './userReducer';
 import { Reducer as conversations } from './conversationsReducer';
 // import { Reducer as contacts } from './contactReducer';
 
-export const store = combineReducers<AppStore.store>(
+export const store = combineReducers<AppStore.Store>(
     {
         app,
         user,

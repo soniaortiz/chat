@@ -12,7 +12,7 @@ const requestLoginActionCreator = () => {
 };
 
 export const RequestLogin = (email: string, password: string) => {
-    return (dispatch: Dispatch<AppStore.store>) => {
+    return (dispatch: Dispatch<AppStore.Store>) => {
         return request.post(
             '/login',
             { email, password },

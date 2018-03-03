@@ -47,7 +47,7 @@ export class Dashboard extends React.Component<DashboardProps, DashboardState> {
     }
 }
 
-export default connect<{}, {}, DashboardProps, AppStore.store>(
+export default connect<{}, {}, DashboardProps, AppStore.Store>(
     (store) => ({
         user: store.user,
         logged: store.app.logged

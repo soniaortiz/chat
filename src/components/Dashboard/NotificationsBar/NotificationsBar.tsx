@@ -88,7 +88,7 @@ interface MapStateToPropsNB {
     userContactRequests: string[];
 }
 
-export default connect<MapStateToPropsNB, MapDispatchToPropsNB, NotificationsBarProps, AppStore.store>(
+export default connect<MapStateToPropsNB, MapDispatchToPropsNB, NotificationsBarProps, AppStore.Store>(
     (store) => ({
         // userMessages: store
         userContactRequests: store.user.friendRequests

@@ -50,7 +50,7 @@ interface MapDispatchToProps {
     aceptContactRequest: (contactEmail: string) => void;
     rejectContactRequest: (contactEmail: string) => void;
 }
-export default connect<MapStateToProps, MapDispatchToProps, {}, AppStore.store>(
+export default connect<MapStateToProps, MapDispatchToProps, {}, AppStore.Store>(
     (store) => ({
         requestList: store.user.friendRequests
     }),

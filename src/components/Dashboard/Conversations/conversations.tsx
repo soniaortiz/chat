@@ -11,8 +11,6 @@ export class Conversations extends React.Component<ConversationWindowProps> {
     openConversation = () => {
         console.log('Display conversation');
         this.props.dispatchConversation();
-        // user should joing the room of the conversation id
-        // should emit and receive the message
     }
     render() {
         return (
@@ -45,7 +43,7 @@ interface ConversationMapDispatchToProps {
 
 type ConversationWindowProps = ConversationsMapStateToProps & ConversationMapDispatchToProps & ConversationsProps;
 
-export default connect<ConversationsMapStateToProps, ConversationMapDispatchToProps, ConversationsProps, AppStore.store>(
+export default connect<ConversationsMapStateToProps, ConversationMapDispatchToProps, ConversationsProps, AppStore.Store>(
     (store) => ({
         conversationsList: store.user.conversations,
         conversationSelected: store.app.conversationSelected

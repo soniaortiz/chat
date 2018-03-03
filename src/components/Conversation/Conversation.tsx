@@ -17,7 +17,7 @@ export class Conversation extends React.Component {
     }
 }
 
-export default connect<{}, {}, {}, AppStore.store>(
+export default connect<{}, {}, {}, AppStore.Store>(
     (store) => ({
 
     })

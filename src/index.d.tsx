@@ -1,15 +1,15 @@
 interface PasswordProps {
     passwordValidation: Function;
 }
-interface passwordState {
+interface PasswordState {
     password: string;
     confirmationPassword: string;
     disable: boolean;
 }
-interface emailProps {
+interface EmailProps {
     setEmailValue: Function;
 }
-interface emailState {
+interface EmailState {
     valid: boolean;
     expression: boolean;
 }
@@ -58,7 +58,7 @@ interface Conversation {
     conversation_id: string;
     conversationName: string;
 }
-declare namespace AppStore {//store
+declare namespace AppStore {// store
     interface App {
         logged: boolean;
         loading: boolean;
@@ -78,13 +78,13 @@ declare namespace AppStore {//store
         contactList: Array<Contact>;
         conversations: Array<Conversation>;
     }
-    interface conversations extends Array<Conversation> { }
-    interface messages { }
-    interface store {
+    interface Conversations extends Array<Conversation> { }
+    interface Messages { }
+    interface Store {
         app: App;
         user: User;
-        conversations: conversations;
-        messages: messages;
+        conversations: Conversations;
+        messages: Messages;
         // contacts: contacts;
     }
 }

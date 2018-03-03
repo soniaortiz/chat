@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Paper } from 'material-ui';
 
-export class Password extends React.Component<PasswordProps, passwordState> {
+export class Password extends React.Component<PasswordProps, PasswordState> {
     constructor(props: PasswordProps) {
         super(props);
         this.state = {

@@ -71,7 +71,7 @@ type dispatchToProps = {
 
 type connectedComponentProps = mapToProps & dispatchToProps & ContactRequestProps;
 
-export default connect<mapToProps, dispatchToProps, ContactRequestProps, AppStore.store>(
+export default connect<mapToProps, dispatchToProps, ContactRequestProps, AppStore.Store>(
     (store) => ({
         emailSender: store.user.email,
         requestWindowOpened: store.app.requestWindowOpened

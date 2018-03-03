@@ -8,7 +8,7 @@ const setModalWindowActionCreator = () => {
 };
 
 export const setModalWindowAction = () => {
-    return (dispatch: Dispatch<AppStore.store>) => {
+    return (dispatch: Dispatch<AppStore.Store>) => {
         dispatch(setModalWindowActionCreator());
     };
 };

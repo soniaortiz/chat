@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { TextField, Paper } from 'material-ui';
 
-export class EmailField extends React.Component<emailProps, emailState> {
-    constructor(props: emailProps) {
+export class EmailField extends React.Component<EmailProps, EmailState> {
+    constructor(props: EmailProps) {
         super(props);
         this.state = { valid: false, expression: true };
     }

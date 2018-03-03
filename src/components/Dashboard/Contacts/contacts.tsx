@@ -31,7 +31,7 @@ interface ContactsMapDispatchToProps {
     // getContacts: () => void
 }
 
-export default connect<ContactsMapStateToProps, ContactsMapDispatchToProps, ContactsProps, AppStore.store>(
+export default connect<ContactsMapStateToProps, ContactsMapDispatchToProps, ContactsProps, AppStore.Store>(
     (store) => ({
         contactsList: store.user.contactList
     }),

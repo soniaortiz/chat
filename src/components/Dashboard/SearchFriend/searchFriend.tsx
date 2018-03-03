@@ -122,7 +122,7 @@ interface SearchFriendMapToProps {
 interface SearchFriendDispatchToProps {
     setModalRequestWindow: () => void;
 }
-export default connect<SearchFriendMapToProps, SearchFriendDispatchToProps, SearchFriendProps, AppStore.store>(
+export default connect<SearchFriendMapToProps, SearchFriendDispatchToProps, SearchFriendProps, AppStore.Store>(
     (store) => (
         {
             requestWindowOpened: store.app.requestWindowOpened

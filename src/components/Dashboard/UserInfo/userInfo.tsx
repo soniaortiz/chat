@@ -39,7 +39,7 @@ export class Me extends React.Component<MeProps> {
     }
 }
 
-export default connect<{}, {}, {}, AppStore.store>(
+export default connect<{}, {}, {}, AppStore.Store>(
     (store) => ({
         user: store.user
     }),
