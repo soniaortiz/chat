@@ -192,6 +192,8 @@ var User = /** @class */ (function (_super) {
                     case 0:
                         contactEmail = req.body.contactEmail;
                         email = req.user.email;
+                        console.log("emailContact", contactEmail);
+                        console.log("email", email);
                         return [4 /*yield*/, new conversationSchema_1.ConversationModel({}).save()];
                     case 1:
                         conversation = _a.sent();
@@ -201,7 +203,7 @@ var User = /** @class */ (function (_super) {
                             }, { new: true }).exec()];
                     case 2:
                         me = _a.sent();
-                        return [4 /*yield*/, userSchema_1.UserModel.findOneAndUpdate(contactEmail, {
+                        return [4 /*yield*/, userSchema_1.UserModel.findOneAndUpdate({ email: contactEmail }, {
                                 $push: {
                                     contacts: email, conversations: conversation._id
                                 }
@@ -210,6 +212,7 @@ var User = /** @class */ (function (_super) {
                     case 3:
                         contact = _a.sent();
                         if (!(me && contact)) return [3 /*break*/, 5];
+                        console.log('me: ', me._id, 'contact', contact._id);
                         return [4 /*yield*/, conversationSchema_1.ConversationModel.findOneAndUpdate(conversation._id, {
                                 $set: {
                                     participants: [me._id, contact._id],
@@ -228,20 +231,26 @@ var User = /** @class */ (function (_super) {
             });
         }); };
         _this.sendMessage = function (req, res, next) {
+            console.log('sender@@@@', req.user);
             new messageSchema_1.MessageModel({
                 messageContent: req.body.messageContent,
-                sender: req.user._id
+                sender: req.user._id,
+                date: new Date().toString(),
             })
                 .save()
                 .then(function (m) {
+                console.log('***message***', m);
+                console.log('***conver_id***', req.body.conversation_id);
                 conversationSchema_1.ConversationModel
                     .findOneAndUpdate({ _id: req.body.conversation_id }, {
                     $push: { messages: m._id }
+                }, { new: true })
+                    .then(function (conversation) {
+                    console.log('***conversation: ***', conversation);
+                    app_1.nspConversation.to(req.body.conversation_id)
+                        .emit('new message', m);
+                    res.sendStatus(200);
                 });
-            })
-                .then(function (conversation) {
-                app_1.nspConversation.to(req.body.conversation_id).emit(req.body.messageContent);
-                res.sendStatus(200);
             })
                 .catch(function (e) { return res.send(e); });
         };

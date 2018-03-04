@@ -24,7 +24,8 @@ export class Conversation extends React.Component<ConversationPropsMix, Conversa
 
     sendMessage = () => {
         // nspConversation.emit('new message', this.state.message);
-        this.props.SendMessage({ message: this.state.message, conversation_id: this.props.conversationId })
+        console.log(this.state.message);
+        this.props.SendMessage({ messageContent: this.state.message, conversation_id: this.props.conversationId })
     }
 
     handleChange = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
@@ -45,7 +46,7 @@ export class Conversation extends React.Component<ConversationPropsMix, Conversa
 
 interface ConversationMapDispatchToProps {
     SetConversationStateOpen: () => void;
-    SendMessage: (data: { message: string, conversation_id: string }) => void;
+    SendMessage: (data: { messageContent: string, conversation_id: string }) => void;
 }
 
 interface ConversationMapToProps {

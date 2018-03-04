@@ -151,8 +151,8 @@ export class User extends Controller {
         // console.log('*******************************************************************************  ');
         const { contactEmail } = req.body;
         const email = req.user.email;
-        // console.log("emailContact", contactEmail);
-        // console.log("email", email);
+        console.log("emailContact", contactEmail);
+        console.log("email", email);
         const conversation = await new ConversationModel({}).save();
         const me = await UserModel.findOneAndUpdate(
             { email },
@@ -163,16 +163,17 @@ export class User extends Controller {
             { new: true }).exec();
 
         const contact = await UserModel.findOneAndUpdate(
-            contactEmail,
+            {email: contactEmail},
             {
                 $push: {
                     contacts: email, conversations: conversation._id
                 }
-            },
-            { new: true })
+            }, 
+            {new: true})
             .exec();
 
         if (me && contact) {
+            console.log('me: ', me._id, 'contact', contact._id);
             await ConversationModel.findOneAndUpdate(
                 conversation._id,
                 {
@@ -227,26 +228,33 @@ export class User extends Controller {
         //     .catch((e) => res.send(e));
     }
     sendMessage = (req: express.Request, res: express.Response, next: express.NextFunction) => {
+        console.log('sender@@@@', req.user);
         new MessageModel({
             messageContent: req.body.messageContent,
-            sender: req.user._id
+            sender: req.user._id,
+            date: new Date().toString(),
         })
             .save()
             .then(
                 (m) => { // after the message is created then the reference is passed to the conversation
+                    console.log('***message***', m);
+                    console.log('***conver_id***', req.body.conversation_id);
                     ConversationModel
                         .findOneAndUpdate(
                             { _id: req.body.conversation_id },
                             {
                                 $push: { messages: m._id }
-                            }
-                        );
+                            },
+                            {new: true}
+                        )
+                        .then((conversation) => {
+                            console.log('***conversation: ***', conversation);
+                            nspConversation.to(req.body.conversation_id)
+                            .emit('new message', m);
+                            res.sendStatus(200);
+                        });
                 }
             )
-            .then((conversation) => {
-                nspConversation.to(req.body.conversation_id).emit(req.body.messageContent);
-                res.sendStatus(200);
-            })
             .catch((e: Error) => res.send(e));
     }
     logout = (req: express.Request, res: express.Response, next: express.NextFunction) => {

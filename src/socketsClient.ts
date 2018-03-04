@@ -27,4 +27,7 @@ export function socketListeners() {
         store.dispatch(updateContactRequestsActionCreator(data));
     });
 
+    nspConversation.on('new message', (data: any) => {
+        console.log(data);
+    });
 }

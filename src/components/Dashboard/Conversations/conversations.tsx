@@ -22,6 +22,7 @@ export class Conversations extends React.Component<ConversationWindowProps> {
         console.log(this.props.conversationsList);
         return (
             <React.Fragment>
+                {console.log(this.props.conversationsList)}
                 {
                     this.props.conversationsList ?
                         this.props.conversationsList.map((element, index) => (
@@ -33,9 +34,11 @@ export class Conversations extends React.Component<ConversationWindowProps> {
                                     element.conversationName ?
                                         element.conversationName :
                                         (
-                                            element.participants.find((participant) =>
-                                                participant.email != this.props.myEmail
-                                            )!.name
+                                            element.participants.filter((participant) =>{
+                                                console.log(participant.email, this.props.myEmail)
+                                                return participant.email != this.props.myEmail
+                                            }
+                                            )[0].name
                                         )
                                 }
                             </MenuItem>

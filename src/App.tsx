@@ -13,13 +13,17 @@ import { store as storeReducer } from './store/reducers';
 import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 // import * as Colors from 'material-ui/styles/colors';
 // import { fade } from 'material-ui/utils/colorManipulator';
+// const devtools = require('remote-redux-devtools');
+import { composeWithDevTools } from 'remote-redux-devtools';
 
 const getTheme = () => {
   let overwrites = {};
   return getMuiTheme(baseTheme, overwrites);
 };
 
-export const store = createStore(storeReducer, applyMiddleware(thunk));
+// export const store = createStore(storeReducer, applyMiddleware(thunk));
+export const store = createStore(storeReducer, composeWithDevTools(applyMiddleware(thunk)));
+
 // store.dispatch
 class App extends React.Component {
   render() {

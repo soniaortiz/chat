@@ -81,7 +81,12 @@ declare namespace AppStore {// store
         conversations: Array<Conversation>;
     }
     interface Conversations extends Array<Conversation> { }
-    interface Messages { }
+    interface Messages {
+        _id: string;
+        messageContent: string;
+        date: string;
+        sender: string;
+     }
     interface Store {
         app: App;
         user: User;

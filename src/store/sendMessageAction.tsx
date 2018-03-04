@@ -7,7 +7,7 @@ import request from 'axios';
 //     payload
 // });
 
-export const SendMessage = (data: {message: string, conversation_id: string}) => {
+export const SendMessage = (data: {messageContent: string, conversation_id: string}) => {
     return (dispatch: Dispatch<AppStore.Store>) => {
         return request.post('/conversation/sendmessage', data)
             .then((status) => {
