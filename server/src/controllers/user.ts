@@ -7,7 +7,7 @@ import { Error } from 'mongoose';
 import * as jwt from 'jsonwebtoken';
 import { Secret } from 'jsonwebtoken';
 import * as bcrypt from 'bcrypt';
-import { io, nspUser } from '../app';
+import { io, nspUser, nspConversation } from '../app';
 import * as moment from 'moment';
 
 export class User extends Controller {
@@ -229,7 +229,7 @@ export class User extends Controller {
     sendMessage = (req: express.Request, res: express.Response, next: express.NextFunction) => {
         new MessageModel({
             messageContent: req.body.messageContent,
-            sender: req.body.sender
+            sender: req.user._id
         })
             .save()
             .then(
@@ -243,7 +243,10 @@ export class User extends Controller {
                         );
                 }
             )
-            .then((conversation) => res.send(conversation))
+            .then((conversation) => {
+                nspConversation.to(req.body.conversation_id).emit(req.body.messageContent);
+                res.sendStatus(200);
+            })
             .catch((e: Error) => res.send(e));
     }
     logout = (req: express.Request, res: express.Response, next: express.NextFunction) => {

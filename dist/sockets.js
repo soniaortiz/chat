@@ -15,6 +15,13 @@ function sockets() {
             client.emit('msg', 'chat, after joining room: ' + email);
         });
     });
+    app_1.nspConversation.on('connection', function (client) {
+        client.on('join conversations', function (conversations) {
+            conversations.forEach(function (conversation) {
+                client.join(conversation._id);
+            });
+        });
+    });
 }
 exports.sockets = sockets;
 //# sourceMappingURL=sockets.js.map

@@ -1,4 +1,5 @@
-import { io, nspUser } from './app';
+import { io, nspUser, nspConversation } from './app';
+import { Conversation } from './controllers/conversation';
 
 export function sockets() {
     console.log('in server sockets: **********************************************************');
@@ -13,6 +14,14 @@ export function sockets() {
             console.log('aaaaaa' + email + ' joined');
             client.join(email);
             client.emit('msg', 'chat, after joining room: ' + email);
+        });
+    });
+
+    nspConversation.on('connection', (client: SocketIO.Socket) => {
+        client.on('join conversations', (conversations) => {
+            conversations.forEach((conversation: any) => {
+                client.join(conversation._id);
+            });
         });
     });
 

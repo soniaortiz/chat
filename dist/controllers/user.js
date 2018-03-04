@@ -230,7 +230,7 @@ var User = /** @class */ (function (_super) {
         _this.sendMessage = function (req, res, next) {
             new messageSchema_1.MessageModel({
                 messageContent: req.body.messageContent,
-                sender: req.body.sender
+                sender: req.user._id
             })
                 .save()
                 .then(function (m) {
@@ -239,7 +239,10 @@ var User = /** @class */ (function (_super) {
                     $push: { messages: m._id }
                 });
             })
-                .then(function (conversation) { return res.send(conversation); })
+                .then(function (conversation) {
+                app_1.nspConversation.to(req.body.conversation_id).emit(req.body.messageContent);
+                res.sendStatus(200);
+            })
                 .catch(function (e) { return res.send(e); });
         };
         _this.logout = function (req, res, next) {

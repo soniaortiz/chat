@@ -8,22 +8,18 @@ interface ConversationsProps {
 
 export class Conversations extends React.Component<ConversationWindowProps> {
 
-    componentDidUpdate() {
-        console.log(this.props.conversationsList);
-    }
-
     componentWillMount() {
-        // will request the conversations 
         this.props.setConversations();
         console.log('the conversations', this.props.conversationsList);
     }
 
-    openConversation = () => {
+    openConversation = (Conversation: any) => () => {
         console.log('Display conversation');
         this.props.conversationSelected ? false :
-            this.props.dispatchConversation();
+            this.props.dispatchConversation(Conversation._id);
     }
     render() {
+        console.log(this.props.conversationsList);
         return (
             <React.Fragment>
                 {
@@ -31,16 +27,16 @@ export class Conversations extends React.Component<ConversationWindowProps> {
                         this.props.conversationsList.map((element, index) => (
                             <MenuItem
                                 key={index}
-                                onClick={this.openConversation}
+                                onClick={this.openConversation(element)}
                             >
                                 {
                                     element.conversationName ?
                                         element.conversationName :
                                         (
-                                            element.participants.filter((participant) =>
+                                            element.participants.find((participant) =>
                                                 participant.email != this.props.myEmail
-                                            )[0].name
-                                    )
+                                            )!.name
+                                        )
                                 }
                             </MenuItem>
                         )) : []
@@ -57,7 +53,7 @@ interface ConversationsMapStateToProps {
 }
 
 interface ConversationMapDispatchToProps {
-    dispatchConversation: () => void;
+    dispatchConversation: (conversationId: string) => void;
     setConversations: () => void;
 }
 
@@ -71,7 +67,6 @@ export default connect<ConversationsMapStateToProps, ConversationMapDispatchToPr
     }),
     {
         dispatchConversation: SetConversationWindow, // to open the conversation once it is selected
-        // dispatch to set the conversations in the 
         setConversations: RequestConversations
     }
 )(Conversations);

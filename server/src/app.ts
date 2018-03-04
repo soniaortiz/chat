@@ -91,4 +91,5 @@ const boot = () => {
 };
 export const io = SocketIO(server);
 export const nspUser = io.of('/user');
+export const nspConversation = io.of('/conversation');
 boot();

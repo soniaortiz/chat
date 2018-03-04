@@ -12,7 +12,8 @@ const appState: AppStore.App = { // initial state
     loading: false,
     requestWindowOpened: false,
     newContactRequests: [],
-    conversationSelected: false
+    conversationSelected: false,
+    currentConversation: ''
 };
 
 export const Reducer = handleActions(
@@ -26,8 +27,12 @@ export const Reducer = handleActions(
         [SET_REQUEST_MODAL_WINDOW]: (state: AppStore.App) => {
             return { ...state, requestWindowOpened: !state.requestWindowOpened };
         },
-        [SET_CONVERSATION_MODAL_WINDOW]: (state: AppStore.App) => {
-            return { ...state, conversationSelected: !state.conversationSelected };
+        [SET_CONVERSATION_MODAL_WINDOW]: (state: AppStore.App, action) => {
+            return action.payload ? {
+                ...state,
+                conversationSelected: !state.conversationSelected,
+                currentConversation: action.payload
+            } : { ...state }; 
         },
 
     },

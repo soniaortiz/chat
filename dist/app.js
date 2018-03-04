@@ -83,5 +83,6 @@ var boot = function () {
 };
 exports.io = SocketIO(server);
 exports.nspUser = exports.io.of('/user');
+exports.nspConversation = exports.io.of('/conversation');
 boot();
 //# sourceMappingURL=app.js.map

@@ -65,6 +65,7 @@ declare namespace AppStore {// store
         loading: boolean;
         requestWindowOpened: boolean;
         conversationSelected: boolean;
+        currentConversation: string;
         newContactRequests: Array<string>;
     }
     interface User {
