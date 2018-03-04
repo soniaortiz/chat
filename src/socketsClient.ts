@@ -21,7 +21,9 @@ export function socketListeners() {
     });
 
     nspUser.on('contact request', (data: Array<string>) => {
-        console.log('message received: ', data);
+        // console.log('message received: ', data);
+        // when a new user send a contact request so 
+        // it triggers the action to update the requests
         store.dispatch(updateContactRequestsActionCreator(data));
     });
 

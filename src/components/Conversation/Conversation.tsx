@@ -13,18 +13,12 @@ export class Conversation extends React.Component<ConversationPropsMix> {
         this.props.SetConversationStateOpen();
     }
     render() {
-
         return (
             <Paper style={style}>
-                <Paper >
-                    <FlatButton label={'Close'} onClick={this.closeConversation} />
-                    this is going to be the conversation list conversations
-                <Paper>
-                        <TextField />
-                        <RaisedButton label={'Send'} />
-                    </Paper>
-                </Paper>
-
+                {/* here is going to map the messages of each conversation */}
+                <FlatButton label={'Close'} onClick={this.closeConversation} />
+                <TextField />
+                <RaisedButton label={'Send'} />
             </Paper>
         );
     }

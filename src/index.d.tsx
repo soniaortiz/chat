@@ -57,6 +57,7 @@ interface Contact {
 interface Conversation {
     conversation_id: string;
     conversationName: string;
+    participants: Array<Partial<AppStore.User>>;
 }
 declare namespace AppStore {// store
     interface App {

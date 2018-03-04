@@ -1,5 +1,6 @@
 import * as mongoose from 'mongoose';
 import * as bcrypt from 'bcrypt';
+import { ObjectId } from 'bson';
 
 const Schema = mongoose.Schema;
 
@@ -12,23 +13,24 @@ export const userSchema = new Schema({
     birthdate: Date,
     gender: String,
     contacts: [String],
-    conversations: [String],
+    conversations: [{ type: Schema.Types.ObjectId, ref: 'Conversation' }],
+    //   friends: [{ type: ObjectId, ref: 'User' }]
     friendRequests: [String],
     avatar: String
 });
 
 export interface IUserDocument extends mongoose.Document {
-    email: string,
-    name: string,
-    middleName: string,
-    lastName: string,
-    password: string,
-    birthdate: Date,
-    gender: string,
-    contacts?: string[],
-    conversations?: string[],
-    friendRequests?: string[],
-    avatar?: string
+    email: string;
+    name: string;
+    middleName: string;
+    lastName: string;
+    password: string;
+    birthdate: Date;
+    gender: string;
+    contacts?: string[];
+    conversations?: string[];
+    friendRequests?: string[];
+    avatar?: string;
 }
 
 userSchema.set('toJSON', {

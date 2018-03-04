@@ -12,7 +12,8 @@ exports.userSchema = new Schema({
     birthdate: Date,
     gender: String,
     contacts: [String],
-    conversations: [String],
+    conversations: [{ type: Schema.Types.ObjectId, ref: 'Conversation' }],
+    //   friends: [{ type: ObjectId, ref: 'User' }]
     friendRequests: [String],
     avatar: String
 });

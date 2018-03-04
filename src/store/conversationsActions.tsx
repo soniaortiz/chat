@@ -11,14 +11,9 @@ const RequestConversationsList = (payload: AppStore.Conversations) => {
 
 export const RequestConversations = () => {
     return (dispatch: Dispatch<AppStore.Conversations>) => {
-        return request('/conversations', { withCredentials: true })
+        return request.post('/conversations', { withCredentials: true })
             .then(({ data }) => {
-                // console.log("Conversations: ", data);
-                dispatch(RequestConversationsList(
-                    data.map((conversation: any) => ({
-                        conversation_id: data._id
-                    }))
-                ));
+                dispatch(RequestConversationsList(data));
                 return true;
             })
             .catch(() => false);

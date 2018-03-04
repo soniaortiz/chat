@@ -79,13 +79,22 @@ export class User extends Controller {
         res.json(user);
     }
     conversations = (req: express.Request, res: express.Response, next: express.NextFunction) => {
-        // console.log("Conversations");
         const { _id } = req.user;
-        UserModel.findById({ _id })
-            // .populate("conversations")
+        console.log("Conversations request user id:  $$$$", req.user._id);
+
+        UserModel.findById(_id)
+            .populate(
+                {
+                    path: 'conversations',
+                    populate: {
+                        path: 'participants',
+                        select: 'name email -_id'
+                    }
+                    // select:  {conversationName: undefined},
+                })
             .then((user) => {
                 if (user) {
-                    // console.log(user.email);
+                    console.log('user.email###', user);
                     res.send(user.conversations);
                 }
             });
@@ -138,46 +147,84 @@ export class User extends Controller {
             })
             .catch((e: Error) => res.send(e));
     }
-    acceptFriendRequest = (req: express.Request, res: express.Response, next: express.NextFunction) => {
+    acceptFriendRequest = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
         // console.log('*******************************************************************************  ');
         const { contactEmail } = req.body;
         const email = req.user.email;
         // console.log("emailContact", contactEmail);
         // console.log("email", email);
-        new ConversationModel({})
-            .save()
-            .then((conversation) => {
-                return (UserModel.findOneAndUpdate(
-                    { email },
-                    {
-                        $pull: { friendRequests: contactEmail },
-                        $push: { contacts: contactEmail, conversations: conversation._id }
-                    },
-                    { new: true }).exec(),
-                    conversation);
-            })
-            .then((conversation) => {
-                // console.log('the conversation id: ', conversation._id);
-                return (ConversationModel.findOneAndUpdate(
-                    conversation._id,
-                    {
-                        $set: {
-                            participants: [email, contactEmail],
-                            conversationName: req.body.conversation_id
-                        }
-                    }).exec(),
-                    conversation);
-            })
-            .then((conversation) => {
-                return UserModel.findOneAndUpdate(
-                    email,
-                    { $push: { contacts: email, conversations: conversation._id } }, { new: true })
-                    .exec();
-            })
-            .then((user) => {
-                res.send(user);
-            })
-            .catch((e) => res.send(e));
+        const conversation = await new ConversationModel({}).save();
+        const me = await UserModel.findOneAndUpdate(
+            { email },
+            {
+                $pull: { friendRequests: contactEmail },
+                $push: { contacts: contactEmail, conversations: conversation._id }
+            },
+            { new: true }).exec();
+
+        const contact = await UserModel.findOneAndUpdate(
+            contactEmail,
+            {
+                $push: {
+                    contacts: email, conversations: conversation._id
+                }
+            },
+            { new: true })
+            .exec();
+
+        if (me && contact) {
+            await ConversationModel.findOneAndUpdate(
+                conversation._id,
+                {
+                    $set: {
+                        participants: [me._id, contact._id],
+                        conversationName: undefined
+                    }
+                }).exec();
+            res.send(me);
+        } else {
+            next(new Error('me or contact undefined'));
+        }
+
+        // new ConversationModel({})
+        //     .save()
+        //     .then((conversation) => {
+        //         return (UserModel.findOneAndUpdate(
+        //             { email },
+        //             {
+        //                 $pull: { friendRequests: contactEmail },
+        //                 $push: { contacts: contactEmail, conversations: conversation._id }
+        //             },
+        //             { new: true }).exec(),
+        //             conversation);
+        //     })
+        //     .then((conversation) => {
+        //         // console.log('the conversation id: ', conversation._id);
+        //         return (ConversationModel.findOneAndUpdate(
+        //             conversation._id,
+        //             {
+        //                 $set: {
+        //                     participants: [email, contactEmail],
+        //                     conversationName: undefined
+        //                 }
+        //             }).exec(),
+        //             conversation);
+        //     })
+        //     .then((conversation) => {
+        //         return UserModel.findOneAndUpdate(
+        //             contactEmail,
+        //             {
+        //                 $push: {
+        //                     contacts: email, conversations: conversation._id
+        //                 }
+        //             },
+        //             { new: true })
+        //             .exec();
+        //     })
+        //     .then((user) => {
+        //         res.send(user);
+        //     })
+        //     .catch((e) => res.send(e));
     }
     sendMessage = (req: express.Request, res: express.Response, next: express.NextFunction) => {
         new MessageModel({
