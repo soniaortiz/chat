@@ -88,7 +88,7 @@ declare namespace AppStore {// store
         _id: string;
         messageContent: string;
         date: string;
-        sender: string;
+        sender: Partial <User>;
      }
     interface Store {
         app: App;

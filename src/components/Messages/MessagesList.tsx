@@ -2,15 +2,17 @@ import * as React from 'react';
 import { MenuItem } from 'material-ui';
 import { connect } from 'react-redux';
 import { RequestConversationMessagesAction } from '../../store/messageAction';
+// import CommunicationChatBubble from 'material-ui/svg-icons/communication/chat-bubble';
 
-const style = {
+const style: React.CSSProperties = {
     borderRadius: 10,
     width: '50%',
     textAlign: 'justify',
     border: 'solid 1px',
-    textColor: 'darkBlack',
+    color: 'white',
     margin: '10px',
-    left: '45%'
+    left: '45%',
+    position: 'relative'
 };
 
 const innerDivStyle = {
@@ -19,6 +21,9 @@ const innerDivStyle = {
 };
 
 class MessagesList extends React.Component<MessagesListProps & DispMessagesToProps> {
+    componentWillMount() {
+        console.log(this.props);
+    }
     componentDidMount() {
         console.log('Retrieve messages');
         console.log('Current conversation: ', this.props.currentConversation);
@@ -33,11 +38,15 @@ class MessagesList extends React.Component<MessagesListProps & DispMessagesToPro
                     this.props.messages.map((message: AppStore.Messages, index: number) => (
                         <MenuItem
                             key={index}
-                            style={style}
+                            style={{
+                                ...style,
+                                left: message.sender && (message.sender.email === this.props.myEmail) ?
+                                    '48%' : 0
+                            }}
                             disabled={true}
                             innerDivStyle={innerDivStyle}
                         >
-                            {message.messageContent}
+                            {message.sender && message.messageContent}
                         </MenuItem>
                     ))
                 }
@@ -51,6 +60,7 @@ type MessagesListProps = MessagesListMSTP;
 interface MessagesListMSTP {
     currentConversation: string;
     messages: Array<any>;
+    myEmail: string;
 }
 
 interface DispMessagesToProps {
@@ -61,7 +71,9 @@ export default connect<MessagesListMSTP, DispMessagesToProps, {}, AppStore.Store
         currentConversation: store.app.currentConversation,
         messages: store.conversations.find((conversation) => {
             return conversation._id === store.app.currentConversation;
-        })!.messages
+        })!.messages,
+        myEmail: store.user.email
+
     }),
     {
         getMessages: RequestConversationMessagesAction

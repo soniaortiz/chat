@@ -2,12 +2,9 @@ import * as React from 'react';
 import { Paper, TextField, FlatButton, RaisedButton } from 'material-ui';
 import { connect } from 'react-redux';
 import { UpdateConversationStatus } from '../../store/conversationAction';
-// import { nspConversation } from '../../socketsClient';
 import { SendMessage } from '../../store/sendMessageAction';
+import NavigationClose from 'material-ui/svg-icons/navigation/close';
 import MessagesList from '../Messages/MessagesList';
-const BtnStyle = {
-    align: 'right'
-};
 
 interface ConversationSate {
     message: string;
@@ -34,21 +31,35 @@ export class Conversation extends React.Component<ConversationPropsMix, Conversa
     }
     render() {
         return (
-            <Paper>
+            <Paper
+                style={
+                    {height: '100%'}
+                }
+            >
 
                 <FlatButton
+                    icon={<NavigationClose />}
+                    labelPosition={'before'}
                     label={'Close'}
                     onClick={this.closeConversation}
+                    style={{
+                        left: '85%',
+                        position: 'relative'
+                    }}
                 />
 
                 <MessagesList />
 
-                <TextField onChange={this.handleChange} />
+                <TextField 
+                    onChange={this.handleChange} 
+                    style= {{
+                        width: '85%'
+                    }}
+                    />
 
-                <RaisedButton 
-                    label={'Send'} 
+                <RaisedButton
+                    label={'Send'}
                     onClick={this.sendMessage}
-                    style={BtnStyle} 
                 />
             </Paper>
         );
@@ -61,7 +72,7 @@ interface ConversationMapDispatchToProps {
 }
 
 interface ConversationMapToProps {
-    conversationId: string
+    conversationId: string;
 }
 type ConversationPropsMix = ConversationMapDispatchToProps & ConversationMapToProps;
 export default connect<ConversationMapToProps, ConversationMapDispatchToProps, {}, AppStore.Store>(

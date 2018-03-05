@@ -21,7 +21,6 @@ const getTheme = () => {
   return getMuiTheme(baseTheme, overwrites);
 };
 
-// export const store = createStore(storeReducer, applyMiddleware(thunk));
 export const store = createStore(storeReducer, composeWithDevTools(applyMiddleware(thunk)));
 
 // store.dispatch

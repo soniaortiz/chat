@@ -238,6 +238,9 @@ var User = /** @class */ (function (_super) {
                 date: new Date().toString(),
             })
                 .save()
+                .then(function (message) {
+                return message.populate('sender');
+            })
                 .then(function (m) {
                 console.log('***message***', m);
                 console.log('***conver_id***', req.body.conversation_id);
@@ -307,7 +310,13 @@ var User = /** @class */ (function (_super) {
         _this.getMessages = function (req, res, next) {
             // console.log('Conversation: ', req.body.conversationId);
             conversationSchema_1.ConversationModel.findById(req.body.conversationId)
-                .populate('messages')
+                .populate({
+                path: 'messages',
+                populate: {
+                    path: 'sender',
+                    select: 'email name'
+                }
+            })
                 .populate('participants', 'email')
                 .then(function (conversation) {
                 // console.log('||||||||||||||||', conversation);

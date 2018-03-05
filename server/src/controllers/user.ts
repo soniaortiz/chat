@@ -235,6 +235,9 @@ export class User extends Controller {
             date: new Date().toString(),
         })
             .save()
+            .then((message) => {
+                return message.populate('sender');
+            })
             .then(
                 (m) => { // after the message is created then the reference is passed to the conversation
                     console.log('***message***', m);
@@ -250,7 +253,7 @@ export class User extends Controller {
                         .then((conversation) => {
                             console.log('***conversation: ***', conversation);
                             nspConversation.to(req.body.conversation_id)
-                                .emit('new message', {message: m, conversationId: conversation!._id});
+                                .emit('new message', { message: m, conversationId: conversation!._id });
                             res.sendStatus(200);
                         });
                 }
@@ -318,7 +321,13 @@ export class User extends Controller {
     getMessages = (req: express.Request, res: express.Response, next: express.NextFunction) => {
         // console.log('Conversation: ', req.body.conversationId);
         ConversationModel.findById(req.body.conversationId)
-            .populate('messages')
+            .populate({
+                path: 'messages',
+                populate: {
+                    path: 'sender',
+                    select: 'email name'
+                }
+            })
             .populate('participants', 'email')
             .then((conversation) => {
                 // console.log('||||||||||||||||', conversation);
