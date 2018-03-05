@@ -4,8 +4,9 @@ import { connect } from 'react-redux';
 import { UpdateConversationStatus } from '../../store/conversationAction';
 // import { nspConversation } from '../../socketsClient';
 import { SendMessage } from '../../store/sendMessageAction';
-const style = {
-    background: 'fuchsia'
+import MessagesList from '../Messages/MessagesList';
+const BtnStyle = {
+    align: 'right'
 };
 
 interface ConversationSate {
@@ -23,7 +24,6 @@ export class Conversation extends React.Component<ConversationPropsMix, Conversa
     }
 
     sendMessage = () => {
-        // nspConversation.emit('new message', this.state.message);
         console.log(this.state.message);
         this.props.SendMessage({ messageContent: this.state.message, conversation_id: this.props.conversationId })
     }
@@ -34,11 +34,22 @@ export class Conversation extends React.Component<ConversationPropsMix, Conversa
     }
     render() {
         return (
-            <Paper style={style}>
-                {/* here is going to map the messages of each conversation */}
-                <FlatButton label={'Close'} onClick={this.closeConversation} />
+            <Paper>
+
+                <FlatButton
+                    label={'Close'}
+                    onClick={this.closeConversation}
+                />
+
+                <MessagesList />
+
                 <TextField onChange={this.handleChange} />
-                <RaisedButton label={'Send'} onClick={this.sendMessage} />
+
+                <RaisedButton 
+                    label={'Send'} 
+                    onClick={this.sendMessage}
+                    style={BtnStyle} 
+                />
             </Paper>
         );
     }
@@ -52,7 +63,7 @@ interface ConversationMapDispatchToProps {
 interface ConversationMapToProps {
     conversationId: string
 }
-type ConversationPropsMix = ConversationMapDispatchToProps&ConversationMapToProps;
+type ConversationPropsMix = ConversationMapDispatchToProps & ConversationMapToProps;
 export default connect<ConversationMapToProps, ConversationMapDispatchToProps, {}, AppStore.Store>(
     (store) => ({
         conversationId: store.app.currentConversation

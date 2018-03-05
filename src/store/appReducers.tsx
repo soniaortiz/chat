@@ -3,6 +3,7 @@ import {
     REQUEST_LOGIN, LOG_OUT,
     SET_REQUEST_MODAL_WINDOW,
     SET_CONVERSATION_MODAL_WINDOW,
+    // REQUEST_CONVERSATION_MESSAGES
 } from './actionsTypes';
 // import { Action } from 'redux';
 // import App from '../App';
@@ -28,12 +29,17 @@ export const Reducer = handleActions(
             return { ...state, requestWindowOpened: !state.requestWindowOpened };
         },
         [SET_CONVERSATION_MODAL_WINDOW]: (state: AppStore.App, action) => {
+            console.log('state: in conversation close: ', state);
             return action.payload ? {
                 ...state,
                 conversationSelected: !state.conversationSelected,
                 currentConversation: action.payload
-            } : { ...state }; 
-        },
+            } : 
+            { 
+                ...state,
+                conversationSelected: !state.conversationSelected
+             };
+        }
 
     },
     appState);

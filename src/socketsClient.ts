@@ -29,5 +29,6 @@ export function socketListeners() {
 
     nspConversation.on('new message', (data: any) => {
         console.log(data);
+        // store.dispatch()
     });
 }

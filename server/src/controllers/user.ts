@@ -163,13 +163,13 @@ export class User extends Controller {
             { new: true }).exec();
 
         const contact = await UserModel.findOneAndUpdate(
-            {email: contactEmail},
+            { email: contactEmail },
             {
                 $push: {
                     contacts: email, conversations: conversation._id
                 }
-            }, 
-            {new: true})
+            },
+            { new: true })
             .exec();
 
         if (me && contact) {
@@ -245,12 +245,12 @@ export class User extends Controller {
                             {
                                 $push: { messages: m._id }
                             },
-                            {new: true}
+                            { new: true }
                         )
                         .then((conversation) => {
                             console.log('***conversation: ***', conversation);
                             nspConversation.to(req.body.conversation_id)
-                            .emit('new message', m);
+                                .emit('new message', {message: m, conversationId: conversation!._id});
                             res.sendStatus(200);
                         });
                 }
@@ -315,13 +315,15 @@ export class User extends Controller {
                 res.send(e);
             });
     }
-    // updateContacRequests = (req: express.Request, res: express.Response, next: express.NextFunction) => {
-    //     console.log('update contac requests: ', req.user.email);
-    //     UserModel.findOne({ email: req.user.email })
-    //         .then((user) => {
-    //             // emit.to(req.user)
-    //             console.log(user);
-    //         })
-    //         .catch((e) => res.send(e));
-    // }
+    getMessages = (req: express.Request, res: express.Response, next: express.NextFunction) => {
+        // console.log('Conversation: ', req.body.conversationId);
+        ConversationModel.findById(req.body.conversationId)
+            .populate('messages')
+            .populate('participants', 'email')
+            .then((conversation) => {
+                // console.log('||||||||||||||||', conversation);
+                res.send(conversation);
+            })
+            .catch((e) => res.send(e));
+    }
 }

@@ -67,6 +67,7 @@ mongoose.connect(url).then(function () {
     app.get('/findUsers', routes.user.findUsers);
     app.post('/rejectContactRequest', routes.user.rejectContactRequest);
     app.post('/logout', routes.user.logout);
+    app.post('/messageList', routes.user.getMessages);
     // app.post('/updateContactRequests', routes.user.updateContacRequests);
     app.get('*', function (req, res, next) {
         res.sendFile(path.join(__dirname, '../build/index.html'));

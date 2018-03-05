@@ -10,7 +10,7 @@ export class Conversations extends React.Component<ConversationWindowProps> {
 
     componentWillMount() {
         this.props.setConversations();
-        console.log('the conversations', this.props.conversationsList);
+        // console.log('the conversations', this.props.conversationsList);
     }
 
     openConversation = (Conversation: any) => () => {
@@ -19,7 +19,7 @@ export class Conversations extends React.Component<ConversationWindowProps> {
             this.props.dispatchConversation(Conversation._id);
     }
     render() {
-        console.log(this.props.conversationsList);
+        // console.log(this.props.conversationsList);
         return (
             <React.Fragment>
                 {console.log(this.props.conversationsList)}
@@ -34,9 +34,9 @@ export class Conversations extends React.Component<ConversationWindowProps> {
                                     element.conversationName ?
                                         element.conversationName :
                                         (
-                                            element.participants.filter((participant) =>{
-                                                console.log(participant.email, this.props.myEmail)
-                                                return participant.email != this.props.myEmail
+                                            element.participants.filter((participant) => {
+                                                // console.log(participant.email, this.props.myEmail)
+                                                return participant.email != this.props.myEmail;
                                             }
                                             )[0].name
                                         )

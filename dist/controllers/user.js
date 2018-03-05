@@ -248,7 +248,7 @@ var User = /** @class */ (function (_super) {
                     .then(function (conversation) {
                     console.log('***conversation: ***', conversation);
                     app_1.nspConversation.to(req.body.conversation_id)
-                        .emit('new message', m);
+                        .emit('new message', { message: m, conversationId: conversation._id });
                     res.sendStatus(200);
                 });
             })
@@ -304,16 +304,18 @@ var User = /** @class */ (function (_super) {
                 res.send(e);
             });
         };
+        _this.getMessages = function (req, res, next) {
+            // console.log('Conversation: ', req.body.conversationId);
+            conversationSchema_1.ConversationModel.findById(req.body.conversationId)
+                .populate('messages')
+                .populate('participants', 'email')
+                .then(function (conversation) {
+                // console.log('||||||||||||||||', conversation);
+                res.send(conversation);
+            })
+                .catch(function (e) { return res.send(e); });
+        };
         return _this;
-        // updateContacRequests = (req: express.Request, res: express.Response, next: express.NextFunction) => {
-        //     console.log('update contac requests: ', req.user.email);
-        //     UserModel.findOne({ email: req.user.email })
-        //         .then((user) => {
-        //             // emit.to(req.user)
-        //             console.log(user);
-        //         })
-        //         .catch((e) => res.send(e));
-        // }
     }
     return User;
 }(base_1.Controller));

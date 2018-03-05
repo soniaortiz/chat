@@ -54,10 +54,13 @@ interface Contact {
     contact_id: string;
     contactName: string;
 }
+
 interface Conversation {
+    _id?: string;
     conversation_id: string;
     conversationName: string;
     participants: Array<Partial<AppStore.User>>;
+    messages: Array<AppStore.Messages>;
 }
 declare namespace AppStore {// store
     interface App {
