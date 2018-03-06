@@ -14,7 +14,6 @@ export class Conversations extends React.Component<ConversationWindowProps> {
     }
 
     openConversation = (Conversation: any) => () => {
-        console.log('Display conversation');
         this.props.conversationSelected ? false :
             this.props.dispatchConversation(Conversation._id);
     }
@@ -31,15 +30,16 @@ export class Conversations extends React.Component<ConversationWindowProps> {
                                 onClick={this.openConversation(element)}
                             >
                                 {
-                                    element.conversationName ?
-                                        element.conversationName :
-                                        (
-                                            element.participants.filter((participant) => {
-                                                // console.log(participant.email, this.props.myEmail)
-                                                return participant.email != this.props.myEmail;
-                                            }
-                                            )[0].name
-                                        )
+                                    // element.conversationName ?
+                                    //     element.conversationName :
+                                    //     (
+                                    //         element.participants.filter((participant) => {
+                                    //             // console.log(participant.email, this.props.myEmail)
+                                    //             return participant.email != this.props.myEmail;
+                                    //         }
+                                    //         )[0].name
+                                    //     )
+                                    element.conversation_id
                                 }
                             </MenuItem>
                         )) : []
@@ -64,7 +64,7 @@ type ConversationWindowProps = ConversationsMapStateToProps & ConversationMapDis
 
 export default connect<ConversationsMapStateToProps, ConversationMapDispatchToProps, ConversationsProps, AppStore.Store>(
     (store) => ({
-        conversationsList: store.conversations, //.user.conversations,
+        conversationsList: store.conversations,
         conversationSelected: store.app.conversationSelected,
         myEmail: store.user.email
     }),

@@ -57,6 +57,7 @@ interface Contact {
 
 interface Conversation {
     _id?: string;
+    conversationId?: string;
     conversation_id: string;
     conversationName: string;
     participants: Array<Partial<AppStore.User>>;

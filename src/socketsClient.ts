@@ -3,6 +3,7 @@ export const socket = io('http://localhost:8000'); // flag to connect
 // it shouln't be connected to the server if there is not user logged.
 export const nspUser = io('/user');
 export const nspConversation = io('/conversation');
+import { PushMessageToConversation } from './store/pushMessageToConversation';
 
 import { store } from './App';
 // import { RequestUserInfoAction } from './store/userActions';
@@ -28,7 +29,7 @@ export function socketListeners() {
     });
 
     nspConversation.on('new message', (data: any) => {
-        console.log(data);
-        // store.dispatch()
+        // console.log(data);
+        store.dispatch(PushMessageToConversation(data));
     });
 }

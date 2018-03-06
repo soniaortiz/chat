@@ -21,19 +21,18 @@ const innerDivStyle = {
 };
 
 class MessagesList extends React.Component<MessagesListProps & DispMessagesToProps> {
-    componentWillMount() {
-        console.log(this.props);
-    }
+    // componentWillMount() {
+    //     console.log(this.props);
+    // }
     componentDidMount() {
-        console.log('Retrieve messages');
-        console.log('Current conversation: ', this.props.currentConversation);
+        // console.log('Retrieve messages');
         this.props.getMessages(this.props.currentConversation);
 
     }
     render() {
-        console.log('conversations: //', this.props.messages);
-        return (
+        return (          
             <React.Fragment>
+                {console.log('The list', this.props.messages)}
                 {
                     this.props.messages.map((message: AppStore.Messages, index: number) => (
                         <MenuItem

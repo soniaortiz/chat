@@ -21,7 +21,7 @@ export class Conversation extends React.Component<ConversationPropsMix, Conversa
     }
 
     sendMessage = () => {
-        console.log(this.state.message);
+        // console.log(this.state.message);
         this.props.SendMessage({ messageContent: this.state.message, conversation_id: this.props.conversationId })
     }
 

@@ -7,14 +7,14 @@ import {
 
 const conversationsData: AppStore.Conversations = [];
 
-type Actions = AppStore.Conversations & Conversation & { _id: string };
+type Actions = AppStore.Conversations & Conversation & { _id: string } &{message: any};
 
 export const Reducer = handleActions<AppStore.Conversations, Actions>(
     {
         [REQUEST_USER_CONVERSATIONS_LIST]: (state, action) => {
             return (action.payload) ? action.payload : { ...state };
         },
-        [REQUEST_CONVERSATION_MESSAGES]: (state, action) => {
+        [REQUEST_CONVERSATION_MESSAGES]: (state, action) => { // add message to the conversation
             const conversations = (state).filter((current) =>
                 current._id !== action.payload!._id
             );
@@ -24,10 +24,27 @@ export const Reducer = handleActions<AppStore.Conversations, Actions>(
             }
             return state;
         },
-        [PUSH_MESSAGE_TO_CONVERSATION]: (state, action) => {
-            return { ...state };
-        }
 
+        [PUSH_MESSAGE_TO_CONVERSATION]: (state, action) => {
+            console.log('///THIS IS THE ACTION///', action.payload);
+            console.log('***THIS IS THE STATE***', state);
+            // console.log(action.payload!.conversationId);
+
+            const conversation = (state).find((current) =>
+                current._id === action.payload!.conversationId
+            );
+            console.log('conversation ', conversation);
+            delete action.payload!.conversationId;
+            console.log(action.payload!.message);
+
+            if (action.payload) {
+                conversation!.messages.push(action.payload.message);
+                // return state;
+                console.log('***THIS IS THE STATE***', state);
+                
+            }
+            return state;
+        }
     },
     conversationsData
 );

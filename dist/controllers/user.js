@@ -231,7 +231,7 @@ var User = /** @class */ (function (_super) {
             });
         }); };
         _this.sendMessage = function (req, res, next) {
-            console.log('sender@@@@', req.user);
+            // console.log('sender@@@@', req.user);
             new messageSchema_1.MessageModel({
                 messageContent: req.body.messageContent,
                 sender: req.user._id,
@@ -242,14 +242,14 @@ var User = /** @class */ (function (_super) {
                 return message.populate('sender');
             })
                 .then(function (m) {
-                console.log('***message***', m);
-                console.log('***conver_id***', req.body.conversation_id);
+                // console.log('***message***', m);
+                // console.log('***conver_id***', req.body.conversation_id);
                 conversationSchema_1.ConversationModel
                     .findOneAndUpdate({ _id: req.body.conversation_id }, {
                     $push: { messages: m._id }
                 }, { new: true })
                     .then(function (conversation) {
-                    console.log('***conversation: ***', conversation);
+                    // console.log('***conversation: ***', conversation);
                     app_1.nspConversation.to(req.body.conversation_id)
                         .emit('new message', { message: m, conversationId: conversation._id });
                     res.sendStatus(200);
