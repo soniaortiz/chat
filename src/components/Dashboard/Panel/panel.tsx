@@ -37,6 +37,6 @@ interface PanelMapDispatchToProps {
 type PanelPropertiesMix = PanelProps & PanelMapToProps & PanelMapDispatchToProps;
 export default connect<PanelMapToProps, PanelMapDispatchToProps, PanelProps, AppStore.Store>(
     (store) => ({
-        showConversation: store.app.conversationSelected
+        showConversation: store.app.conversationSelected,
     })
 )(Panel);

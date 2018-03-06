@@ -26,8 +26,8 @@ export const Reducer = handleActions<AppStore.Conversations, Actions>(
         },
 
         [PUSH_MESSAGE_TO_CONVERSATION]: (state, action) => {
-            console.log('///THIS IS THE ACTION///', action.payload);
-            console.log('***THIS IS THE STATE***', state);
+            // console.log('///THIS IS THE ACTION///', action.payload);
+            // console.log('***THIS IS THE STATE***', state);
             // console.log(action.payload!.conversationId);
 
             const conversation = (state).find((current) =>
@@ -40,10 +40,11 @@ export const Reducer = handleActions<AppStore.Conversations, Actions>(
             if (action.payload) {
                 conversation!.messages.push(action.payload.message);
                 // return state;
-                console.log('***THIS IS THE STATE***', state);
+                // console.log('***THIS IS THE STATE***', state);
                 
             }
-            return state;
+            const newState = [...state];
+            return newState;
         }
     },
     conversationsData
