@@ -17,8 +17,8 @@ function sockets() {
     });
     app_1.nspConversation.on('connection', function (client) {
         client.on('join conversations', function (conversations) {
-            conversations.forEach(function (conversation) {
-                client.join(conversation._id);
+            Object.keys(conversations).forEach(function (cnv) {
+                client.join(cnv);
             });
         });
     });

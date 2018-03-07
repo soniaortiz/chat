@@ -14,14 +14,9 @@ export const RequestConversations = () => {
     return (dispatch: Dispatch<AppStore.Conversations>) => {
         return request.post('/conversations', { withCredentials: true })
             .then(({ data }) => {
-                data.map((value: any) => (
-                    {
-                        ...value,
-                        conversation_id: value.id
-                    }
-                ));
+                console.log('maping conversations', data);
                 dispatch(RequestConversationsList(data));
-                console.log(data);
+                console.log('before sending emit');
                 nspConversation.emit('join conversations', data);
                 return true;
             })

@@ -1,5 +1,6 @@
 import { io, nspUser, nspConversation } from './app';
 import { Conversation } from './controllers/conversation';
+import { conversation } from './controllers/routes';
 
 export function sockets() {
     console.log('in server sockets: **********************************************************');
@@ -19,8 +20,9 @@ export function sockets() {
 
     nspConversation.on('connection', (client: SocketIO.Socket) => {
         client.on('join conversations', (conversations) => {
-            conversations.forEach((conversation: any) => {
-                client.join(conversation._id);
+
+            Object.keys(conversations).forEach((cnv: string) => {
+                client.join(cnv);
             });
         });
     });

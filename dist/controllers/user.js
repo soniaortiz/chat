@@ -54,6 +54,7 @@ var jwt = require("jsonwebtoken");
 var bcrypt = require("bcrypt");
 var app_1 = require("../app");
 var moment = require("moment");
+var _ = require("lodash");
 var User = /** @class */ (function (_super) {
     __extends(User, _super);
     function User() {
@@ -125,7 +126,7 @@ var User = /** @class */ (function (_super) {
         };
         _this.conversations = function (req, res, next) {
             var _id = req.user._id;
-            console.log("Conversations request user id:  $$$$", req.user._id);
+            // console.log("Conversations request user id:  $$$$", req.user._id); 
             userSchema_1.UserModel.findById(_id)
                 .populate({
                 path: 'conversations',
@@ -137,8 +138,9 @@ var User = /** @class */ (function (_super) {
             })
                 .then(function (user) {
                 if (user) {
-                    console.log('user.email###', user);
-                    res.send(user.conversations);
+                    var conv = _.mapKeys(user.conversations.slice(), '_id');
+                    console.log('user.conversations###', conv);
+                    res.send(conv);
                 }
             });
         };
@@ -192,8 +194,6 @@ var User = /** @class */ (function (_super) {
                     case 0:
                         contactEmail = req.body.contactEmail;
                         email = req.user.email;
-                        console.log("emailContact", contactEmail);
-                        console.log("email", email);
                         return [4 /*yield*/, new conversationSchema_1.ConversationModel({}).save()];
                     case 1:
                         conversation = _a.sent();
@@ -212,7 +212,7 @@ var User = /** @class */ (function (_super) {
                     case 3:
                         contact = _a.sent();
                         if (!(me && contact)) return [3 /*break*/, 5];
-                        console.log('me: ', me._id, 'contact', contact._id);
+                        // console.log('me: ', me._id, 'contact', contact._id);
                         return [4 /*yield*/, conversationSchema_1.ConversationModel.findOneAndUpdate(conversation._id, {
                                 $set: {
                                     participants: [me._id, contact._id],
@@ -220,6 +220,7 @@ var User = /** @class */ (function (_super) {
                                 }
                             }).exec()];
                     case 4:
+                        // console.log('me: ', me._id, 'contact', contact._id);
                         _a.sent();
                         res.send(me);
                         return [3 /*break*/, 6];

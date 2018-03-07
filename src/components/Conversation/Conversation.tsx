@@ -73,15 +73,13 @@ interface ConversationMapDispatchToProps {
 
 interface ConversationMapToProps {
     conversationId: string;
-    messagesList: any;
+    messagesList: Array<AppStore.Messages>;
 }
 type ConversationPropsMix = ConversationMapDispatchToProps & ConversationMapToProps;
 export default connect<ConversationMapToProps, ConversationMapDispatchToProps, {}, AppStore.Store>(
     (store) => ({
         conversationId: store.app.currentConversation,
-        messagesList: store.conversations.find((conversation) => {
-            return conversation._id === store.app.currentConversation;
-        })!.messages,
+        messagesList: store.conversations.conversationId.messages,
     }),
     {
         SetConversationStateOpen: UpdateConversationStatus,

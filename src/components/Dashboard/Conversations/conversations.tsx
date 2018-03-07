@@ -8,9 +8,9 @@ interface ConversationsProps {
 
 export class Conversations extends React.Component<ConversationWindowProps> {
 
-    componentWillMount() {
+    componentDidMount() {
         this.props.setConversations();
-        // console.log('the conversations', this.props.conversationsList);
+        console.log('the conversations', this.props.conversationsList);
     }
 
     openConversation = (Conversation: any) => () => {
@@ -18,13 +18,14 @@ export class Conversations extends React.Component<ConversationWindowProps> {
             this.props.dispatchConversation(Conversation._id);
     }
     render() {
-        // console.log(this.props.conversationsList);
+        console.log(this.props.conversationsList);        
         return (
             <React.Fragment>
                 {console.log(this.props.conversationsList)}
                 {
                     this.props.conversationsList ?
-                        this.props.conversationsList.map((element, index) => (
+                        Object.keys(this.props.conversationsList)
+                        .map((element, index) => (
                             <MenuItem
                                 key={index}
                                 onClick={this.openConversation(element)}
@@ -39,7 +40,8 @@ export class Conversations extends React.Component<ConversationWindowProps> {
                                     //         }
                                     //         )[0].name
                                     //     )
-                                    element.conversation_id
+                                    // this.props.conversationsList.element
+                                    this.props.conversationsList[element].conversationName
                                 }
                             </MenuItem>
                         )) : []
@@ -50,7 +52,7 @@ export class Conversations extends React.Component<ConversationWindowProps> {
 }
 
 interface ConversationsMapStateToProps {
-    conversationsList: Array<Conversation>;
+    conversationsList: AppStore.Conversations;
     conversationSelected: boolean;
     myEmail: string;
 }
@@ -62,7 +64,8 @@ interface ConversationMapDispatchToProps {
 
 type ConversationWindowProps = ConversationsMapStateToProps & ConversationMapDispatchToProps & ConversationsProps;
 
-export default connect<ConversationsMapStateToProps, ConversationMapDispatchToProps, ConversationsProps, AppStore.Store>(
+export default 
+connect<ConversationsMapStateToProps, ConversationMapDispatchToProps, ConversationsProps, AppStore.Store>(
     (store) => ({
         conversationsList: store.conversations,
         conversationSelected: store.app.conversationSelected,

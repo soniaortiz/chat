@@ -28,9 +28,9 @@ class MessagesList extends React.Component<MessagesListProps & DispMessagesToPro
     render() {
         return (
             <React.Fragment>
-                {console.log('The list', this.props.getStoreMessages())}
+                {/* {console.log('The list', this.props.getStoreMessages())} */}
                 {
-                    this.props.getStoreMessages().map((message: AppStore.Messages, index: number) => (
+                    this.props.messages.map((message: AppStore.Messages, index: number) => (
                         <MenuItem
                             key={index}
                             style={{
@@ -59,7 +59,7 @@ interface MessagesListMSTP {
     currentConversation: string;
     messages: Array<any>;
     myEmail: string;
-    getStoreMessages: Function;
+    // getStoreMessages: Function;
 }
 
 interface DispMessagesToProps {
@@ -68,16 +68,8 @@ interface DispMessagesToProps {
 export default connect<MessagesListMSTP, DispMessagesToProps, {}, AppStore.Store>(
     (store) => ({
         currentConversation: store.app.currentConversation,
-
-        messages: store.conversations.find((conversation) => {
-            return conversation._id === store.app.currentConversation;
-        })!.messages,
-        
-        getStoreMessages: () => store.conversations.find((conversation) => {
-            return conversation._id === store.app.currentConversation;
-        })!.messages,
+        messages: store.conversations.currentConversation.messages,
         myEmail: store.user.email
-
     }),
     {
         getMessages: RequestConversationMessagesAction

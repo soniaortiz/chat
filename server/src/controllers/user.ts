@@ -9,6 +9,7 @@ import { Secret } from 'jsonwebtoken';
 import * as bcrypt from 'bcrypt';
 import { io, nspUser, nspConversation } from '../app';
 import * as moment from 'moment';
+import * as _ from 'lodash';
 
 export class User extends Controller {
     model = UserModel;
@@ -23,8 +24,8 @@ export class User extends Controller {
                 }
                 res.sendStatus(404);
             })
-            .then((flag) => {
-                if (flag) { // TO CREATE THE TOKEN
+            .then((flag) => { 
+                if (flag) { // TO CREATE THE TOKEN 
                     return UserModel
                         .findOne({ email })
                         .then((user) => {
@@ -80,8 +81,7 @@ export class User extends Controller {
     }
     conversations = (req: express.Request, res: express.Response, next: express.NextFunction) => {
         const { _id } = req.user;
-        console.log("Conversations request user id:  $$$$", req.user._id);
-
+        // console.log("Conversations request user id:  $$$$", req.user._id); 
         UserModel.findById(_id)
             .populate(
                 {
@@ -94,8 +94,9 @@ export class User extends Controller {
                 })
             .then((user) => {
                 if (user) {
-                    console.log('user.email###', user);
-                    res.send(user.conversations);
+                    const conv = _.mapKeys([...user.conversations!], '_id');
+                    console.log('user.conversations###', conv);
+                    res.send(conv);
                 }
             });
     }
@@ -151,8 +152,8 @@ export class User extends Controller {
         // console.log('*******************************************************************************  ');
         const { contactEmail } = req.body;
         const email = req.user.email;
-        console.log("emailContact", contactEmail);
-        console.log("email", email);
+        // console.log("emailContact", contactEmail);
+        // console.log("email", email);
         const conversation = await new ConversationModel({}).save();
         const me = await UserModel.findOneAndUpdate(
             { email },
@@ -173,7 +174,7 @@ export class User extends Controller {
             .exec();
 
         if (me && contact) {
-            console.log('me: ', me._id, 'contact', contact._id);
+            // console.log('me: ', me._id, 'contact', contact._id);
             await ConversationModel.findOneAndUpdate(
                 conversation._id,
                 {
