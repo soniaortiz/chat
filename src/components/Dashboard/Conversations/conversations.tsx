@@ -26,26 +26,23 @@ export class Conversations extends React.Component<ConversationWindowProps> {
                 {
                     this.props.conversationsList ?
                         Object.keys(this.props.conversationsList)
-                        .map((element, index) => (
-                            <MenuItem
-                                key={index}
-                                onClick={this.openConversation(element)}
-                            >
-                                {
-                                    // element.conversationName ?
-                                    //     element.conversationName :
-                                    //     (
-                                    //         element.participants.filter((participant) => {
-                                    //             // console.log(participant.email, this.props.myEmail)
-                                    //             return participant.email != this.props.myEmail;
-                                    //         }
-                                    //         )[0].name
-                                    //     )
-                                    // this.props.conversationsList.element
-                                    this.props.conversationsList[element].conversationName
-                                }
-                            </MenuItem>
-                        )) : []
+                            .map((element, index) => (
+                                <MenuItem
+                                    key={index}
+                                    onClick={this.openConversation(element)}
+                                >
+                                    {
+                                        // this.props.conversationsList[element].conversationName ?
+                                        //     this.props.conversationsList[element].conversationName :
+                                        //     this.props.conversationsList[element].participants.filter(
+                                        //         (participant) => {
+                                        //             return participant.email != this.props.myEmail;
+                                        //         })[0].name
+                                        element
+
+                                    }
+                                </MenuItem>
+                            )) : []
                 }
             </ React.Fragment>
         );
@@ -65,15 +62,15 @@ interface ConversationMapDispatchToProps {
 
 type ConversationWindowProps = ConversationsMapStateToProps & ConversationMapDispatchToProps & ConversationsProps;
 
-export default 
-connect<ConversationsMapStateToProps, ConversationMapDispatchToProps, ConversationsProps, AppStore.Store>(
-    (store) => ({
-        conversationsList: store.conversations,
-        conversationSelected: store.app.conversationSelected,
-        myEmail: store.user.email
-    }),
-    {
-        dispatchConversation: SetConversationWindow, // to open the conversation once it is selected
-        setConversations: RequestConversations
-    }
-)(Conversations);
+export default
+    connect<ConversationsMapStateToProps, ConversationMapDispatchToProps, ConversationsProps, AppStore.Store>(
+        (store) => ({
+            conversationsList: store.conversations,
+            conversationSelected: store.app.conversationSelected,
+            myEmail: store.user.email
+        }),
+        {
+            dispatchConversation: SetConversationWindow, // to open the conversation once it is selected
+            setConversations: RequestConversations
+        }
+    )(Conversations);
