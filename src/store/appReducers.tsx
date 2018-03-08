@@ -29,7 +29,7 @@ export const Reducer = handleActions(
             return { ...state, requestWindowOpened: !state.requestWindowOpened };
         },
         [SET_CONVERSATION_MODAL_WINDOW]: (state: AppStore.App, action) => {
-            console.log('state: in conversation close: ', state);
+            // console.log('state: in conversation close: ', state);
             return action.payload ? {
                 ...state,
                 conversationSelected: !state.conversationSelected,

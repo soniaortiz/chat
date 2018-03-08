@@ -16,7 +16,6 @@ export const RequestConversations = () => {
             .then(({ data }) => {
                 console.log('maping conversations', data);
                 dispatch(RequestConversationsList(data));
-                console.log('before sending emit');
                 nspConversation.emit('join conversations', data);
                 return true;
             })

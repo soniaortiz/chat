@@ -17,6 +17,7 @@ function sockets() {
     });
     app_1.nspConversation.on('connection', function (client) {
         client.on('join conversations', function (conversations) {
+            // console.log()
             Object.keys(conversations).forEach(function (cnv) {
                 client.join(cnv);
             });

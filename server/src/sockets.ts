@@ -20,7 +20,7 @@ export function sockets() {
 
     nspConversation.on('connection', (client: SocketIO.Socket) => {
         client.on('join conversations', (conversations) => {
-
+            // console.log()
             Object.keys(conversations).forEach((cnv: string) => {
                 client.join(cnv);
             });

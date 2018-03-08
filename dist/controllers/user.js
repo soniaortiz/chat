@@ -54,7 +54,6 @@ var jwt = require("jsonwebtoken");
 var bcrypt = require("bcrypt");
 var app_1 = require("../app");
 var moment = require("moment");
-var _ = require("lodash");
 var User = /** @class */ (function (_super) {
     __extends(User, _super);
     function User() {
@@ -138,7 +137,13 @@ var User = /** @class */ (function (_super) {
             })
                 .then(function (user) {
                 if (user) {
-                    var conv = _.mapKeys(user.conversations.slice(), '_id');
+                    // const conv = _.mapKeys({...user.conversations!}, '_id');
+                    var conv = user.conversations.reduce(function (ac, conversation, index) {
+                        if (typeof conversation !== 'string') {
+                            ac[conversation._id] = conversation;
+                        }
+                        return ac;
+                    }, {});
                     console.log('user.conversations###', conv);
                     res.send(conv);
                 }
@@ -250,7 +255,7 @@ var User = /** @class */ (function (_super) {
                     $push: { messages: m._id }
                 }, { new: true })
                     .then(function (conversation) {
-                    // console.log('***conversation: ***', conversation);
+                    console.log('***conversation: ***', conversation);
                     app_1.nspConversation.to(req.body.conversation_id)
                         .emit('new message', { message: m, conversationId: conversation._id });
                     res.sendStatus(200);
@@ -309,8 +314,9 @@ var User = /** @class */ (function (_super) {
             });
         };
         _this.getMessages = function (req, res, next) {
+            var conversationId = req.body.conversationId;
             // console.log('Conversation: ', req.body.conversationId);
-            conversationSchema_1.ConversationModel.findById(req.body.conversationId)
+            conversationSchema_1.ConversationModel.findById(conversationId)
                 .populate({
                 path: 'messages',
                 populate: {
@@ -321,7 +327,9 @@ var User = /** @class */ (function (_super) {
                 .populate('participants', 'email')
                 .then(function (conversation) {
                 // console.log('||||||||||||||||', conversation);
-                res.send(conversation);
+                // const msgs = _.mapKeys([...conversation!.messages], '_id');
+                // const conv = _.mapKeys([...user.conversations!], '_id');
+                res.send({ msgs: conversation.messages, _id: conversationId });
             })
                 .catch(function (e) { return res.send(e); });
         };

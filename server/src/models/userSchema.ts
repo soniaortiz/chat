@@ -1,6 +1,7 @@
 import * as mongoose from 'mongoose';
 import * as bcrypt from 'bcrypt';
 import { ObjectId } from 'bson';
+import { IConversationDocument } from './conversationSchema';
 
 const Schema = mongoose.Schema;
 
@@ -28,7 +29,7 @@ export interface IUserDocument extends mongoose.Document {
     birthdate: Date;
     gender: string;
     contacts?: string[];
-    conversations?: string[];
+    conversations?: Array<string| IConversationDocument>;
     friendRequests?: string[];
     avatar?: string;
 }

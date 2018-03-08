@@ -7,32 +7,49 @@ import {
 
 const conversationsData: AppStore.Conversations = {};
 
-type Actions = AppStore.Conversations & Conversation & { _id: string } & { message: any };
+type Actions = AppStore.Conversations & Conversation & { _id: string } & { message: any } & { conversationId: string }
+    & { _id: string, msgs: Array<any> };
 
 export const Reducer = handleActions<AppStore.Conversations, Actions>(
     {
         [REQUEST_USER_CONVERSATIONS_LIST]: (state, action) => {
-            console.log(state);
-            console.log(action.payload);
+            // console.log(state);
+            // console.log(action.payload);
             return (action.payload) ? action.payload : state;
         },
         [REQUEST_CONVERSATION_MESSAGES]: (state, action) => { // to get an specific conversation
-            // state[action.payload!.conversation_id].
-            // state[action.payload!._id].push(action.payload)
-            // const conversations = (state).key((current) =>
-            //     current._id !== action.payload!._id
-            // );
-            // if (action.payload) {
-            //     conversations.push(action.payload);
-            //     return conversations;
-            // }
-            return state;
+            // console.log('PAYLOAD---->', action.payload);
+            // console.log('state------->', state);
+            const newConversation = {
+                ...state[action.payload!._id],
+                messages: action.payload!.msgs
+            };
+            return action.payload
+                ? {
+                    ...state,
+                    [action.payload._id]: newConversation
+                }
+                : { ...state };
         },
         [PUSH_MESSAGE_TO_CONVERSATION]: (state, action) => {
-            if (action.payload) {
-                state[action.payload.conversation_id].messages.push(action.payload!.message);
-            }
-            return state;
+            console.log('PAYLOAD---->', action.payload!.message);
+            console.log('state------->', state);
+
+            const conversationUpdated = {
+                ...state,
+                ...state[action.payload!.conversationId],
+                messages: state[action.payload!.conversationId].messages.push(action.payload!.message)
+            };
+            console.log('updated: ', conversationUpdated);
+
+            // return action.payload ? 
+            // {
+            //     ...state,
+            //     [action.payload.conversationId]: {...conver}
+            // } : 
+            // { ...state };
+            return { ...state };
+
         }
     },
     conversationsData

@@ -2,7 +2,7 @@ import { Dispatch } from 'react-redux';
 import request from 'axios';
 import { REQUEST_CONVERSATION_MESSAGES } from './actionsTypes';
 
-const RequestConversationsMessages = (payload: any) => ({
+const RequestConversationsMessages = (payload: any) => ({ // Array of Messages
     type: REQUEST_CONVERSATION_MESSAGES,
     payload
 });
@@ -10,8 +10,8 @@ const RequestConversationsMessages = (payload: any) => ({
 export const RequestConversationMessagesAction = (conversationId: string) => {
     return (dispatch: Dispatch<AppStore.Store>) => {
         return request.post('/messageList', { conversationId }, { withCredentials: true })
-            .then(({data}) => {
-                // console.log('Data: ', data);
+            .then(({ data }) => {
+                console.log('Messages:::: ', data);
                 dispatch(RequestConversationsMessages(data));
                 // console.log('Messages', data);
             })

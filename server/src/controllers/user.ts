@@ -1,6 +1,6 @@
 import { Controller } from './base';
 import { UserModel } from '../models/userSchema';
-import { ConversationModel } from '../models/conversationSchema';
+import { ConversationModel, IConversationDocument } from '../models/conversationSchema';
 import { MessageModel } from '../models/messageSchema';
 import * as express from 'express';
 import { Error } from 'mongoose';
@@ -24,7 +24,7 @@ export class User extends Controller {
                 }
                 res.sendStatus(404);
             })
-            .then((flag) => { 
+            .then((flag) => {
                 if (flag) { // TO CREATE THE TOKEN 
                     return UserModel
                         .findOne({ email })
@@ -92,9 +92,21 @@ export class User extends Controller {
                     }
                     // select:  {conversationName: undefined},
                 })
+            // .populate({
+            //     path: 'conversations',
+            //     populate: {
+            //         path: 'messages'
+            //     }
+            // })
             .then((user) => {
                 if (user) {
-                    const conv = _.mapKeys([...user.conversations!], '_id');
+                    // const conv = _.mapKeys({...user.conversations!}, '_id');
+                    const conv = user.conversations!.reduce((ac, conversation, index) => {
+                        if (typeof conversation !== 'string') {
+                            ac[conversation._id] = conversation;
+                        }
+                        return ac;
+                    },                                      {});
                     console.log('user.conversations###', conv);
                     res.send(conv);
                 }
@@ -252,7 +264,7 @@ export class User extends Controller {
                             { new: true }
                         )
                         .then((conversation) => {
-                            // console.log('***conversation: ***', conversation);
+                            console.log('***conversation: ***', conversation);
                             nspConversation.to(req.body.conversation_id)
                                 .emit('new message', { message: m, conversationId: conversation!._id });
                             res.sendStatus(200);
@@ -320,8 +332,9 @@ export class User extends Controller {
             });
     }
     getMessages = (req: express.Request, res: express.Response, next: express.NextFunction) => {
+        const { conversationId } = req.body
         // console.log('Conversation: ', req.body.conversationId);
-        ConversationModel.findById(req.body.conversationId)
+        ConversationModel.findById(conversationId)
             .populate({
                 path: 'messages',
                 populate: {
@@ -332,7 +345,10 @@ export class User extends Controller {
             .populate('participants', 'email')
             .then((conversation) => {
                 // console.log('||||||||||||||||', conversation);
-                res.send(conversation);
+                // const msgs = _.mapKeys([...conversation!.messages], '_id');
+                // const conv = _.mapKeys([...user.conversations!], '_id');
+
+                res.send({ msgs: conversation!.messages, _id: conversationId });
             })
             .catch((e) => res.send(e));
     }

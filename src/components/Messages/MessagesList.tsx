@@ -21,16 +21,18 @@ const innerDivStyle = {
 };
 
 class MessagesList extends React.Component<MessagesListProps & DispMessagesToProps & MessageListOwnProps> {
-    componentDidMount() {
-        // console.log('Retrieve messages');
+    componentWillMount() {
+        // console.log('Retrieve messages/*-', this.props.currentConversation);
         this.props.getMessages(this.props.currentConversation);
+        console.log(this.props.messages);
     }
     render() {
         return (
             <React.Fragment>
-                {/* {console.log('The list', this.props.getStoreMessages())} */}
                 {
-                    this.props.messages.map((message: AppStore.Messages, index: number) => (
+                    this.props.messages
+                    [this.props.currentConversation].
+                    messages.map((message: AppStore.Messages, index: number) => (
                         <MenuItem
                             key={index}
                             style={{
@@ -57,7 +59,7 @@ type MessagesListProps = MessagesListMSTP;
 
 interface MessagesListMSTP {
     currentConversation: string;
-    messages: Array<any>;
+    messages: any;
     myEmail: string;
     // getStoreMessages: Function;
 }
@@ -68,7 +70,7 @@ interface DispMessagesToProps {
 export default connect<MessagesListMSTP, DispMessagesToProps, {}, AppStore.Store>(
     (store) => ({
         currentConversation: store.app.currentConversation,
-        messages: store.conversations.currentConversation.messages,
+        messages: store.conversations, // will return the conversations with messages
         myEmail: store.user.email
     }),
     {
