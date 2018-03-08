@@ -12,7 +12,7 @@ import { updateContactRequestsActionCreator } from './store/appUpdateRequestRedu
 export function socketListeners() {
     // tslint:disable-next-line:no-any
     socket.on('news', function (data: any) {
-        console.log('data', data);
+        // console.log('data', data);
         socket.emit('connection', { my: 'data' });
     });
     // tslint:disable-next-line:no-any

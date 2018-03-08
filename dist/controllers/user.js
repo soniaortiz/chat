@@ -144,7 +144,7 @@ var User = /** @class */ (function (_super) {
                         }
                         return ac;
                     }, {});
-                    console.log('user.conversations###', conv);
+                    // console.log('user.conversations###', conv);
                     res.send(conv);
                 }
             });
@@ -245,7 +245,10 @@ var User = /** @class */ (function (_super) {
             })
                 .save()
                 .then(function (message) {
-                return message.populate('sender');
+                return message.populate({
+                    path: 'sender',
+                    select: 'email name'
+                }).execPopulate();
             })
                 .then(function (m) {
                 // console.log('***message***', m);
@@ -255,9 +258,10 @@ var User = /** @class */ (function (_super) {
                     $push: { messages: m._id }
                 }, { new: true })
                     .then(function (conversation) {
-                    console.log('***conversation: ***', conversation);
+                    // console.log('***conversation: ***', conversation);
                     app_1.nspConversation.to(req.body.conversation_id)
                         .emit('new message', { message: m, conversationId: conversation._id });
+                    // console.log('+++++++++', m);
                     res.sendStatus(200);
                 });
             })

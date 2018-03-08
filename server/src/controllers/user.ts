@@ -106,8 +106,8 @@ export class User extends Controller {
                             ac[conversation._id] = conversation;
                         }
                         return ac;
-                    },                                      {});
-                    console.log('user.conversations###', conv);
+                    }, {});
+                    // console.log('user.conversations###', conv);
                     res.send(conv);
                 }
             });
@@ -249,7 +249,11 @@ export class User extends Controller {
         })
             .save()
             .then((message) => {
-                return message.populate('sender');
+                return message.populate(
+                    { 
+                        path: 'sender',
+                        select: 'email name'
+                    }).execPopulate();
             })
             .then(
                 (m) => { // after the message is created then the reference is passed to the conversation
@@ -264,9 +268,10 @@ export class User extends Controller {
                             { new: true }
                         )
                         .then((conversation) => {
-                            console.log('***conversation: ***', conversation);
+                            // console.log('***conversation: ***', conversation);
                             nspConversation.to(req.body.conversation_id)
                                 .emit('new message', { message: m, conversationId: conversation!._id });
+                            // console.log('+++++++++', m);
                             res.sendStatus(200);
                         });
                 }

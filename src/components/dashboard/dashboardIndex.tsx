@@ -21,7 +21,7 @@ export class Dashboard extends React.Component<DashboardProps, DashboardState> {
     }
 
     componentDidMount() {
-        console.log('Component did mount');
+        // console.log('Component did mount');
         this.props.getUser()
             .then(() => console.log(this.props.user));
     }

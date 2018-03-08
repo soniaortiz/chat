@@ -32,11 +32,10 @@ export const Reducer = handleActions<AppStore.Conversations, Actions>(
                 : { ...state };
         },
         [PUSH_MESSAGE_TO_CONVERSATION]: (state, action) => {
-            console.log('PAYLOAD---->', action.payload!.message);
-            console.log('state------->', state);
+            // console.log('PAYLOAD---->', action.payload!.message);
+            // console.log('state------->', state);
 
             const conversationUpdated = {
-                ...state,
                 ...state[action.payload!.conversationId],
                 messages: state[action.payload!.conversationId].messages.push(action.payload!.message)
             };

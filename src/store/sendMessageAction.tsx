@@ -9,10 +9,10 @@ import request from 'axios';
 
 export const SendMessage = (data: {messageContent: string, conversation_id: string}) => {
     return (dispatch: Dispatch<AppStore.Store>) => {
-        console.log(data);
+        // console.log(data);
         return request.post('/conversation/sendmessage', data)
             .then((status) => {
-                console.log(status);
+                // console.log(status);
             });
     };
 };
