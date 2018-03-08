@@ -1,13 +1,16 @@
 import { Dispatch } from 'react-redux';
 import request from 'axios';
-import { LOG_OUT } from './actionsTypes';
+import { 
+    // LOG_OUT,
+    CLEAR_STATE 
+} from './actionsTypes';
 import * as H from 'history';
 
 // Action creator
 
 const LogOut = () => {
     return {
-        type: LOG_OUT
+        type: CLEAR_STATE
     };
 };
 
@@ -18,6 +21,7 @@ export function LogOutRequest (history: H.History) {
             .then(() => {
                 console.log('Loging out');
                 dispatch(LogOut());
+                // dispatch
             })
             .then(() => {
                 history.replace('');

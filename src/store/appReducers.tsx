@@ -3,10 +3,8 @@ import {
     REQUEST_LOGIN, LOG_OUT,
     SET_REQUEST_MODAL_WINDOW,
     SET_CONVERSATION_MODAL_WINDOW,
-    // REQUEST_CONVERSATION_MESSAGES
+    CLEAR_STATE
 } from './actionsTypes';
-// import { Action } from 'redux';
-// import App from '../App';
 
 const appState: AppStore.App = { // initial state
     logged: false,
@@ -34,11 +32,14 @@ export const Reducer = handleActions(
                 ...state,
                 conversationSelected: !state.conversationSelected,
                 currentConversation: action.payload
-            } : 
-            { 
-                ...state,
-                conversationSelected: !state.conversationSelected
-             };
+            } :
+                {
+                    ...state,
+                    conversationSelected: !state.conversationSelected
+                };
+        },
+        [CLEAR_STATE]: (state: AppStore.App) => {
+            return { ...appState }; //Delete all the state
         }
 
     },

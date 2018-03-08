@@ -15,8 +15,15 @@ export class Conversations extends React.Component<ConversationWindowProps> {
 
     openConversation = (Conversation: string) => () => {
         // console.log('conversation: ', Conversation);
-        this.props.conversationSelected ? false :
+        // this.props.conversationSelected ? false :
+        //     this.props.dispatchConversation(Conversation);
+
+        if (this.props.currentConversation !== Conversation) {
             this.props.dispatchConversation(Conversation);
+        } else {
+            console.log('going to the else');
+        }
+
     }
     render() {
         // console.log(this.props.conversationsList);        
@@ -53,6 +60,7 @@ interface ConversationsMapStateToProps {
     conversationsList: AppStore.Conversations;
     conversationSelected: boolean;
     myEmail: string;
+    currentConversation: string;
 }
 
 interface ConversationMapDispatchToProps {
@@ -67,7 +75,8 @@ export default
         (store) => ({
             conversationsList: store.conversations,
             conversationSelected: store.app.conversationSelected,
-            myEmail: store.user.email
+            myEmail: store.user.email,
+            currentConversation: store.app.currentConversation
         }),
         {
             dispatchConversation: SetConversationWindow, // to open the conversation once it is selected
