@@ -157,11 +157,10 @@ export class User extends Controller {
             .catch((e: Error) => res.send(e));
     }
     acceptFriendRequest = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
-        // console.log('*******************************************************************************  ');
         const { contactEmail } = req.body;
         const email = req.user.email;
-        // console.log("emailContact", contactEmail);
-        // console.log("email", email);
+        // const cntc = await UserModel.findOne({email: contactEmail}).exec();
+        // console.log('*-*-*-: contact: ', cntc!._id) ;
         const conversation = await new ConversationModel({}).save();
         const me = await UserModel.findOneAndUpdate(
             { email },
