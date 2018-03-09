@@ -53,6 +53,7 @@ interface UserContact {
 interface Contact {
     contact_id: string;
     contactName: string;
+    name: string; // *-*-*-*-*-*-
 }
 
 interface Conversation {

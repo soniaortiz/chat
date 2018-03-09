@@ -30,6 +30,8 @@ export class ContactRequestDialog extends React.Component<connectedComponentProp
     }
 
     handleContactRequest = () => {
+
+        //  console.log('users emails', this.props.emailSender, this.props.user.email); // sender receiver
         this.props.sendfriendrequest(this.props.emailSender, this.props.user.email);
         nspUser.emit('send contact request', { user: this.props.user.email });
         // this.setState({ open: false });

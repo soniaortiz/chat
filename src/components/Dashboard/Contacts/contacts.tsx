@@ -6,26 +6,23 @@ interface ContactsProps {
 
 }
 
-export class Contacts extends React.Component<ContactsProps&ContactsMapStateToProps&ContactsMapDispatchToProps> {
+export class Contacts extends React.Component<ContactsProps & ContactsMapStateToProps & ContactsMapDispatchToProps> {
     render() {
         console.log(this.props.contactsList);
         return (
             <React.Fragment>
-                {
-                    this.props.contactsList.map((contact, index) => (
-                        <MenuItem key={index}>
-                            {contact}
-                        </MenuItem>
-                    ))
-                }
+                {this.props.contactsList.map((contact, index) => (
+                    <MenuItem key={index}>
+                        {contact.name}
+                    </MenuItem>)
+                )}
             </React.Fragment>
-            // <div></div>
         );
     }
 }
 
 interface ContactsMapStateToProps {
-    contactsList: Array <Contact>;
+    contactsList: Array<Contact>;
 }
 interface ContactsMapDispatchToProps {
     // getContacts: () => void

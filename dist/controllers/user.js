@@ -121,7 +121,9 @@ var User = /** @class */ (function (_super) {
             var user = req.user;
             !user && res.status(404).send('User not found');
             // nspUser.to(user.email).emit('profile', user);
-            res.json(user);
+            user.populate('contacts')
+                .execPopulate({ new: true })
+                .then(function (u) { res.json(u); });
         };
         _this.conversations = function (req, res, next) {
             var _id = req.user._id;
@@ -160,7 +162,7 @@ var User = /** @class */ (function (_super) {
             });
         };
         _this.sendFriendRequest = function (req, res, next) {
-            // console.log("Sending contact request **", req.body.emailContact);
+            // console.log("Sending contact request **", req.body.contactEmail);
             var _a = req.body, userEmail = _a.userEmail, contactEmail = _a.contactEmail;
             userSchema_1.UserModel
                 .findOneAndUpdate({ email: contactEmail }, {
@@ -189,30 +191,33 @@ var User = /** @class */ (function (_super) {
                 .catch(function (e) { return res.send(e); });
         };
         _this.acceptFriendRequest = function (req, res, next) { return __awaiter(_this, void 0, void 0, function () {
-            var contactEmail, email, conversation, me, contact, x;
+            var contactEmail, email, cntc, conversation, me, contact, x;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         contactEmail = req.body.contactEmail;
                         email = req.user.email;
-                        return [4 /*yield*/, new conversationSchema_1.ConversationModel({}).save()];
+                        return [4 /*yield*/, userSchema_1.UserModel.findOne({ email: contactEmail }).exec()];
                     case 1:
+                        cntc = _a.sent();
+                        return [4 /*yield*/, new conversationSchema_1.ConversationModel({}).save()];
+                    case 2:
                         conversation = _a.sent();
                         return [4 /*yield*/, userSchema_1.UserModel.findOneAndUpdate({ email: email }, {
                                 $pull: { friendRequests: contactEmail },
-                                $push: { contacts: contactEmail, conversations: conversation._id }
+                                $push: { contacts: cntc._id, conversations: conversation._id }
                             }, { new: true }).exec()];
-                    case 2:
+                    case 3:
                         me = _a.sent();
                         return [4 /*yield*/, userSchema_1.UserModel.findOneAndUpdate({ email: contactEmail }, {
                                 $push: {
-                                    contacts: email, conversations: conversation._id
+                                    contacts: req.user._id, conversations: conversation._id
                                 }
                             }, { new: true })
                                 .exec()];
-                    case 3:
+                    case 4:
                         contact = _a.sent();
-                        if (!(me && contact)) return [3 /*break*/, 5];
+                        if (!(me && contact)) return [3 /*break*/, 6];
                         // console.log('me: ', me._id, 'contact', contact._id);
                         console.log('the conversation._id ++ ', conversation._id);
                         return [4 /*yield*/, conversationSchema_1.ConversationModel.findOneAndUpdate({ _id: conversation._id }, {
@@ -221,16 +226,16 @@ var User = /** @class */ (function (_super) {
                                     conversationName: undefined
                                 }
                             }, { new: true }).exec()];
-                    case 4:
+                    case 5:
                         x = _a.sent();
                         // .then(() => {
                         console.log('conversation ', x);
                         res.send(me);
-                        return [3 /*break*/, 6];
-                    case 5:
+                        return [3 /*break*/, 7];
+                    case 6:
                         next(new mongoose_1.Error('me or contact undefined'));
-                        _a.label = 6;
-                    case 6: return [2 /*return*/];
+                        _a.label = 7;
+                    case 7: return [2 /*return*/];
                 }
             });
         }); };

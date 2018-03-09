@@ -77,7 +77,10 @@ export class User extends Controller {
         const user = req.user;
         !user && res.status(404).send('User not found');
         // nspUser.to(user.email).emit('profile', user);
-        res.json(user);
+        user.populate('contacts')
+            .execPopulate({new: true})
+            .then((u) => {res.json(u);});
+        
     }
     conversations = (req: express.Request, res: express.Response, next: express.NextFunction) => {
         const { _id } = req.user;
@@ -123,7 +126,7 @@ export class User extends Controller {
             });
     }
     sendFriendRequest = (req: express.Request, res: express.Response, next: express.NextFunction) => {// Incomplete
-        // console.log("Sending contact request **", req.body.emailContact);
+        // console.log("Sending contact request **", req.body.contactEmail);
         const { userEmail, contactEmail } = req.body;
         UserModel
             .findOneAndUpdate(
@@ -159,14 +162,14 @@ export class User extends Controller {
     acceptFriendRequest = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
         const { contactEmail } = req.body;
         const email = req.user.email;
-        // const cntc = await UserModel.findOne({email: contactEmail}).exec();
+        const cntc = await UserModel.findOne({ email: contactEmail }).exec();
         // console.log('*-*-*-: contact: ', cntc!._id) ;
         const conversation = await new ConversationModel({}).save();
         const me = await UserModel.findOneAndUpdate(
             { email },
             {
                 $pull: { friendRequests: contactEmail },
-                $push: { contacts: contactEmail, conversations: conversation._id }
+                $push: { contacts: cntc!._id, conversations: conversation._id }
             },
             { new: true }).exec();
 
@@ -174,7 +177,7 @@ export class User extends Controller {
             { email: contactEmail },
             {
                 $push: {
-                    contacts: email, conversations: conversation._id
+                    contacts: req.user._id, conversations: conversation._id
                 }
             },
             { new: true })
@@ -190,8 +193,8 @@ export class User extends Controller {
                         participants: [me._id, contact._id],
                         conversationName: undefined
                     }
-                }, 
-                {new: true}).exec();
+                },
+                { new: true }).exec();
             // .then(() => {
             console.log('conversation ', x);
 
