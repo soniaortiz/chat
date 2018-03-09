@@ -11,16 +11,10 @@ export class Conversations extends React.Component<ConversationWindowProps> {
 
     componentDidMount() {
         this.props.setConversations();
-        // console.log('the conversations', this.props.conversationsList);
     }
 
     openConversation = (Conversation: string) => () => {
-        // console.log('here')
-        // if (!this.props.conversationSelected) {
-        // this.props.openConversation();
-        // }
         this.props.dispatchConversation(Conversation);
-        // console.log('there')
 
     }
     render() {

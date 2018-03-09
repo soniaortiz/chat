@@ -18,7 +18,7 @@ export const RequestUserInfo = () => {
         // console.log("Request user info");
         return request.post('/profile', { withCredentials: true })
             .then(({ data }) => {
-                // console.log('response: ', data);
+                console.log('response: ', data);
                 dispatch(RequestUserInfoAction(
                     {
                         name: data.name,

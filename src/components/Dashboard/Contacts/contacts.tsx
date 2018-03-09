@@ -8,7 +8,7 @@ interface ContactsProps {
 
 export class Contacts extends React.Component<ContactsProps&ContactsMapStateToProps&ContactsMapDispatchToProps> {
     render() {
-        // console.log(this.props.contactsList);
+        console.log(this.props.contactsList);
         return (
             <React.Fragment>
                 {
