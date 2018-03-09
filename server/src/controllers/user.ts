@@ -77,7 +77,11 @@ export class User extends Controller {
         const user = req.user;
         !user && res.status(404).send('User not found');
         // nspUser.to(user.email).emit('profile', user);
-        user.populate('contacts')
+        user.populate(
+            {
+                path:'contacts',
+                select: 'name email'
+            })
             .execPopulate({new: true})
             .then((u) => {res.json(u);});
         
