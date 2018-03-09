@@ -6,7 +6,7 @@ import {
     CLEAR_STATE
 } from './actionsTypes';
 
-const appState: AppStore.App = { // initial state
+export const appState: AppStore.App = { // initial state
     logged: false,
     loading: false,
     requestWindowOpened: false,
@@ -27,7 +27,6 @@ export const Reducer = handleActions(
             return { ...state, requestWindowOpened: !state.requestWindowOpened };
         },
         [SET_CONVERSATION_MODAL_WINDOW]: (state: AppStore.App, action) => {
-            // console.log('state: in conversation close: ', state);
             return action.payload ? {
                 ...state,
                 conversationSelected: !state.conversationSelected,
@@ -39,8 +38,7 @@ export const Reducer = handleActions(
                 };
         },
         [CLEAR_STATE]: (state: AppStore.App) => {
-            return { ...appState }; //Delete all the state
+            return { ...appState }; // Delete all the state
         }
-
     },
     appState);

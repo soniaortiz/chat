@@ -9,7 +9,6 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import { store as storeReducer } from './store/reducers';
-
 import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import { composeWithDevTools } from 'remote-redux-devtools';
 

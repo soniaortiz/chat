@@ -1,27 +1,18 @@
 import { Dispatch } from 'react-redux';
 import request from 'axios';
-import { 
+import {
     // LOG_OUT,
-    CLEAR_STATE 
+    // CLEAR_STATE
 } from './actionsTypes';
 import * as H from 'history';
+import { clearStateAction } from './clearAction';
 
-// Action creator
-
-const LogOut = () => {
-    return {
-        type: CLEAR_STATE
-    };
-};
-
-// tslint:disable-next-line:no-any
-export function LogOutRequest (history: H.History) {
+export function LogOutRequest(history: H.History) {
     return function (dispatch: Dispatch<AppStore.User>) {
         return request.post('/logout', { withCredentials: true })
             .then(() => {
                 console.log('Loging out');
-                dispatch(LogOut());
-                // dispatch
+                dispatch(clearStateAction());
             })
             .then(() => {
                 history.replace('');

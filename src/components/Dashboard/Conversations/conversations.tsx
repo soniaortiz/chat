@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { MenuItem } from 'material-ui';
 import { SetConversationWindow } from '../../../store/appSetConversationModalWindow';
 import { RequestConversations } from '../../../store/conversationsActions';
+// import { openConversation } from '../../../store/openConversation';
 interface ConversationsProps {
 }
 
@@ -14,22 +15,17 @@ export class Conversations extends React.Component<ConversationWindowProps> {
     }
 
     openConversation = (Conversation: string) => () => {
-        // console.log('conversation: ', Conversation);
-        // this.props.conversationSelected ? false :
-        //     this.props.dispatchConversation(Conversation);
-
-        if (this.props.currentConversation !== Conversation) {
-            this.props.dispatchConversation(Conversation);
-        } else {
-            console.log('going to the else');
-        }
+        // console.log('here')
+        // if (!this.props.conversationSelected) {
+        // this.props.openConversation();
+        // }
+        this.props.dispatchConversation(Conversation);
+        // console.log('there')
 
     }
     render() {
-        // console.log(this.props.conversationsList);        
         return (
             <React.Fragment>
-                {/* {console.log(this.props.conversationsList)} */}
                 {
                     this.props.conversationsList ?
                         Object.keys(this.props.conversationsList)
@@ -39,14 +35,13 @@ export class Conversations extends React.Component<ConversationWindowProps> {
                                     onClick={this.openConversation(element)}
                                 >
                                     {
-                                        // this.props.conversationsList[element].conversationName ?
-                                        //     this.props.conversationsList[element].conversationName :
-                                        //     this.props.conversationsList[element].participants.filter(
-                                        //         (participant) => {
-                                        //             return participant.email != this.props.myEmail;
-                                        //         })[0].name
-                                        element
-
+                                        // this.props.conversationsList[element].participants[0]
+                                        this.props.conversationsList[element].conversationName ?
+                                            this.props.conversationsList[element].conversationName :
+                                            this.props.conversationsList[element].participants
+                                                .filter((participant) => {
+                                                    return participant.email !== this.props.myEmail;
+                                                })[0].name
                                     }
                                 </MenuItem>
                             )) : []
@@ -66,6 +61,7 @@ interface ConversationsMapStateToProps {
 interface ConversationMapDispatchToProps {
     dispatchConversation: (conversationId: string) => void;
     setConversations: () => void;
+    // openConversation: () => void;
 }
 
 type ConversationWindowProps = ConversationsMapStateToProps & ConversationMapDispatchToProps & ConversationsProps;
@@ -80,6 +76,7 @@ export default
         }),
         {
             dispatchConversation: SetConversationWindow, // to open the conversation once it is selected
-            setConversations: RequestConversations
+            setConversations: RequestConversations,
+            // openConversation: openConversation
         }
     )(Conversations);

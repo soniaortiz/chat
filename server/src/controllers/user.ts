@@ -123,7 +123,6 @@ export class User extends Controller {
             });
     }
     sendFriendRequest = (req: express.Request, res: express.Response, next: express.NextFunction) => {// Incomplete
-        // console.log('Sending contact request **');
         // console.log("Sending contact request **", req.body.emailContact);
         const { userEmail, contactEmail } = req.body;
         UserModel
@@ -135,9 +134,6 @@ export class User extends Controller {
                 },
                 { new: true }) // websockets
             .then((user) => {
-                // io.in(user.id).emmit('send request', { hello: 'world' });
-                // io.emit('send request', { hello: 'world' });
-                // console.log('---------', user);
                 if (user) {
                     nspUser.to(contactEmail).emit('contact request', user.friendRequests);
                     res.sendStatus(200);
@@ -187,15 +183,23 @@ export class User extends Controller {
 
         if (me && contact) {
             // console.log('me: ', me._id, 'contact', contact._id);
-            await ConversationModel.findOneAndUpdate(
-                conversation._id,
+            console.log('the conversation._id ++ ', conversation._id);
+            const x = await ConversationModel.findOneAndUpdate(
+                { _id: conversation._id },
                 {
                     $set: {
                         participants: [me._id, contact._id],
                         conversationName: undefined
                     }
-                }).exec();
+                }, 
+                {new: true}).exec();
+            // .then(() => {
+            console.log('conversation ', x);
+
             res.send(me);
+            // });
+            // console.log('conversation', me.conversations, contact.conversations);
+
         } else {
             next(new Error('me or contact undefined'));
         }
@@ -250,7 +254,7 @@ export class User extends Controller {
             .save()
             .then((message) => {
                 return message.populate(
-                    { 
+                    {
                         path: 'sender',
                         select: 'email name'
                     }).execPopulate();

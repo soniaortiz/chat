@@ -3,9 +3,11 @@ import {
     REQUEST_USER_INFO, SEND_CONTACT_REQUEST,
     ACEPT_CONTACT_REQUEST, REJECT_CONTACT_REQUEST,
     LOG_OUT,
-    UPDATE_CONTACT_REQUESTS
+    UPDATE_CONTACT_REQUESTS,
+    CLEAR_STATE
 } from './actionsTypes';
-const userData: AppStore.User = { // init state
+
+export const userData: AppStore.User = { // init state
     name: '',
     middleName: '',
     lastName: '',
@@ -58,7 +60,11 @@ export const Reducer = handleActions<AppStore.User, payload>(
                 friendRequests: action.payload.friendRequests
             } : { ...state };
 
+        },
+        [CLEAR_STATE]: (state) => {
+            return { ...userData }; // Delete all the state
         }
+
     },
     userData
 );

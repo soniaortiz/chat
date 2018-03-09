@@ -2,10 +2,11 @@ import { handleActions } from 'redux-actions';
 import {
     REQUEST_USER_CONVERSATIONS_LIST,
     REQUEST_CONVERSATION_MESSAGES,
-    PUSH_MESSAGE_TO_CONVERSATION
+    PUSH_MESSAGE_TO_CONVERSATION,
+    CLEAR_STATE
 } from './actionsTypes';
 
-const conversationsData: AppStore.Conversations = {};
+export const conversationsData: AppStore.Conversations = {};
 
 type Actions = AppStore.Conversations & Conversation & { _id: string } & { message: any } & { conversationId: string }
     & { _id: string, msgs: Array<any> };
@@ -32,23 +33,15 @@ export const Reducer = handleActions<AppStore.Conversations, Actions>(
                 : { ...state };
         },
         [PUSH_MESSAGE_TO_CONVERSATION]: (state, action) => {
-            // console.log('PAYLOAD---->', action.payload!.message);
-            // console.log('state------->', state);
-
             const conversationUpdated = {
                 ...state[action.payload!.conversationId],
                 messages: state[action.payload!.conversationId].messages.push(action.payload!.message)
             };
             console.log('updated: ', conversationUpdated);
-
-            // return action.payload ? 
-            // {
-            //     ...state,
-            //     [action.payload.conversationId]: {...conver}
-            // } : 
-            // { ...state };
             return { ...state };
-
+        },
+        [CLEAR_STATE]: (state) => {
+            return { ... conversationsData}; // Delete all the state
         }
     },
     conversationsData

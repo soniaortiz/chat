@@ -14,7 +14,7 @@ export const RequestConversations = () => {
     return (dispatch: Dispatch<AppStore.Conversations>) => {
         return request.post('/conversations', { withCredentials: true })
             .then(({ data }) => {
-                // console.log('maping conversations', data);
+                console.log('maping conversations', data);
                 dispatch(RequestConversationsList(data));
                 nspConversation.emit('join conversations', data);
                 return true;

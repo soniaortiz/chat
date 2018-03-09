@@ -160,7 +160,6 @@ var User = /** @class */ (function (_super) {
             });
         };
         _this.sendFriendRequest = function (req, res, next) {
-            // console.log('Sending contact request **');
             // console.log("Sending contact request **", req.body.emailContact);
             var _a = req.body, userEmail = _a.userEmail, contactEmail = _a.contactEmail;
             userSchema_1.UserModel
@@ -168,9 +167,6 @@ var User = /** @class */ (function (_super) {
                 $push: { friendRequests: userEmail }
             }, { new: true }) // websockets
                 .then(function (user) {
-                // io.in(user.id).emmit('send request', { hello: 'world' });
-                // io.emit('send request', { hello: 'world' });
-                // console.log('---------', user);
                 if (user) {
                     app_1.nspUser.to(contactEmail).emit('contact request', user.friendRequests);
                     res.sendStatus(200);
@@ -193,7 +189,7 @@ var User = /** @class */ (function (_super) {
                 .catch(function (e) { return res.send(e); });
         };
         _this.acceptFriendRequest = function (req, res, next) { return __awaiter(_this, void 0, void 0, function () {
-            var contactEmail, email, conversation, me, contact;
+            var contactEmail, email, conversation, me, contact, x;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -218,15 +214,17 @@ var User = /** @class */ (function (_super) {
                         contact = _a.sent();
                         if (!(me && contact)) return [3 /*break*/, 5];
                         // console.log('me: ', me._id, 'contact', contact._id);
-                        return [4 /*yield*/, conversationSchema_1.ConversationModel.findOneAndUpdate(conversation._id, {
+                        console.log('the conversation._id ++ ', conversation._id);
+                        return [4 /*yield*/, conversationSchema_1.ConversationModel.findOneAndUpdate({ _id: conversation._id }, {
                                 $set: {
                                     participants: [me._id, contact._id],
                                     conversationName: undefined
                                 }
-                            }).exec()];
+                            }, { new: true }).exec()];
                     case 4:
-                        // console.log('me: ', me._id, 'contact', contact._id);
-                        _a.sent();
+                        x = _a.sent();
+                        // .then(() => {
+                        console.log('conversation ', x);
                         res.send(me);
                         return [3 /*break*/, 6];
                     case 5:
