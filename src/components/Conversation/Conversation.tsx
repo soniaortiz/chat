@@ -22,7 +22,7 @@ export class Conversation extends React.Component<ConversationPropsMix, Conversa
 
     sendMessage = () => {
         // console.log(this.state.message);
-        this.props.SendMessage({ messageContent: this.state.message, conversation_id: this.props.conversationId })
+        this.props.SendMessage({ messageContent: this.state.message, conversation_id: this.props.conversationId });
     }
 
     handleChange = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
@@ -33,7 +33,7 @@ export class Conversation extends React.Component<ConversationPropsMix, Conversa
         return (
             <Paper
                 style={
-                    {height: '100%'}
+                    { height: '100%' }
                 }
             >
 
@@ -50,12 +50,12 @@ export class Conversation extends React.Component<ConversationPropsMix, Conversa
 
                 <MessagesList />
 
-                <TextField 
-                    onChange={this.handleChange} 
-                    style= {{
+                <TextField
+                    onChange={this.handleChange}
+                    style={{
                         width: '85%'
                     }}
-                    />
+                />
 
                 <RaisedButton
                     label={'Send'}

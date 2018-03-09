@@ -3,7 +3,7 @@ import request, { AxiosResponse } from 'axios';
 import { AutoComplete, MenuItem, Paper } from 'material-ui';
 import ContactRequestDialog from '../ContactRequestDialog/contactRequestDialog';
 import ActionSearch from 'material-ui/svg-icons/action/search';
-import SvgIcon from 'material-ui/SvgIcon';
+// import SvgIcon from 'material-ui/SvgIcon';
 import { connect } from 'react-redux';
 import { setModalWindowAction } from '../../../store/appActionRequestWindow';
 
@@ -49,7 +49,6 @@ export class SearchFriend extends React.Component<SearchFriendPropsMix, SearchFr
 
     onCloseDialog = () => {
         console.log('Dialog closed');
-        // this.setState({ viewUser: false });
     }
 
     handleNewRequest = (value: string) => {
@@ -82,32 +81,32 @@ export class SearchFriend extends React.Component<SearchFriendPropsMix, SearchFr
                             onCloseDialog={this.onCloseDialog}
                         /> : false
                 }
-                <SvgIcon>
-                    <ActionSearch />
-                </SvgIcon>
-                <AutoComplete
-                    onUpdateInput={this.handleNewRequest}
-                    maxSearchResults={10}
-                    hintText={'Search new Contact'}
-                    dataSource={
 
-                        this.state.users.map((user, index) => {
-                            // console.log(user);
-                            return ({
-                                text: user.name,
-                                value: (
-                                    < MenuItem
-                                        id={index.toString()}
-                                        onClick={this.displayUser}
-                                        key={index}
-                                        primaryText={user.name}
-                                    // value={user.name}
-                                    />
-                                )
-                            });
-                        })
-                    }
-                />
+                <div className="search">
+                    <AutoComplete
+                        onUpdateInput={this.handleNewRequest}
+                        maxSearchResults={10}
+                        hintText={'Search new Contact'}
+                        dataSource={
+                            this.state.users.map((user, index) => {
+                                return ({
+                                    text: user.name,
+                                    value: (
+                                        < MenuItem
+                                            id={index.toString()}
+                                            onClick={this.displayUser}
+                                            key={index}
+                                            primaryText={user.name}
+                                        />
+                                    )
+                                });
+                            })
+                        }
+                    />
+                </div>
+                <div className="search">
+                    <ActionSearch />
+                </div>
             </Paper>
         );
     }

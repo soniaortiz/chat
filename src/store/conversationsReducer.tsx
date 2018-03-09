@@ -14,13 +14,9 @@ type Actions = AppStore.Conversations & Conversation & { _id: string } & { messa
 export const Reducer = handleActions<AppStore.Conversations, Actions>(
     {
         [REQUEST_USER_CONVERSATIONS_LIST]: (state, action) => {
-            // console.log(state);
-            // console.log(action.payload);
             return (action.payload) ? action.payload : state;
         },
         [REQUEST_CONVERSATION_MESSAGES]: (state, action) => { // to get an specific conversation
-            // console.log('PAYLOAD---->', action.payload);
-            // console.log('state------->', state);
             const newConversation = {
                 ...state[action.payload!._id],
                 messages: action.payload!.msgs
@@ -41,7 +37,7 @@ export const Reducer = handleActions<AppStore.Conversations, Actions>(
             return { ...state };
         },
         [CLEAR_STATE]: (state) => {
-            return { ... conversationsData}; // Delete all the state
+            return { ...conversationsData }; // Delete all the state
         }
     },
     conversationsData

@@ -1,12 +1,9 @@
 import * as io from 'socket.io-client';
 export const socket = io('http://localhost:8000'); // flag to connect 
-// it shouln't be connected to the server if there is not user logged.
 export const nspUser = io('/user');
 export const nspConversation = io('/conversation');
 import { PushMessageToConversation } from './store/pushMessageToConversation';
-
 import { store } from './App';
-// import { RequestUserInfoAction } from './store/userActions';
 import { updateContactRequestsActionCreator } from './store/appUpdateRequestReducer';
 
 export function socketListeners() {
@@ -22,14 +19,10 @@ export function socketListeners() {
     });
 
     nspUser.on('contact request', (data: Array<string>) => {
-        // console.log('message received: ', data);
-        // when a new user send a contact request so 
-        // it triggers the action to update the requests
         store.dispatch(updateContactRequestsActionCreator(data));
     });
 
     nspConversation.on('new message', (data: any) => {
-        // console.log(data);
         store.dispatch(PushMessageToConversation(data));
     });
 }
