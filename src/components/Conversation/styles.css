@@ -5,3 +5,8 @@
     background: fuchsia;
     text-decoration: underline
 }
+
+.ConvName{
+    display: inline-block;
+    
+}

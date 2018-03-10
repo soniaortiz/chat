@@ -8,6 +8,8 @@ interface MeProps extends DispatchProp<{}>, RouteComponentProps<{}> {
     user: AppStore.User;
 }
 
+// const property = ['Name', 'Middle Name', 'Last Name', 'Email', 'Birthdate', 'Gender'];
+
 export class Me extends React.Component<MeProps> {
     render() {
         return (
@@ -24,7 +26,9 @@ export class Me extends React.Component<MeProps> {
 
                             )
                             .map(([key, value], index) => (
-                                <ListItem key={index} primaryText={value.toString()} />
+                                <ListItem key={index} primaryText={
+                                    // property[index] + ' ' +
+                                    value.toString()} />
                             )
                             )
                     }

@@ -36,18 +36,33 @@ export class Conversation extends React.Component<ConversationPropsMix, Conversa
                     { height: '100%' }
                 }
             >
+                <Paper
+                    style={
+                        {
+                            width: '70%',
+                            display: 'inline-block'
+                        }
+                    }
+                    zDepth={0} 
+                >
+
+                    {'Conversation name'}
+                </Paper>
 
                 <FlatButton
                     icon={<NavigationClose />}
                     labelPosition={'before'}
                     label={'Close'}
                     onClick={this.closeConversation}
-                    style={{
-                        left: '85%',
-                        position: 'relative'
-                    }}
-                />
+                    className={'ConvName'}
+                    style={
+                        {
+                            width: '30%'
+                        }
+                    }
 
+                />
+                {/* </Paper> */}
                 <MessagesList />
 
                 <TextField
@@ -74,12 +89,16 @@ interface ConversationMapDispatchToProps {
 interface ConversationMapToProps {
     conversationId: string;
     messagesList: any;
+    // conversationName: string
 }
 type ConversationPropsMix = ConversationMapDispatchToProps & ConversationMapToProps;
 export default connect<ConversationMapToProps, ConversationMapDispatchToProps, {}, AppStore.Store>(
     (store) => ({
         conversationId: store.app.currentConversation,
         messagesList: store.conversations,
+        // conversationName: store.conversations[this.props.conversationId].participants.filter((part, index)=>{
+        //     return part.name==''
+        // })[0].name;
     }),
     {
         SetConversationStateOpen: UpdateConversationStatus,
