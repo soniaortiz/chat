@@ -1,5 +1,13 @@
 import * as React from 'react';
-import { Paper, TextField, FlatButton, RaisedButton } from 'material-ui';
+import {
+    // Paper, 
+    TextField,
+    FlatButton,
+    RaisedButton,
+    CardHeader,
+    Card,
+    CardMedia
+} from 'material-ui';
 import { connect } from 'react-redux';
 import { UpdateConversationStatus } from '../../store/conversationAction';
 import { SendMessage } from '../../store/sendMessageAction';
@@ -16,7 +24,7 @@ export class Conversation extends React.Component<ConversationPropsMix, Conversa
         this.state = { message: '' };
     }
     closeConversation = () => {
-        console.log('close conversation');
+        // console.log('close conversation');
         this.props.SetConversationStateOpen();
     }
 
@@ -31,39 +39,32 @@ export class Conversation extends React.Component<ConversationPropsMix, Conversa
     }
     render() {
         return (
-            <Paper
+            <Card
                 style={
                     { height: '100%' }
                 }
             >
-                <Paper
+                <CardHeader
+                    title={'Conversation name'}
                     style={
                         {
-                            width: '70%',
-                            display: 'inline-block'
+                            width: '80%'
                         }
                     }
-                    zDepth={0} 
                 >
+                    <FlatButton
+                        icon={<NavigationClose />}
+                        labelPosition={'before'}
+                        label={'Close'}
+                        onClick={this.closeConversation}
+                        className={'ConvName'}
+                    />
+                </CardHeader>
 
-                    {'Conversation name'}
-                </Paper>
-
-                <FlatButton
-                    icon={<NavigationClose />}
-                    labelPosition={'before'}
-                    label={'Close'}
-                    onClick={this.closeConversation}
-                    className={'ConvName'}
-                    style={
-                        {
-                            width: '30%'
-                        }
-                    }
-
-                />
-                {/* </Paper> */}
-                <MessagesList />
+                <CardMedia >
+                    <img src="./conversation_background.jpg" alt="" />
+                    <MessagesList />
+                </CardMedia>
 
                 <TextField
                     onChange={this.handleChange}
@@ -76,7 +77,7 @@ export class Conversation extends React.Component<ConversationPropsMix, Conversa
                     label={'Send'}
                     onClick={this.sendMessage}
                 />
-            </Paper>
+            </Card>
         );
     }
 }
@@ -95,10 +96,7 @@ type ConversationPropsMix = ConversationMapDispatchToProps & ConversationMapToPr
 export default connect<ConversationMapToProps, ConversationMapDispatchToProps, {}, AppStore.Store>(
     (store) => ({
         conversationId: store.app.currentConversation,
-        messagesList: store.conversations,
-        // conversationName: store.conversations[this.props.conversationId].participants.filter((part, index)=>{
-        //     return part.name==''
-        // })[0].name;
+        messagesList: store.conversations
     }),
     {
         SetConversationStateOpen: UpdateConversationStatus,

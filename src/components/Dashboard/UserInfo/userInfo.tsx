@@ -14,7 +14,7 @@ export class Me extends React.Component<MeProps> {
     render() {
         return (
             <Paper>
-                <Avatar src="http://via.placeholder.com/350x150" size={100} className="Avatar" />
+                <Avatar src="./avatar.jpg" size={100} className="Avatar" />
                 <List>
                     {
                         Object.entries(this.props.user)
