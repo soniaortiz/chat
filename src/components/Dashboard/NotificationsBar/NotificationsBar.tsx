@@ -7,7 +7,7 @@ import ContactRequestList from '../ContactRequestList/ContactRequestList';
 import { LogOutRequest } from '../../../store/logOut';
 import { RouteComponentProps } from 'react-router';
 import * as H from 'history';
-import { FormattedMessage, FormattedTime } from 'react-intl';
+// import { FormattedMessage, FormattedTime } from 'react-intl';
 
 // const styleToolBar = {
 //     color: 'red',
@@ -40,11 +40,11 @@ export class NotificationsBar extends React.Component<NotificationsBarProps
         return (
             <Paper>
                 <Toolbar>
-                    <FormattedMessage
+                    {/* <FormattedMessage
                         id="welcomeMessage"
                         defaultMessage="Welcome"
                     />
-                    <FormattedTime value={Date.now()} day={'today'} />
+                    <FormattedTime value={Date.now()} day={'today'} /> */}
                     {/* <ToolbarGroup style={styleToolBar} >
                         Welcome
                     </ToolbarGroup> */}

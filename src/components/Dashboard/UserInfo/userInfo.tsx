@@ -13,8 +13,6 @@ interface MeProps extends DispatchProp<{}>, RouteComponentProps<{}> {
     user: AppStore.User;
 }
 
-// const property = ['Name', 'Middle Name', 'Last Name', 'Email', 'Birthdate', 'Gender'];
-
 export class Me extends React.Component<MeProps> {
 
     openAvatar = () => {

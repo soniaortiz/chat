@@ -12,7 +12,8 @@ export const appState: AppStore.App = { // initial state
     requestWindowOpened: false,
     newContactRequests: [],
     conversationSelected: false,
-    currentConversation: ''
+    currentConversation: '',
+    locale: window.navigator.language
 };
 
 export const Reducer = handleActions(

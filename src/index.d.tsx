@@ -72,6 +72,7 @@ declare namespace AppStore {// store
         conversationSelected: boolean;
         currentConversation: string;
         newContactRequests: Array<string>;
+        locale: string;
     }
     interface User {
         name: string;
