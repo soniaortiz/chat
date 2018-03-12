@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { DispatchProp, connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
-import { Avatar, 
-    List, 
-    Paper, 
-    ListItem 
+import {
+    Avatar,
+    List,
+    Paper,
+    ListItem
 } from 'material-ui';
 import './style.css';
 
@@ -15,10 +16,16 @@ interface MeProps extends DispatchProp<{}>, RouteComponentProps<{}> {
 // const property = ['Name', 'Middle Name', 'Last Name', 'Email', 'Birthdate', 'Gender'];
 
 export class Me extends React.Component<MeProps> {
+
+    openAvatar = () => {
+        console.log('Open avatar');
+    }
     render() {
         return (
             <Paper>
-                <Avatar src="./avatar.jpg" size={100} className="Avatar" />
+                <Avatar src="./avatar.jpg" size={100} className="Avatar"
+                    onClick={this.openAvatar}
+                />
                 <List>
                     {
                         Object.entries(this.props.user)
@@ -32,7 +39,10 @@ export class Me extends React.Component<MeProps> {
                             .map(([key, value], index) => (
                                 <ListItem key={index} primaryText={
                                     // property[index] + ' ' +
-                                    value.toString()} />
+                                    value.toString()}
+                                    disabled={true}
+
+                                />
                             )
                             )
                     }
