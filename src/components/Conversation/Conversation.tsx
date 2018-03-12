@@ -62,7 +62,7 @@ export class Conversation extends React.Component<ConversationPropsMix, Conversa
                 </CardHeader>
 
                 <CardMedia >
-                    <img src="./conversation_background.jpg" alt="" />
+                    {/* <img src="./conversation_background.jpg" alt="" /> */}
                     <MessagesList />
                 </CardMedia>
 

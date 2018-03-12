@@ -1,7 +1,11 @@
 import * as React from 'react';
 import { DispatchProp, connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
-import { Avatar, List, Paper, ListItem } from 'material-ui';
+import { Avatar, 
+    List, 
+    Paper, 
+    ListItem 
+} from 'material-ui';
 import './style.css';
 
 interface MeProps extends DispatchProp<{}>, RouteComponentProps<{}> {
