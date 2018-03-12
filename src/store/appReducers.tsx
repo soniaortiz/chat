@@ -35,7 +35,8 @@ export const Reducer = handleActions(
             } :
                 {
                     ...state,
-                    conversationSelected: !state.conversationSelected
+                    currentConversation: '',
+                    conversationSelected: false
                 };
         },
         [CLEAR_STATE]: (state: AppStore.App) => {
