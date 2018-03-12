@@ -23,6 +23,13 @@ export class Me extends React.Component<MeProps> {
             <Paper>
                 <Avatar src="./avatar.jpg" size={100} className="Avatar"
                     onClick={this.openAvatar}
+                    style={
+                        {
+                            zIndex: 5,
+                            border: 'solid',
+                            position: 'relative'
+                        }
+                    }
                 />
                 <List>
                     {
