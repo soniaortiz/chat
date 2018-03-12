@@ -27,9 +27,10 @@ export const Reducer = handleActions(
             return { ...state, requestWindowOpened: !state.requestWindowOpened };
         },
         [SET_CONVERSATION_MODAL_WINDOW]: (state: AppStore.App, action) => {
+            console.log('payload in modal window selected', action.payload);
             return action.payload ? {
                 ...state,
-                conversationSelected: !state.conversationSelected,
+                conversationSelected: true,
                 currentConversation: action.payload
             } :
                 {

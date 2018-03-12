@@ -9,7 +9,7 @@ const SetConversationModalWindowActionCreator = (payload: any) => {
 };
 
 export const SetConversationWindow = (conversation: string) => {
-    console.log('conversation: ', conversation);
+    // console.log('conversation: ', conversation);
     return (dispatch: Dispatch<AppStore.App>) => {
         dispatch(SetConversationModalWindowActionCreator(conversation));
     };

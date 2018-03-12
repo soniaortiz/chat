@@ -9,10 +9,10 @@ import { RouteComponentProps } from 'react-router';
 import * as H from 'history';
 import { FormattedMessage, FormattedTime } from 'react-intl';
 
-const styleToolBar = {
-    color: 'red',
-    width: '65%'
-};
+// const styleToolBar = {
+//     color: 'red',
+//     width: '65%'
+// };
 
 interface NotificationsBarProps extends RouteComponentProps<{}> {
     // getNumberOfRequests: () => number;
@@ -45,9 +45,9 @@ export class NotificationsBar extends React.Component<NotificationsBarProps
                         defaultMessage="Welcome"
                     />
                     <FormattedTime value={Date.now()} day={'today'} />
-                    <ToolbarGroup style={styleToolBar} >
+                    {/* <ToolbarGroup style={styleToolBar} >
                         Welcome
-                    </ToolbarGroup>
+                    </ToolbarGroup> */}
                     <ToolbarGroup >
                         {/* {this.props.userContactRequests.length} */}
                         <IconMenu

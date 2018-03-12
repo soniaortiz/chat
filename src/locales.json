@@ -1,5 +1,8 @@
 {
     "es-419": {
         "welcomeMessage": "Bienvenido"
+    },
+    "en-GB": {
+        "welcomeMessage": "Welcome!"
     }
 }

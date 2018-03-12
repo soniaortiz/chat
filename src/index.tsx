@@ -4,15 +4,12 @@ import registerServiceWorker from './registerServiceWorker';
 import App from './App';
 import {
   IntlProvider,
-  addLocaleData,
+  // addLocaleData,
 } from 'react-intl';
 
-import * as es from 'react-intl/locale-data/es';
-addLocaleData([...es]);
-const locale = 'es-419';
+// addLocaleData([...es]);
+const locale = window.navigator.language;
 const appStringResources = require(`./locales.json`);
-
-// console.log('!@#$%^&*() ', appStringResources[locale]);
 
 ReactDOM.render(
   <IntlProvider locale={locale || 'en-GB'} messages={appStringResources[locale]} >
