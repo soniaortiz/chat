@@ -8,6 +8,7 @@ const clearAllStates: AppStore.Store = {
     app: appState,
     user: userData,
     conversations: conversationsData,
+    intlReducer: {locale: '', messages: {}}
 };
 
 export const Reducer = handleActions(

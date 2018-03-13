@@ -3,7 +3,8 @@ import {
     REQUEST_LOGIN, LOG_OUT,
     SET_REQUEST_MODAL_WINDOW,
     SET_CONVERSATION_MODAL_WINDOW,
-    CLEAR_STATE
+    CLEAR_STATE,
+    // SET_LANGUAGE
 } from './actionsTypes';
 
 export const appState: AppStore.App = { // initial state
@@ -15,8 +16,9 @@ export const appState: AppStore.App = { // initial state
     currentConversation: '',
     locale: window.navigator.language
 };
+type payload = string; // change to string
 
-export const Reducer = handleActions(
+export const Reducer = handleActions<AppStore.App, payload>(
     {
         [REQUEST_LOGIN]: (state: AppStore.App) => {
             return { ...state, logged: true, loading: true };
@@ -28,7 +30,6 @@ export const Reducer = handleActions(
             return { ...state, requestWindowOpened: !state.requestWindowOpened };
         },
         [SET_CONVERSATION_MODAL_WINDOW]: (state: AppStore.App, action) => {
-            console.log('payload in modal window selected', action.payload);
             return action.payload ? {
                 ...state,
                 conversationSelected: true,
@@ -42,6 +43,12 @@ export const Reducer = handleActions(
         },
         [CLEAR_STATE]: (state: AppStore.App) => {
             return { ...appState }; // Delete all the state
-        }
+        },
+        // [SET_LANGUAGE]: (state: AppStore.App, action) => {
+        //     console.log(action.payload);
+        //     return action.payload ?
+        //         { ...state, locale: action.payload} :
+        //         { ...state };
+        // }
     },
     appState);

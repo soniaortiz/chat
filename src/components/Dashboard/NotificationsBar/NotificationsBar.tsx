@@ -1,63 +1,69 @@
 import * as React from 'react';
-import { Paper, Toolbar, IconMenu, ToolbarGroup, FlatButton } from 'material-ui';
-import NotificationSms from 'material-ui/svg-icons/notification/sms';
+import { Paper, Toolbar, IconMenu, ToolbarGroup, FlatButton, MenuItem } from 'material-ui';
+import ActionTranslate from 'material-ui/svg-icons/action/translate';
 import SocialPeople from 'material-ui/svg-icons/social/people';
 import { connect } from 'react-redux';
 import ContactRequestList from '../ContactRequestList/ContactRequestList';
 import { LogOutRequest } from '../../../store/logOut';
 import { RouteComponentProps } from 'react-router';
 import * as H from 'history';
-// import { FormattedMessage, FormattedTime } from 'react-intl';
+import { setLanguage } from '../../../store/LangAction';
+const messages = require('../../../locales.json');
 
-// const styleToolBar = {
-//     color: 'red',
-//     width: '65%'
-// };
+const languages = ['es-419', 'en', 'it'];
 
 interface NotificationsBarProps extends RouteComponentProps<{}> {
-    // getNumberOfRequests: () => number;
 }
 
 interface NotificationsBarState {
     displayRequestsList: boolean;
+    language: string;
 }
 export class NotificationsBar extends React.Component<NotificationsBarProps
     & MapDispatchToPropsNB & MapStateToPropsNB, NotificationsBarState> {
 
     constructor(props: NotificationsBarProps & MapDispatchToPropsNB & MapStateToPropsNB) {
         super(props);
-        this.state = { displayRequestsList: false };
+        this.state = { displayRequestsList: false, language: '' };
     }
     logOut = () => {
         console.log('Login out');
         this.props.logOut(this.props.history);
     }
     displayRequests = () => {
-        console.log(this.props.userContactRequests);
+        // console.log(this.props.userContactRequests);
         this.setState({ displayRequestsList: !this.state.displayRequestsList });
     }
+    setLanguageToStore = (lang: string) => () => {
+        this.props.setLanguage(lang);
+    }
     render() {
+        console.log(messages);
         return (
             <Paper>
                 <Toolbar>
-                    {/* <FormattedMessage
-                        id="welcomeMessage"
-                        defaultMessage="Welcome"
-                    />
-                    <FormattedTime value={Date.now()} day={'today'} /> */}
-                    {/* <ToolbarGroup style={styleToolBar} >
-                        Welcome
-                    </ToolbarGroup> */}
+                    {
+                        this.props.lan ?
+                            <p> {messages[this.props.lan].welcomeMessage} </p> :
+                            <p> hola </p>}
                     <ToolbarGroup >
-                        {/* {this.props.userContactRequests.length} */}
                         <IconMenu
                             iconButtonElement={
-                                <NotificationSms
-                                    hoverColor="red"
-                                />
+                                <ActionTranslate />
                             }
                         >
+                            {
+                                languages.map((lang, index) => {
+                                    return (
+                                        <MenuItem onClick={this.setLanguageToStore(lang)} >
+                                            {lang}
+                                        </MenuItem>
+                                    );
+                                }
+                                )
+                            }
                         </IconMenu >
+
                     </ToolbarGroup>
                     <ToolbarGroup >
                         {this.props.userContactRequests ?
@@ -88,18 +94,22 @@ export class NotificationsBar extends React.Component<NotificationsBarProps
 interface MapDispatchToPropsNB {
     // tslint:disable-next-line:no-any
     logOut: (history: H.History) => void;
+    setLanguage: (l: string) => void;
 }
 
 interface MapStateToPropsNB {
     userContactRequests: string[];
+    lan: string;
 }
 
 export default connect<MapStateToPropsNB, MapDispatchToPropsNB, NotificationsBarProps, AppStore.Store>(
     (store) => ({
         // userMessages: store
-        userContactRequests: store.user.friendRequests
+        userContactRequests: store.user.friendRequests,
+        lan: store.intlReducer.locale
     }),
     {
-        logOut: LogOutRequest
+        logOut: LogOutRequest,
+        setLanguage: setLanguage
     }
 )(NotificationsBar);

@@ -4,15 +4,18 @@ import { RouteComponentProps } from 'react-router';
 // import { CircularProgress } from 'material-ui';
 import { RequestUserInfo } from '../../store/userActions';
 import Sidebar from '../Dashboard/Sidebar/sidebar';
-import  Panel  from './Panel/panel';
+import Panel from './Panel/panel';
 import { socketListeners } from '../../socketsClient';
 import './style.css';
+// import { intlReducer } from 'react-intl-redux';
 
 interface DashboardProps extends DispatchProp<{}>, RouteComponentProps<{}> {
     getUser: () => Promise<boolean>;
     user: AppStore.User;
     logged: boolean;
 }
+
+// const messages = require('./locales.json');
 
 export class Dashboard extends React.Component<DashboardProps, DashboardState> {
     constructor(props: DashboardProps) {

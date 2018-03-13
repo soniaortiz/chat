@@ -2,7 +2,11 @@
     "es-419": {
         "welcomeMessage": "Bienvenido"
     },
-    "en-GB": {
+    "en": {
         "welcomeMessage": "Welcome!"
+    },
+    "it": {
+       "welcomeMessage" : "Benvenuto",
+       "logout": "disconnettersi"
     }
 }
