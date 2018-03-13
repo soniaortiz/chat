@@ -99,8 +99,6 @@ declare namespace AppStore {// store
         app: App;
         user: User;
         conversations: Conversations;
-        intlReducer: { locale: string, messages: any }
-        // messages: {[key: string]: Messages};
-        // contacts: contacts;
+        intlReducer: { locale: string, messages: any };
     }
 }

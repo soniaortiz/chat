@@ -18,37 +18,15 @@ const getTheme = () => {
   return getMuiTheme(baseTheme, overwrites);
 };
 
-// const locale = window.navigator.language;
-// const messages = require('./locales.json');
-
 const compeEnhancers = composeWithDevTools({ name: 'PrimitiveChat' }, );
 export const store = createStore(storeReducer, compeEnhancers(applyMiddleware(thunk)));
-
-// const ConnectedIntl = connect<{ locale: string }, {}, {}, {
-//   locale?: string,
-//   // tslint:disable-next-line:no-any
-//   messages?: any
-// }, AppStore.Store>(
-//   (st) => ({
-//     locale: ''
-//   }),
-//   {},
-//   (m2p, d2p, owp) => {
-//     return {
-//       locale: m2p.locale,
-//       messages: appStringResources[m2p.locale]
-//     };
-//   }
-// )(IntlProvider);
-
-// console.log(ConnectedIntl);
 
 class App extends React.Component {
   render() {
     return (
       < Provider store={store}>
         <MuiThemeProvider muiTheme={getTheme()}>
-          {/* <ConnectedIntl> */}
+
           <IntlProvider >
             <BrowserRouter>
 
@@ -61,7 +39,6 @@ class App extends React.Component {
 
             </BrowserRouter>
           </IntlProvider>
-          {/* </ConnectedIntl> */}
 
         </MuiThemeProvider>
       </ Provider>

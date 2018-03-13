@@ -8,7 +8,7 @@ import { LogOutRequest } from '../../../store/logOut';
 import { RouteComponentProps } from 'react-router';
 import * as H from 'history';
 import { setLanguage } from '../../../store/LangAction';
-const messages = require('../../../locales.json');
+// const messages = require('../../../locales.json');
 
 const languages = ['es-419', 'en', 'it'];
 
@@ -38,14 +38,12 @@ export class NotificationsBar extends React.Component<NotificationsBarProps
         this.props.setLanguage(lang);
     }
     render() {
-        console.log(messages);
         return (
             <Paper>
                 <Toolbar>
                     {
-                        this.props.lan ?
-                            <p> {messages[this.props.lan].welcomeMessage} </p> :
-                            <p> hola </p>}
+                        <p> {this.props.messages.welcomeMessage} </p>                           
+                    }
                     <ToolbarGroup >
                         <IconMenu
                             iconButtonElement={
@@ -100,13 +98,14 @@ interface MapDispatchToPropsNB {
 interface MapStateToPropsNB {
     userContactRequests: string[];
     lan: string;
+    messages: any
 }
 
 export default connect<MapStateToPropsNB, MapDispatchToPropsNB, NotificationsBarProps, AppStore.Store>(
     (store) => ({
-        // userMessages: store
         userContactRequests: store.user.friendRequests,
-        lan: store.intlReducer.locale
+        lan: store.intlReducer.locale,
+        messages: store.intlReducer.messages
     }),
     {
         logOut: LogOutRequest,

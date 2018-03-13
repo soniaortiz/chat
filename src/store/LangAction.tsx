@@ -1,11 +1,5 @@
-// import { SET_LANGUAGE } from './actionsTypes';
 import { Dispatch } from 'react-redux';
 import { updateIntl } from 'react-intl-redux';
-
-// const SetLanguageAction = (payload: any) => ({
-//     type: SET_LANGUAGE,
-//     payload
-// });
 
 const messages = require('../locales.json');
 

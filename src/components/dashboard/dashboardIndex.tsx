@@ -7,24 +7,27 @@ import Sidebar from '../Dashboard/Sidebar/sidebar';
 import Panel from './Panel/panel';
 import { socketListeners } from '../../socketsClient';
 import './style.css';
-// import { intlReducer } from 'react-intl-redux';
+import { setLanguage } from '../../store/LangAction';
 
 interface DashboardProps extends DispatchProp<{}>, RouteComponentProps<{}> {
     getUser: () => Promise<boolean>;
     user: AppStore.User;
     logged: boolean;
+    loadLanguages: (language: string) => void;
 }
 
-// const messages = require('./locales.json');
+const messages = require('../../locales.json');
+console.log('messages ------>', messages.en);
 
 export class Dashboard extends React.Component<DashboardProps, DashboardState> {
     constructor(props: DashboardProps) {
         super(props);
         socketListeners();
     }
-
+    componentWillMount() {
+        this.props.loadLanguages('en');
+    }
     componentDidMount() {
-        // console.log('Component did mount');
         this.props.getUser()
             .then(() => console.log(this.props.user));
     }
@@ -51,6 +54,6 @@ export default connect<{}, {}, DashboardProps, AppStore.Store>(
     }),
     {
         getUser: RequestUserInfo,
-        // getNewContactRequests: updateContactRequestsActionCreator
+        loadLanguages: setLanguage
     }
 )(Dashboard);
