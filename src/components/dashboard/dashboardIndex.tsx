@@ -16,9 +16,6 @@ interface DashboardProps extends DispatchProp<{}>, RouteComponentProps<{}> {
     loadLanguages: (language: string) => void;
 }
 
-const messages = require('../../locales.json');
-console.log('messages ------>', messages.en);
-
 export class Dashboard extends React.Component<DashboardProps, DashboardState> {
     constructor(props: DashboardProps) {
         super(props);

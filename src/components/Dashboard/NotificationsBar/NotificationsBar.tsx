@@ -8,7 +8,6 @@ import { LogOutRequest } from '../../../store/logOut';
 import { RouteComponentProps } from 'react-router';
 import * as H from 'history';
 import { setLanguage } from '../../../store/LangAction';
-// const messages = require('../../../locales.json');
 
 const languages = ['es-419', 'en', 'it'];
 
@@ -79,7 +78,7 @@ export class NotificationsBar extends React.Component<NotificationsBarProps
                     </ToolbarGroup>
 
                     <ToolbarGroup >
-                        <FlatButton label={'Logout'} onClick={this.logOut} />
+                        <FlatButton label={this.props.messages.logout} onClick={this.logOut} />
                     </ToolbarGroup>
 
                 </Toolbar>

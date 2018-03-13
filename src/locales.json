@@ -1,12 +1,23 @@
 {
     "es-419": {
-        "welcomeMessage": "Bienvenido"
+        "welcomeMessage": "Bienvenido a Primitive Chat!",
+        "logout": "Cerrar sesión ",
+        "send": "Enviar",
+        "contacts": "Contactos",
+        "conversations": "Conversaciones"
     },
     "en": {
-        "welcomeMessage": "Welcome!"
+        "welcomeMessage": "Welcome to Primitive Chat!",
+        "logout": "logout",
+        "send": "Send",
+        "contacts": "Contacts",
+        "conversations": "Conversations"
     },
     "it": {
-       "welcomeMessage" : "Benvenuto",
-       "logout": "disconnettersi"
+       "welcomeMessage" : "Benvenuto a Primitive Chat",
+       "logout": "Disconnettersi",
+       "send": "Inviare",
+       "contacts": "Contatti",
+       "conversations": "Conversazioni"
     }
 }
