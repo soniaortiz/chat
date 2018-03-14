@@ -19,7 +19,7 @@ export class ContactRequestDialog extends React.Component<connectedComponentProp
     constructor(props: connectedComponentProps) {
         super(props);
         this.state = { open: true };
-        this.props.setModalRequestWindow(); // set to true
+        // this.props.setModalRequestWindow(); // set to true
         // console.log('email in modal', this.props.user);
     }
 

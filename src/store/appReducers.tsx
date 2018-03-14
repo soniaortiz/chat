@@ -4,6 +4,7 @@ import {
     SET_REQUEST_MODAL_WINDOW,
     SET_CONVERSATION_MODAL_WINDOW,
     CLEAR_STATE,
+    OPEN_CHAT_GROUP_MW,
     // SET_LANGUAGE
 } from './actionsTypes';
 
@@ -14,7 +15,8 @@ export const appState: AppStore.App = { // initial state
     newContactRequests: [],
     conversationSelected: false,
     currentConversation: '',
-    locale: window.navigator.language
+    locale: window.navigator.language,
+    conversationGroupModWin: false
 };
 type payload = string; // change to string
 
@@ -27,6 +29,7 @@ export const Reducer = handleActions<AppStore.App, payload>(
             return { ...state, logged: false };
         },
         [SET_REQUEST_MODAL_WINDOW]: (state: AppStore.App) => {
+            console.log('console', state.requestWindowOpened);
             return { ...state, requestWindowOpened: !state.requestWindowOpened };
         },
         [SET_CONVERSATION_MODAL_WINDOW]: (state: AppStore.App, action) => {
@@ -44,11 +47,12 @@ export const Reducer = handleActions<AppStore.App, payload>(
         [CLEAR_STATE]: (state: AppStore.App) => {
             return { ...appState }; // Delete all the state
         },
-        // [SET_LANGUAGE]: (state: AppStore.App, action) => {
-        //     console.log(action.payload);
-        //     return action.payload ?
-        //         { ...state, locale: action.payload} :
-        //         { ...state };
-        // }
+        [SET_CONVERSATION_MODAL_WINDOW]: (state: AppStore.App) => {
+            // console.log(state.conversationGroupModWin);
+            return { ...state };
+        },
+        [OPEN_CHAT_GROUP_MW]: (state: AppStore.App) => { // or close
+            return { ...state, conversationGroupModWin: !state.conversationGroupModWin };
+        }
     },
     appState);

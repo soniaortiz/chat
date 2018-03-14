@@ -4,20 +4,32 @@
         "logout": "Cerrar sesión ",
         "send": "Enviar",
         "contacts": "Contactos",
-        "conversations": "Conversaciones"
+        "conversations": "Conversaciones",
+        "close": "Cerrar",
+        "create": "Crear",
+        "name": "Nombre",
+        "search": "Buscar"
     },
     "en": {
         "welcomeMessage": "Welcome to Primitive Chat!",
         "logout": "logout",
         "send": "Send",
         "contacts": "Contacts",
-        "conversations": "Conversations"
+        "conversations": "Conversations",
+        "close": "Close",
+        "create": "Create",
+        "name": "Name",
+        "search": "Search"
     },
     "it": {
        "welcomeMessage" : "Benvenuto a Primitive Chat",
        "logout": "Disconnettersi",
        "send": "Inviare",
        "contacts": "Contatti",
-       "conversations": "Conversazioni"
+       "conversations": "Conversazioni",
+       "close": "Uscire",
+       "create": "Creare",
+       "name": "Nome",
+       "search": "Cercare"
     }
 }

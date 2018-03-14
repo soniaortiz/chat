@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { MenuItem } from 'material-ui';
 import { SetConversationWindow } from '../../../store/appSetConversationModalWindow';
 import { RequestConversations } from '../../../store/conversationsActions';
-// import { openConversation } from '../../../store/openConversation';
 interface ConversationsProps {
 }
 
@@ -29,7 +28,6 @@ export class Conversations extends React.Component<ConversationWindowProps> {
                                     onClick={this.openConversation(element)}
                                 >
                                     {
-                                        // this.props.conversationsList[element].participants[0]
                                         this.props.conversationsList[element].conversationName ?
                                             this.props.conversationsList[element].conversationName :
                                             this.props.conversationsList[element].participants
@@ -55,7 +53,6 @@ interface ConversationsMapStateToProps {
 interface ConversationMapDispatchToProps {
     dispatchConversation: (conversationId: string) => void;
     setConversations: () => void;
-    // openConversation: () => void;
 }
 
 type ConversationWindowProps = ConversationsMapStateToProps & ConversationMapDispatchToProps & ConversationsProps;
@@ -71,6 +68,5 @@ export default
         {
             dispatchConversation: SetConversationWindow, // to open the conversation once it is selected
             setConversations: RequestConversations,
-            // openConversation: openConversation
         }
     )(Conversations);

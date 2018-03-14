@@ -41,9 +41,9 @@ export class SearchFriend extends React.Component<SearchFriendPropsMix, SearchFr
         const emailUser = this.state.users[Number(event.currentTarget.id)];
         // console.log('Emailuser: ', emailUser);
         this.setState({ viewUser: true, selected: emailUser });
-        console.log('Display user: ', this.props.requestWindowOpened);
+        // console.log('Display user: ', this.props.requestWindowOpened);
         this.props.setModalRequestWindow();
-        console.log('this.props.modal', this.props.requestWindowOpened);
+        // console.log('this.props.modal', this.props.requestWindowOpened);
 
     }
 
@@ -53,9 +53,8 @@ export class SearchFriend extends React.Component<SearchFriendPropsMix, SearchFr
 
     handleNewRequest = (value: string) => {
         if (!value) { return; }
-        this.props.setModalRequestWindow();
+        // this.props.setModalRequestWindow();
         this.setState({ userName: value });
-        // this.console.log(value);
         request
             .get('/findUsers', {
                 params: {
