@@ -8,6 +8,7 @@ const openModalWindow = () => {
 };
 
 export const OpenModalWindowAction = () => {
+    console.log('Will Open/Close the window');
     return (dispatch: Dispatch<AppStore.App>) => {
         dispatch(openModalWindow());
     };

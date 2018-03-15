@@ -13,8 +13,8 @@ export class Conversations extends React.Component<ConversationWindowProps> {
     }
 
     openConversation = (Conversation: string) => () => {
+        console.log('opening');        
         this.props.dispatchConversation(Conversation);
-
     }
     render() {
         return (

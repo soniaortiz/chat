@@ -33,6 +33,7 @@ export const Reducer = handleActions<AppStore.App, payload>(
             return { ...state, requestWindowOpened: !state.requestWindowOpened };
         },
         [SET_CONVERSATION_MODAL_WINDOW]: (state: AppStore.App, action) => {
+            console.log('state.conversationSelected');
             return action.payload ? {
                 ...state,
                 conversationSelected: true,
@@ -47,11 +48,12 @@ export const Reducer = handleActions<AppStore.App, payload>(
         [CLEAR_STATE]: (state: AppStore.App) => {
             return { ...appState }; // Delete all the state
         },
-        [SET_CONVERSATION_MODAL_WINDOW]: (state: AppStore.App) => {
-            // console.log(state.conversationGroupModWin);
-            return { ...state };
-        },
+        // [SET_CONVERSATION_MODAL_WINDOW]: (state: AppStore.App) => {
+        //     // console.log(state.conversationGroupModWin);
+        //     return { ...state };
+        // },
         [OPEN_CHAT_GROUP_MW]: (state: AppStore.App) => { // or close
+            console.log('from : ', state.conversationGroupModWin, ' to: ', !state.conversationGroupModWin);
             return { ...state, conversationGroupModWin: !state.conversationGroupModWin };
         }
     },

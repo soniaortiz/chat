@@ -14,6 +14,7 @@ export class Panel extends React.Component<PanelPropertiesMix> {
     }
 
     render() {
+        console.log('this.props', this.props.showConversation);
         return (
             <Paper>
                 <Route component={NotificationsBar} />

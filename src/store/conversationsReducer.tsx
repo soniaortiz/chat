@@ -3,7 +3,8 @@ import {
     REQUEST_USER_CONVERSATIONS_LIST,
     REQUEST_CONVERSATION_MESSAGES,
     PUSH_MESSAGE_TO_CONVERSATION,
-    CLEAR_STATE
+    CLEAR_STATE,
+    CREATE_GROUP_CONVERSATION
 } from './actionsTypes';
 
 export const conversationsData: AppStore.Conversations = {};
@@ -38,7 +39,11 @@ export const Reducer = handleActions<AppStore.Conversations, Actions>(
         },
         [CLEAR_STATE]: (state) => {
             return { ...conversationsData }; // Delete all the state
-        }
+        },
+        [CREATE_GROUP_CONVERSATION]: (state) => {
+            console.log('Create group reducer');
+            return { ...conversationsData }; // need to modify this to return the new conversation data
+        } 
     },
     conversationsData
 );

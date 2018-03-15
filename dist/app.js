@@ -68,6 +68,7 @@ mongoose.connect(url).then(function () {
     app.post('/rejectContactRequest', routes.user.rejectContactRequest);
     app.post('/logout', routes.user.logout);
     app.post('/messageList', routes.user.getMessages);
+    app.post('/createChatGroup', routes.user.createChatGroup);
     // app.post('/updateContactRequests', routes.user.updateContacRequests);
     app.get('*', function (req, res, next) {
         res.sendFile(path.join(__dirname, '../build/index.html'));

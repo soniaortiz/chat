@@ -34,7 +34,6 @@ export class NotificationsBar extends React.Component<NotificationsBarProps
     setLanguageToStore = (lang: string) => () => {
         this.props.setLanguage(lang);
     }
-
     createChatGroup = () => {
         console.log('Open modal window', this.props.modalWindow);
         this.setState({ modalCreateChatGroup: true });
@@ -42,7 +41,6 @@ export class NotificationsBar extends React.Component<NotificationsBarProps
         console.log('Open modal window', this.props.modalWindow);
 
     }
-
     render() {
         return (
             < Paper >

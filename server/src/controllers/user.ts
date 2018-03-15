@@ -79,12 +79,12 @@ export class User extends Controller {
         // nspUser.to(user.email).emit('profile', user);
         user.populate(
             {
-                path:'contacts',
+                path: 'contacts',
                 select: 'name email'
             })
-            .execPopulate({new: true})
-            .then((u) => {res.json(u);});
-        
+            .execPopulate({ new: true })
+            .then((u) => { res.json(u); });
+
     }
     conversations = (req: express.Request, res: express.Response, next: express.NextFunction) => {
         const { _id } = req.user;
@@ -145,7 +145,6 @@ export class User extends Controller {
                     nspUser.to(contactEmail).emit('contact request', user.friendRequests);
                     res.sendStatus(200);
                 }
-
             })
             .catch((e) => res.send(e));
     }
@@ -209,46 +208,6 @@ export class User extends Controller {
         } else {
             next(new Error('me or contact undefined'));
         }
-
-        // new ConversationModel({})
-        //     .save()
-        //     .then((conversation) => {
-        //         return (UserModel.findOneAndUpdate(
-        //             { email },
-        //             {
-        //                 $pull: { friendRequests: contactEmail },
-        //                 $push: { contacts: contactEmail, conversations: conversation._id }
-        //             },
-        //             { new: true }).exec(),
-        //             conversation);
-        //     })
-        //     .then((conversation) => {
-        //         // console.log('the conversation id: ', conversation._id);
-        //         return (ConversationModel.findOneAndUpdate(
-        //             conversation._id,
-        //             {
-        //                 $set: {
-        //                     participants: [email, contactEmail],
-        //                     conversationName: undefined
-        //                 }
-        //             }).exec(),
-        //             conversation);
-        //     })
-        //     .then((conversation) => {
-        //         return UserModel.findOneAndUpdate(
-        //             contactEmail,
-        //             {
-        //                 $push: {
-        //                     contacts: email, conversations: conversation._id
-        //                 }
-        //             },
-        //             { new: true })
-        //             .exec();
-        //     })
-        //     .then((user) => {
-        //         res.send(user);
-        //     })
-        //     .catch((e) => res.send(e));
     }
     sendMessage = (req: express.Request, res: express.Response, next: express.NextFunction) => {
         // console.log('sender@@@@', req.user);
@@ -366,5 +325,29 @@ export class User extends Controller {
                 res.send({ msgs: conversation!.messages, _id: conversationId });
             })
             .catch((e) => res.send(e));
+    }
+    createChatGroup = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
+        // console.log(req.body);
+        const { conversationName, participants } = req.body;
+        const p = await UserModel.find({ email: { $in: participants } }, { select: '_id' });
+
+        const x = p.map((obj) => obj._id);
+
+        x.push(req.user._id);
+        // console.log(x);
+
+        const conversation = await new ConversationModel({
+            conversationName: conversationName,
+            participants: x
+        }).save();
+        // console.log('*-*-*-*-*-*', conversation);
+        const u = await UserModel.update(
+            {_id: {$in: x} },
+            { $push: { conversations: conversation._id } },
+            { new: true, multi: true });
+
+        console.log(u);
+
+        res.send(conversation);
     }
 }

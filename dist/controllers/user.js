@@ -343,6 +343,32 @@ var User = /** @class */ (function (_super) {
             })
                 .catch(function (e) { return res.send(e); });
         };
+        _this.createChatGroup = function (req, res, next) { return __awaiter(_this, void 0, void 0, function () {
+            var _a, conversationName, participants, p, x, conversation, u;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        _a = req.body, conversationName = _a.conversationName, participants = _a.participants;
+                        return [4 /*yield*/, userSchema_1.UserModel.find({ email: { $in: participants } }, { select: '_id' })];
+                    case 1:
+                        p = _b.sent();
+                        x = p.map(function (obj) { return obj._id; });
+                        x.push(req.user._id);
+                        return [4 /*yield*/, new conversationSchema_1.ConversationModel({
+                                conversationName: conversationName,
+                                participants: x
+                            }).save()];
+                    case 2:
+                        conversation = _b.sent();
+                        return [4 /*yield*/, userSchema_1.UserModel.update({ _id: { $in: x } }, { $push: { conversations: conversation._id } }, { new: true, multi: true })];
+                    case 3:
+                        u = _b.sent();
+                        console.log(u);
+                        res.send(conversation);
+                        return [2 /*return*/];
+                }
+            });
+        }); };
         return _this;
     }
     return User;
