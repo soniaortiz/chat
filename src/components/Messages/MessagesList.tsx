@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { MenuItem } from 'material-ui';
+import { MenuItem, CircularProgress } from 'material-ui';
 import { connect } from 'react-redux';
 import { RequestConversationMessagesAction } from '../../store/messageAction';
 // import CommunicationChatBubble from 'material-ui/svg-icons/communication/chat-bubble';
@@ -21,33 +21,36 @@ const innerDivStyle = {
 };
 
 class MessagesList extends React.Component<MessagesListProps & DispMessagesToProps & MessageListOwnProps> {
-    componentWillMount() {
+    componentDidMount() {
         // console.log('Retrieve messages/*-', this.props.currentConversation);
         this.props.getMessages(this.props.currentConversation);
         console.log(this.props.messages);
     }
     render() {
         return (
-            <React.Fragment>
-                {
-                    this.props.messages
-                    [this.props.currentConversation].
-                        messages.map((message: AppStore.Messages, index: number) => (
-                            <MenuItem
-                                key={index}
-                                style={{
-                                    ...style,
-                                    left: message.sender && (message.sender.email === this.props.myEmail) ?
-                                        '48%' : 0
-                                }}
-                                disabled={true}
-                                innerDivStyle={innerDivStyle}
-                            >
-                                <p> {message.sender && message.messageContent} </p>
-                            </MenuItem>
-                        ))
-                }
-            </React.Fragment>
+            this.props.messages ?
+                <React.Fragment>
+                    {
+                        this.props.messages
+                        [this.props.currentConversation].
+                            messages.map((message: AppStore.Messages, index: number) => (
+                                <MenuItem
+                                    key={index}
+                                    style={{
+                                        ...style,
+                                        left: message.sender && (message.sender.email === this.props.myEmail) ?
+                                            '48%' : 0
+                                    }}
+                                    disabled={true}
+                                    innerDivStyle={innerDivStyle}
+                                >
+                                    <p> {message.sender && message.messageContent} </p>
+                                </MenuItem>
+                            ))
+                    }
+                </React.Fragment> :
+                <CircularProgress size={60} thickness={7} />
+
         );
     }
 }
