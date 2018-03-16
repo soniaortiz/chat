@@ -226,8 +226,6 @@ export class User extends Controller {
             })
             .then(
                 (m) => { // after the message is created then the reference is passed to the conversation
-                    // console.log('***message***', m);
-                    // console.log('***conver_id***', req.body.conversation_id);
                     ConversationModel
                         .findOneAndUpdate(
                             { _id: req.body.conversation_id },
@@ -237,10 +235,8 @@ export class User extends Controller {
                             { new: true }
                         )
                         .then((conversation) => {
-                            // console.log('***conversation: ***', conversation);
                             nspConversation.to(req.body.conversation_id)
                                 .emit('new message', { message: m, conversationId: conversation!._id });
-                            // console.log('+++++++++', m);
                             res.sendStatus(200);
                         });
                 }

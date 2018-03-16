@@ -257,17 +257,13 @@ var User = /** @class */ (function (_super) {
                 }).execPopulate();
             })
                 .then(function (m) {
-                // console.log('***message***', m);
-                // console.log('***conver_id***', req.body.conversation_id);
                 conversationSchema_1.ConversationModel
                     .findOneAndUpdate({ _id: req.body.conversation_id }, {
                     $push: { messages: m._id }
                 }, { new: true })
                     .then(function (conversation) {
-                    // console.log('***conversation: ***', conversation);
                     app_1.nspConversation.to(req.body.conversation_id)
                         .emit('new message', { message: m, conversationId: conversation._id });
-                    // console.log('+++++++++', m);
                     res.sendStatus(200);
                 });
             })

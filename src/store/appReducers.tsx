@@ -38,7 +38,7 @@ export const Reducer = handleActions<AppStore.App, actions>(
             return { ...state, requestWindowOpened: !state.requestWindowOpened };
         },
         [SET_CONVERSATION_MODAL_WINDOW]: (state: AppStore.App, action) => {
-            console.log('state.conversationSelected');
+            console.log('state.conversationSelected', action.payload!.conversations);
             return action.payload!.conversations ? {
                 ...state,
                 conversationSelected: true,
