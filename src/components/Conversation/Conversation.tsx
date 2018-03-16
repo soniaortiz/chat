@@ -68,6 +68,7 @@ export class Conversation extends React.Component<ConversationPropsMix, Conversa
 
                 <TextField
                     onChange={this.handleChange}
+                    required={true}
                     style={{
                         width: '85%'
                     }}

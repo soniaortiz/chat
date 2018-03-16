@@ -32,20 +32,20 @@ class MessagesList extends React.Component<MessagesListProps & DispMessagesToPro
                 {
                     this.props.messages
                     [this.props.currentConversation].
-                    messages.map((message: AppStore.Messages, index: number) => (
-                        <MenuItem
-                            key={index}
-                            style={{
-                                ...style,
-                                left: message.sender && (message.sender.email === this.props.myEmail) ?
-                                    '48%' : 0
-                            }}
-                            disabled={true}
-                            innerDivStyle={innerDivStyle}
-                        >
-                            {message.sender && message.messageContent}
-                        </MenuItem>
-                    ))
+                        messages.map((message: AppStore.Messages, index: number) => (
+                            <MenuItem
+                                key={index}
+                                style={{
+                                    ...style,
+                                    left: message.sender && (message.sender.email === this.props.myEmail) ?
+                                        '48%' : 0
+                                }}
+                                disabled={true}
+                                innerDivStyle={innerDivStyle}
+                            >
+                                <p> {message.sender && message.messageContent} </p>
+                            </MenuItem>
+                        ))
                 }
             </React.Fragment>
         );

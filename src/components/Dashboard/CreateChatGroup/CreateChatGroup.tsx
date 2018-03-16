@@ -5,16 +5,22 @@ import { OpenModalWindowAction } from '../../../store/chatGroup';
 import { CreateChatGroupAction } from '../../../store/createGroupConversation';
 
 interface GroupConversationState {
-    conversationName: string
+    conversationName: string,
+    // participants: any,
 }
 interface GroupProps {
 
 }
 class CreateChatGroup extends React.Component<ChatGroupProps, GroupConversationState> {
 
+    enableBtn = true;
     constructor(props: ChatGroupProps) {
         super(props);
         this.state = { conversationName: '' };
+    }
+
+    validateName = () => {
+        this.enableBtn = false;
     }
 
     closeWindow = () => {
@@ -24,6 +30,18 @@ class CreateChatGroup extends React.Component<ChatGroupProps, GroupConversationS
     createGroupConversation = () => {
         this.props.createChatGroup(this.state.conversationName);
         this.props.closeWindow();
+    }
+
+    setConversationName = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
+        this.setState(
+            { conversationName: value }
+        );
+
+        if (value === '') {
+            this.enableBtn = true; // disable
+        } else {
+            this.enableBtn = false;
+        }
     }
     render() {
         return (
@@ -35,13 +53,17 @@ class CreateChatGroup extends React.Component<ChatGroupProps, GroupConversationS
                 <Divider />
 
                 <label> {this.props.messages.name} </label>
-                <TextField />
+                <TextField
+                    onChange={this.setConversationName}
+                />
 
                 <Divider />
 
                 <FlatButton label={this.props.messages.close} onClick={this.closeWindow} />
 
-                <FlatButton label={this.props.messages.create} onClick={this.createGroupConversation} />
+                <FlatButton label={this.props.messages.create}
+                    onClick={this.createGroupConversation}
+                    disabled={this.enableBtn} />
 
             </Dialog>
         );

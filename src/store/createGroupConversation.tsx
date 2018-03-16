@@ -15,7 +15,7 @@ export const CreateChatGroupAction = (conversationName: string) => {
 
     return (dispatch: Dispatch<AppStore.User>) => {
         return (
-            request.post('/createChatGroup', {conversationName: 'test', 
+            request.post('/createChatGroup', {conversationName: conversationName, 
                             participants: ['two@two.com', 'three@three.com']})
                 .then((conversation) => {
                     console.log(conversation);
