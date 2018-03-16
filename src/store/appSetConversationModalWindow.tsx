@@ -5,7 +5,9 @@ const SetConversationModalWindowActionCreator = (payload: any) => {
     console.log('dispatching');
     return {
         type: SET_CONVERSATION_MODAL_WINDOW,
-        payload
+        payload: {
+            conversations: payload
+        }
     };
 };
 

@@ -3,7 +3,8 @@ import { Dialog, FlatButton, TextField, Divider, AutoComplete, MenuItem, Paper }
 import { connect } from 'react-redux';
 import { OpenModalWindowAction } from '../../../store/chatGroup';
 import { CreateChatGroupAction } from '../../../store/createGroupConversation';
-
+import { setParticipants } from '../../../store/setParticipants';
+import Participants from '../Participants/Participants';
 interface GroupConversationState {
     conversationName: string;
     // participants: any,
@@ -27,8 +28,18 @@ class CreateChatGroup extends React.Component<ChatGroupProps, GroupConversationS
     }
 
     createGroupConversation = () => {
-        this.props.createChatGroup(this.state.conversationName);
+
+        const p = this.props.participants.map((participant) => {
+            return participant.email;
+        });
+
+        this.props.createChatGroup(this.state.conversationName, p);
         this.props.closeWindow();
+    }
+
+    setNewParticipant = (part: { name: string, email: string }) => () => {
+        console.log('New Participant', part);
+        this.props.setParticipants(part);
     }
 
     setConversationName = ({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
@@ -48,7 +59,7 @@ class CreateChatGroup extends React.Component<ChatGroupProps, GroupConversationS
 
                 <Paper className={'ParticipantsList'}
                     style={{
-                        display: 'inline-block'
+                        display: 'inline-block',
                     }}>
                     <label> {this.props.messages.search + ' '} </label>
                     <AutoComplete
@@ -58,10 +69,13 @@ class CreateChatGroup extends React.Component<ChatGroupProps, GroupConversationS
                                 (obj: any, index: number) => {
                                     return {
                                         text: obj.name,
-                                        value: (<MenuItem
-                                            key={index}
-                                            primaryText={obj.name}
-                                        />)
+                                        value: (
+                                            <MenuItem
+                                                key={index}
+                                                primaryText={obj.name}
+                                                onClick={this.setNewParticipant(obj)}
+                                            />
+                                        )
                                     };
 
                                 })
@@ -78,10 +92,12 @@ class CreateChatGroup extends React.Component<ChatGroupProps, GroupConversationS
                 <Paper
                     className={'ParticipantsList'}
                     style={{
-                        display: 'inline-block'
+                        display: 'inline-block',
+                        top: 0,
                     }}
                 >
                     <p>Participants</p>
+                    <Participants />
                 </Paper>
                 <Divider />
 
@@ -103,21 +119,25 @@ interface GroupM2P {
     // tslint:disable-next-line:no-any
     messages: any;
     contactList: any;
+    participants: { name: string, email: string }[];
 }
 
 interface GroupD2P {
     closeWindow: Function;
     createChatGroup: Function;
+    setParticipants: (user: { name: string, email: string }) => void;
 }
 
 export default connect<GroupM2P, GroupD2P, {}, AppStore.Store>(
     (store) => ({
         openModal: store.app.conversationGroupModWin,
         messages: store.intlReducer.messages,
-        contactList: store.user.contactList
+        contactList: store.user.contactList,
+        participants: store.app.participants
     }),
     {
         closeWindow: OpenModalWindowAction,
-        createChatGroup: CreateChatGroupAction
+        createChatGroup: CreateChatGroupAction,
+        setParticipants: setParticipants
     }
 )(CreateChatGroup);

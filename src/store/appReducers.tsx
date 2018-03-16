@@ -5,6 +5,7 @@ import {
     SET_CONVERSATION_MODAL_WINDOW,
     CLEAR_STATE,
     OPEN_CHAT_GROUP_MW,
+    SET_USER_CONVERSATION_GROUP
     // SET_LANGUAGE
 } from './actionsTypes';
 
@@ -16,11 +17,15 @@ export const appState: AppStore.App = { // initial state
     conversationSelected: false,
     currentConversation: '',
     locale: window.navigator.language,
-    conversationGroupModWin: false
+    conversationGroupModWin: false,
+    participants: []
 };
-type payload = string; // change to string
+type actions = {
+    conversations: string 
+    participant: { name: string, email: string }
+}; 
 
-export const Reducer = handleActions<AppStore.App, payload>(
+export const Reducer = handleActions<AppStore.App, actions>(
     {
         [REQUEST_LOGIN]: (state: AppStore.App) => {
             return { ...state, logged: true, loading: true };
@@ -34,10 +39,10 @@ export const Reducer = handleActions<AppStore.App, payload>(
         },
         [SET_CONVERSATION_MODAL_WINDOW]: (state: AppStore.App, action) => {
             console.log('state.conversationSelected');
-            return action.payload ? {
+            return action.payload!.conversations ? {
                 ...state,
                 conversationSelected: true,
-                currentConversation: action.payload
+                currentConversation: action.payload!.conversations
             } :
                 {
                     ...state,
@@ -48,13 +53,15 @@ export const Reducer = handleActions<AppStore.App, payload>(
         [CLEAR_STATE]: (state: AppStore.App) => {
             return { ...appState }; // Delete all the state
         },
-        // [SET_CONVERSATION_MODAL_WINDOW]: (state: AppStore.App) => {
-        //     // console.log(state.conversationGroupModWin);
-        //     return { ...state };
-        // },
         [OPEN_CHAT_GROUP_MW]: (state: AppStore.App) => { // or close
             console.log('from : ', state.conversationGroupModWin, ' to: ', !state.conversationGroupModWin);
             return { ...state, conversationGroupModWin: !state.conversationGroupModWin };
+        },
+        [SET_USER_CONVERSATION_GROUP]: (state: AppStore.App, action) => {
+            return {
+                ...state,
+                participants: [...state.participants, action.payload!.participant]
+            };
         }
     },
     appState);

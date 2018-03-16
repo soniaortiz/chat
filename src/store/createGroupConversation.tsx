@@ -11,12 +11,12 @@ const createGroupConversation = (payload: any) => {
     };
 };
 
-export const CreateChatGroupAction = (conversationName: string) => {
+export const CreateChatGroupAction = (conversationName: string, participants: string []) => {
 
     return (dispatch: Dispatch<AppStore.User>) => {
         return (
             request.post('/createChatGroup', {conversationName: conversationName, 
-                            participants: ['two@two.com', 'three@three.com']})
+                            participants: participants})
                 .then((conversation) => {
                     console.log(conversation);
                     dispatch(createGroupConversation(conversation));

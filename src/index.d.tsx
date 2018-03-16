@@ -74,6 +74,7 @@ declare namespace AppStore {// store
         newContactRequests: Array<string>;
         conversationGroupModWin: boolean;
         locale: string;
+        participants: { name: string, email: string }[];
     }
     interface User {
         name: string;
