@@ -1,15 +1,14 @@
 import * as React from 'react';
-import { Dialog, FlatButton, TextField, Divider } from 'material-ui';
+import { Dialog, FlatButton, TextField, Divider, AutoComplete, MenuItem, Paper } from 'material-ui';
 import { connect } from 'react-redux';
 import { OpenModalWindowAction } from '../../../store/chatGroup';
 import { CreateChatGroupAction } from '../../../store/createGroupConversation';
 
 interface GroupConversationState {
-    conversationName: string,
+    conversationName: string;
     // participants: any,
 }
 interface GroupProps {
-
 }
 class CreateChatGroup extends React.Component<ChatGroupProps, GroupConversationState> {
 
@@ -47,16 +46,43 @@ class CreateChatGroup extends React.Component<ChatGroupProps, GroupConversationS
         return (
             <Dialog open={this.props.openModal} >
 
-                <label> {this.props.messages.search} </label>
-                <input type="text" />
+                <Paper className={'ParticipantsList'}
+                    style={{
+                        display: 'inline-block'
+                    }}>
+                    <label> {this.props.messages.search + ' '} </label>
+                    <AutoComplete
+                        filter={AutoComplete.caseInsensitiveFilter}
+                        dataSource={
+                            this.props.contactList.map(
+                                (obj: any, index: number) => {
+                                    return {
+                                        text: obj.name,
+                                        value: (<MenuItem
+                                            key={index}
+                                            primaryText={obj.name}
+                                        />)
+                                    };
 
-                <Divider />
+                                })
+                        } />
 
-                <label> {this.props.messages.name} </label>
-                <TextField
-                    onChange={this.setConversationName}
-                />
+                    <Divider />
 
+                    <label> {this.props.messages.name} </label>
+                    <TextField
+                        onChange={this.setConversationName}
+                    />
+                    <Divider />
+                </Paper>
+                <Paper
+                    className={'ParticipantsList'}
+                    style={{
+                        display: 'inline-block'
+                    }}
+                >
+                    <p>Participants</p>
+                </Paper>
                 <Divider />
 
                 <FlatButton label={this.props.messages.close} onClick={this.closeWindow} />
@@ -74,7 +100,9 @@ type ChatGroupProps = GroupM2P & GroupD2P & GroupProps;
 
 interface GroupM2P {
     openModal: boolean;
+    // tslint:disable-next-line:no-any
     messages: any;
+    contactList: any;
 }
 
 interface GroupD2P {
@@ -85,7 +113,8 @@ interface GroupD2P {
 export default connect<GroupM2P, GroupD2P, {}, AppStore.Store>(
     (store) => ({
         openModal: store.app.conversationGroupModWin,
-        messages: store.intlReducer.messages
+        messages: store.intlReducer.messages,
+        contactList: store.user.contactList
     }),
     {
         closeWindow: OpenModalWindowAction,
