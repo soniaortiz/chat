@@ -12,6 +12,7 @@ import { store as storeReducer } from './store/reducers';
 import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import { composeWithDevTools } from 'remote-redux-devtools';
 import { IntlProvider } from 'react-intl-redux';
+import Home from './components/Home';
 
 const getTheme = () => {
   let overwrites = {};
@@ -31,7 +32,8 @@ class App extends React.Component {
             <BrowserRouter>
 
               <div>
-                <Route exact path="/" component={Login} />
+                <Route exact path="/" component={Home} />
+                <Route exact path="/home" component={Home}/>
                 <Route exact path="/login" component={Login} />
                 <Route exact path="/registration" component={Signup} />
                 <Route exact path="/dashboard" component={Dashboard} />

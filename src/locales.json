@@ -8,7 +8,9 @@
         "close": "Cerrar",
         "create": "Crear",
         "name": "Nombre",
-        "search": "Buscar"
+        "search": "Buscar",
+        "login": "Iniciar sesión",
+        "signup": "Registrarse"
     },
     "en": {
         "welcomeMessage": "Welcome to Primitive Chat!",
@@ -19,7 +21,9 @@
         "close": "Close",
         "create": "Create",
         "name": "Name",
-        "search": "Search"
+        "search": "Search",
+        "login": "Login",
+        "signup": "SignUp"
     },
     "it": {
        "welcomeMessage" : "Benvenuto a Primitive Chat",
@@ -30,6 +34,8 @@
        "close": "Uscire",
        "create": "Creare",
        "name": "Nome",
-       "search": "Cercare"
+       "search": "Cercare",
+       "login": "Accesso",
+        "signup": "Iscrizione"
     }
 }

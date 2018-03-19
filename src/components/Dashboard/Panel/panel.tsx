@@ -16,11 +16,15 @@ export class Panel extends React.Component<PanelPropertiesMix> {
     render() {
         console.log('this.props', this.props.showConversation);
         return (
-            <Paper>
-                <Route component={NotificationsBar} />
+            <Paper style={{ position: 'absolute' , width: '70%', height: 'vh 100%'}}>
+                <Paper >
+                    <Route component={NotificationsBar} />
+                </Paper>
                 {
                     this.props.showConversation ?
-                        <Conversation /> : false
+                        <Paper>
+                            <Conversation />
+                        </Paper> : false
                 }
             </Paper>
         );

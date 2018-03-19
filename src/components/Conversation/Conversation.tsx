@@ -6,7 +6,8 @@ import {
     RaisedButton,
     CardHeader,
     Card,
-    CardMedia
+    CardMedia,
+    Paper
 } from 'material-ui';
 import { connect } from 'react-redux';
 import { UpdateConversationStatus } from '../../store/conversationAction';
@@ -30,7 +31,9 @@ export class Conversation extends React.Component<ConversationPropsMix, Conversa
 
     sendMessage = () => {
         // console.log(this.state.message);
-        this.props.SendMessage({ messageContent: this.state.message, conversation_id: this.props.conversationId });
+        if (this.state.message) {
+            this.props.SendMessage({ messageContent: this.state.message, conversation_id: this.props.conversationId });
+        }
     }
 
     handleChange = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
@@ -39,46 +42,72 @@ export class Conversation extends React.Component<ConversationPropsMix, Conversa
     }
     render() {
         return (
-            <Card
-                style={
-                    { height: '100%' }
-                }
-            >
-                <CardHeader
-                    title={'Conversation name'}
+            <Paper style={{
+                width: '100%'
+            }
+            }>
+                <Card
                     style={
                         {
-                            width: '80%'
+                            // height: '100%',
+                            // position: 'absolute'
+                            width: '100%'
                         }
                     }
                 >
-                    <FlatButton
-                        icon={<NavigationClose />}
-                        labelPosition={'before'}
-                        label={'Close'}
-                        onClick={this.closeConversation}
-                        className={'ConvName'}
+
+                    <Paper >
+                        <CardHeader
+                            title={this.props.conversationName ? this.props.conversationName : ''}
+                            style={
+                                {
+                                    width: '50%',
+                                    // position: 'absolute'
+                                }
+                            }
+                        >
+                            <FlatButton
+                                icon={<NavigationClose />}
+                                labelPosition={'before'}
+                                label={'Close'}
+                                onClick={this.closeConversation}
+                                className={'ConvName'}
+                                style={
+                                    {
+                                        position: 'relative',
+                                        // width: '15%',
+                                        // left: '50%'
+                                        rigth: 0
+                                    }
+                                }
+                            />
+                        </CardHeader>
+                    </Paper>
+
+                    <CardMedia >
+                        {/* <img src="./conversation_background.jpg" alt="" /> */}
+                        <MessagesList />
+                    </CardMedia>
+
+                    <TextField
+                        onChange={this.handleChange}
+                        required={true}
+                        style={{
+                            // width: '85%'
+                        }}
                     />
-                </CardHeader>
 
-                <CardMedia >
-                    {/* <img src="./conversation_background.jpg" alt="" /> */}
-                    <MessagesList />
-                </CardMedia>
+                    <RaisedButton
+                        label={'Send'}
+                        onClick={this.sendMessage}
+                        style={{
+                            position: 'relative',
+                            right: '0'
+                        }}
+                    />
+                </Card>
 
-                <TextField
-                    onChange={this.handleChange}
-                    required={true}
-                    style={{
-                        width: '85%'
-                    }}
-                />
-
-                <RaisedButton
-                    label={'Send'}
-                    onClick={this.sendMessage}
-                />
-            </Card>
+            </Paper>
         );
     }
 }
@@ -91,13 +120,14 @@ interface ConversationMapDispatchToProps {
 interface ConversationMapToProps {
     conversationId: string;
     messagesList: any;
-    // conversationName: string
+    conversationName: string
 }
 type ConversationPropsMix = ConversationMapDispatchToProps & ConversationMapToProps;
 export default connect<ConversationMapToProps, ConversationMapDispatchToProps, {}, AppStore.Store>(
     (store) => ({
         conversationId: store.app.currentConversation,
-        messagesList: store.conversations
+        messagesList: store.conversations,
+        conversationName: store.conversations[store.app.currentConversation].conversationName
     }),
     {
         SetConversationStateOpen: UpdateConversationStatus,
