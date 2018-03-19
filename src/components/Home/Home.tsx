@@ -1,50 +1,54 @@
 import * as React from 'react';
 import { FlatButton, Paper } from 'material-ui';
-// import { RouteProps } from 'react-router';
 import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
+import { setLanguage } from '../../store/LangAction';
 
-const Home = (props: HomeProps) => {
-    const redirectToLogin = () => {
-        console.log('go to login');
-        props.history.replace('/login');
-    };
+class Home extends React.Component<HomeProps> {
+    componentDidMount() {
+        this.props.loadLanguages('en');
+    }
+    redirectToLogin = () => {
+        this.props.history.replace('/login');
+    }
 
-    const redirectToRegistration = () => {
-        props.history.replace('/registration');
-    }; 
+    redirectToRegistration = () => {
+        this.props.history.replace('/registration');
+    }
 
-    return (
+    render() {
+        return (
+            <Paper style={{
+                position: 'fixed',
+                top: '50%',
+                left: '50%',
+                marginTop: '-50px',
+                marginLeft: '-200px'
+            }}>
+                <FlatButton label={this.props.messages.login}
+                    onClick={this.redirectToLogin}
+                    style={{
+                        marginRight: '20px',
+                        backgroundColor: '#00BCD4',
+                        color: 'white',
+                    }}
 
-        <Paper style={{
-            position: 'fixed',
-            top: '50%',
-            left: '50%',
-            marginTop: '-50px',
-            marginLeft: '-200px'
-        }}>
-            <FlatButton label={'props.messages.login'}  
-                onClick= {redirectToLogin}
-                style={{
-                    marginRight: '20px',
-                    backgroundColor: '#00BCD4',
-                    color: 'white',
-                }}
+                />
 
-            />
-             
-            <FlatButton label={'props.messages.signup'} 
-            onClick = {redirectToRegistration}
-            style={{
-                backgroundColor: '#00BCD4',
-                marginLeft: '20px',
-                color: 'white'
+                <FlatButton label={this.props.messages.signup}
+                    onClick={this.redirectToRegistration}
+                    style={{
+                        backgroundColor: '#00BCD4',
+                        marginLeft: '20px',
+                        color: 'white'
 
-            }}
+                    }}
 
-            />
-        </Paper>
-    );
+                />
+            </Paper>
+        );
+
+    }
 
 };
 
@@ -53,11 +57,16 @@ interface HomeMS2P {
 }
 
 interface HomeOwnProps extends RouteComponentProps<{}> { }
+interface HomeD2P {
+    loadLanguages: (language: string) => void;
+}
+type HomeProps = HomeMS2P & HomeOwnProps & HomeD2P;
 
-type HomeProps = HomeMS2P & HomeOwnProps;
-
-export default connect<HomeMS2P, {}, HomeOwnProps, AppStore.Store>(
+export default connect<HomeMS2P, HomeD2P, HomeOwnProps, AppStore.Store>(
     (store) => ({
         messages: store.intlReducer.messages
-    })
+    }),
+    {
+        loadLanguages: setLanguage
+    }
 )(Home);

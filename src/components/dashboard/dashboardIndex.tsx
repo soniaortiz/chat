@@ -7,7 +7,7 @@ import Sidebar from '../Dashboard/Sidebar/sidebar';
 import Panel from './Panel/panel';
 import { socketListeners } from '../../socketsClient';
 import './style.css';
-import { setLanguage } from '../../store/LangAction';
+// import { setLanguage } from '../../store/LangAction';
 import { CircularProgress } from 'material-ui';
 
 interface DashboardProps extends DispatchProp<{}>, RouteComponentProps<{}> {
@@ -26,7 +26,6 @@ export class Dashboard extends React.Component<DashboardProps, DashboardState> {
     componentDidMount() {
         this.props.getUser()
             .then(() => console.log(this.props.user));
-        this.props.loadLanguages('en');
     }
     render() {
         return (
@@ -55,6 +54,6 @@ export default connect<{}, {}, DashboardProps, AppStore.Store>(
     }),
     {
         getUser: RequestUserInfo,
-        loadLanguages: setLanguage
+        // loadLanguages: setLanguage
     }
 )(Dashboard);

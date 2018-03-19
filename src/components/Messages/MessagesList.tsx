@@ -44,7 +44,10 @@ class MessagesList extends React.Component<MessagesListProps & DispMessagesToPro
                                     disabled={true}
                                     innerDivStyle={innerDivStyle}
                                 >
-                                    <p> {message.sender && message.messageContent} </p>
+                                    <div>
+                                        {/* <span>{message.sender}</span> */}
+                                        <div>{message.sender && message.messageContent}</div>
+                                    </div>
                                 </MenuItem>
                             ))
                     }
