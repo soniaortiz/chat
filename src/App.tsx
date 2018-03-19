@@ -13,7 +13,6 @@ import baseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import { composeWithDevTools } from 'remote-redux-devtools';
 import { IntlProvider } from 'react-intl-redux';
 import Home from './components/Home/Home';
-
 const getTheme = () => {
   let overwrites = {};
   return getMuiTheme(baseTheme, overwrites);

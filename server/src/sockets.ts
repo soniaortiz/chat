@@ -3,7 +3,7 @@ import { Conversation } from './controllers/conversation';
 import { conversation } from './controllers/routes';
 
 export function sockets() {
-    console.log('in server sockets: **********************************************************');
+    // console.log('in server sockets: **********************************************************');
     // tslint:disable-next-line:no-any
     nspUser.on('connection', function (client: SocketIO.Socket) {
         console.log('someone connected');

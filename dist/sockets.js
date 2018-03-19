@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var app_1 = require("./app");
 function sockets() {
-    console.log('in server sockets: **********************************************************');
+    // console.log('in server sockets: **********************************************************');
     // tslint:disable-next-line:no-any
     app_1.nspUser.on('connection', function (client) {
         console.log('someone connected');

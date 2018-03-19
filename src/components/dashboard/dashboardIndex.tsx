@@ -9,6 +9,7 @@ import { socketListeners } from '../../socketsClient';
 import './style.css';
 // import { setLanguage } from '../../store/LangAction';
 import { CircularProgress } from 'material-ui';
+import { setLanguage } from '../../store/LangAction';
 
 interface DashboardProps extends DispatchProp<{}>, RouteComponentProps<{}> {
     getUser: () => Promise<boolean>;
@@ -24,6 +25,7 @@ export class Dashboard extends React.Component<DashboardProps, DashboardState> {
         socketListeners();
     }
     componentDidMount() {
+        // this.props.loadLanguages(this.props.language);
         this.props.getUser()
             .then(() => console.log(this.props.user));
     }
@@ -54,6 +56,6 @@ export default connect<{}, {}, DashboardProps, AppStore.Store>(
     }),
     {
         getUser: RequestUserInfo,
-        // loadLanguages: setLanguage
+        loadLanguages: setLanguage
     }
 )(Dashboard);
