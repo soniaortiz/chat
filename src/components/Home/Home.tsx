@@ -6,7 +6,7 @@ import { setLanguage } from '../../store/LangAction';
 
 class Home extends React.Component<HomeProps> {
     componentDidMount() {
-        this.props.loadLanguages('en');
+        this.props.loadLanguages(this.props.language);
     }
     redirectToLogin = () => {
         this.props.history.replace('/login');
@@ -53,7 +53,9 @@ class Home extends React.Component<HomeProps> {
 };
 
 interface HomeMS2P {
-    messages: any
+    messages: any;
+    language: string;
+
 }
 
 interface HomeOwnProps extends RouteComponentProps<{}> { }
@@ -64,7 +66,8 @@ type HomeProps = HomeMS2P & HomeOwnProps & HomeD2P;
 
 export default connect<HomeMS2P, HomeD2P, HomeOwnProps, AppStore.Store>(
     (store) => ({
-        messages: store.intlReducer.messages
+        messages: store.intlReducer.messages,
+        language: store.app.locale
     }),
     {
         loadLanguages: setLanguage

@@ -25,7 +25,7 @@ export class Dashboard extends React.Component<DashboardProps, DashboardState> {
         socketListeners();
     }
     componentDidMount() {
-        // this.props.loadLanguages(this.props.language);
+        this.props.loadLanguages(this.props.language);
         this.props.getUser()
             .then(() => console.log(this.props.user));
     }
