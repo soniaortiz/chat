@@ -3,7 +3,7 @@ import SocialPerson from 'material-ui/svg-icons/social/person';
 import NotificationSms from 'material-ui/svg-icons/notification/sms';
 
 import {
-    Tabs, Tab
+    Tabs, Tab, RefreshIndicator
 } from 'material-ui';
 import Contacts from '../Contacts/Contacts';
 import Conversations from '../Conversations/conversations';
@@ -13,20 +13,28 @@ export class ContactsConversations extends React.Component<ContactsConversations
 
     render() {
         return (
-            <Tabs >
-                <Tab
-                    label={this.props.messages.conversations}
-                    icon={<NotificationSms />}
-                >
-                    <Conversations />
-                </Tab>
-                <Tab
-                    label={this.props.messages.contacts}
-                    icon={<SocialPerson />}
-                >
-                    <Contacts />
-                </Tab>
-            </Tabs>
+            this.props.messages ?
+                <Tabs >
+                    <Tab
+                        label={this.props.messages.conversations}
+                        icon={<NotificationSms />}
+                        style={{overflow: 'auto'}}
+                    >
+                        <Conversations />
+                    </Tab>
+                    <Tab
+                        label={this.props.messages.contacts}
+                        icon={<SocialPerson />}
+                        style={{overflow: 'auto'}}
+                    >
+                        <Contacts />
+                    </Tab>
+                </Tabs> :
+                <RefreshIndicator
+                    size={40}
+                    left={10}
+                    top={0}
+                    status="loading" />        
         );
     }
 }

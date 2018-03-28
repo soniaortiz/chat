@@ -72,7 +72,9 @@ export class SearchFriend extends React.Component<SearchFriendPropsMix, SearchFr
 
     render() {
         return (
-            <Paper >
+            <Paper style={
+                { overflow: 'auto' }}
+            >
                 {
                     this.props.requestWindowOpened ?
                         <ContactRequestDialog
@@ -81,8 +83,10 @@ export class SearchFriend extends React.Component<SearchFriendPropsMix, SearchFr
                         /> : false
                 }
 
-                <div className="search">
+                <div className="search" style={{ overflow: 'auto' }}>
+                    <ActionSearch />
                     <AutoComplete
+
                         onUpdateInput={this.handleNewRequest}
                         maxSearchResults={10}
                         hintText={'Search new Contact'}
@@ -102,9 +106,6 @@ export class SearchFriend extends React.Component<SearchFriendPropsMix, SearchFr
                             })
                         }
                     />
-                </div>
-                <div className="search">
-                    <ActionSearch />
                 </div>
             </Paper>
         );

@@ -94,6 +94,7 @@ class CreateChatGroup extends React.Component<ChatGroupProps, GroupConversationS
                     style={{
                         display: 'inline-block',
                         top: 0,
+                        overflow: 'auto'
                     }}
                 >
                     <p>Participants</p>

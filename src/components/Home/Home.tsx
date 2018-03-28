@@ -1,12 +1,20 @@
 import * as React from 'react';
-import { FlatButton, Paper } from 'material-ui';
+import {
+    FlatButton,
+    Paper, RefreshIndicator
+} from 'material-ui';
 import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
 import { setLanguage } from '../../store/LangAction';
 
 class Home extends React.Component<HomeProps> {
     componentDidMount() {
-        this.props.loadLanguages(this.props.language);
+        console.log(this.props.language);
+        this.props.loadLanguages(window.navigator.language); // set language 
+        if (!this.props.messages[this.props.language]) {
+            console.log('setting default language');
+            this.props.loadLanguages('en'); // set language 
+        }
     }
     redirectToLogin = () => {
         this.props.history.replace('/login');
@@ -17,17 +25,31 @@ class Home extends React.Component<HomeProps> {
     }
 
     render() {
-        return (
+        // console.log(this.props.messages);
+        return this.props.messages ?
             <Paper style={{
                 position: 'fixed',
-                top: '50%',
-                left: '50%',
-                marginTop: '-50px',
-                marginLeft: '-200px'
+                // backgroundImage: './523596673.jpg',
+                // background: './523596673.jpg',
+                // backgroundColor: 'pink',
+                backgroundRepeat: 'repeat-x',
+                width: '100%',
+                height: '100%',
             }}>
+            
+                <div>
+                    <img src="./523596673.jpg" alt="fas" style={{
+                        display: 'absolute',
+                        // margin: '300px'
+                    }}/>
+                    
+                </div>
                 <FlatButton label={this.props.messages.login}
                     onClick={this.redirectToLogin}
                     style={{
+                        position: 'relative',
+                        top: '50%',
+                        left: '50%',
                         marginRight: '20px',
                         backgroundColor: '#00BCD4',
                         color: 'white',
@@ -38,21 +60,27 @@ class Home extends React.Component<HomeProps> {
                 <FlatButton label={this.props.messages.signup}
                     onClick={this.redirectToRegistration}
                     style={{
+                        position: 'relative',
+                        top: '50%',
+                        left: '50%',
+                        marginRight: '20px',
                         backgroundColor: '#00BCD4',
-                        marginLeft: '20px',
-                        color: 'white'
-
+                        color: 'white',
                     }}
 
                 />
-            </Paper>
-        );
-
+            </Paper> :
+            <RefreshIndicator
+                size={40}
+                left={10}
+                top={0}
+                status="loading" />;
     }
 
-};
+}
 
 interface HomeMS2P {
+    // tslint:disable-next-line:no-any
     messages: any;
     language: string;
 

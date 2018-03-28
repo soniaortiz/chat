@@ -11,6 +11,7 @@ import * as H from 'history';
 import { setLanguage } from '../../../store/LangAction';
 import { OpenModalWindowAction } from '../../../store/chatGroup';
 import CreateChatGroup from '../CreateChatGroup/CreateChatGroup';
+// import Tooltip from 'material-ui/internal/Tooltip';
 
 const languages = ['es-419', 'en', 'it'];
 
@@ -43,12 +44,12 @@ export class NotificationsBar extends React.Component<NotificationsBarProps
     }
     render() {
         return (
-            < Paper >
+            < Paper style={{ overflow: 'auto' }}>
                 {
                     this.props.modalWindow ?
                         <CreateChatGroup /> :
                         false
-                 }
+                }
 
                 <Toolbar
                     style={{
@@ -63,11 +64,13 @@ export class NotificationsBar extends React.Component<NotificationsBarProps
                     </ToolbarGroup>
 
                     <ToolbarGroup >
+
                         <IconMenu
                             iconButtonElement={
                                 <ActionTranslate />
                             }
                         >
+
                             {
                                 languages.map((lang, index) => {
                                     return (
@@ -79,7 +82,6 @@ export class NotificationsBar extends React.Component<NotificationsBarProps
                                 )
                             }
                         </IconMenu >
-
                     </ToolbarGroup>
 
                     <ToolbarGroup >
@@ -133,7 +135,7 @@ export default connect<MapStateToPropsNB, MapDispatchToPropsNB, NotificationsBar
         userContactRequests: store.user.friendRequests,
         lan: store.intlReducer.locale,
         messages: store.intlReducer.messages,
-        modalWindow: store.app.conversationGroupModWin  
+        modalWindow: store.app.conversationGroupModWin
         //  to open the modal window to create a chat group
     }),
     {

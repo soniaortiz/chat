@@ -16,7 +16,7 @@ export class Panel extends React.Component<PanelPropertiesMix> {
     render() {
         console.log('this.props', this.props.showConversation);
         return (
-            <Paper style={{ position: 'absolute' , width: '70%', height: 'vh 100%'}}>
+            <Paper style={{ position: 'absolute' , width: '70%', height: 'vh 100%', overflow: 'auto'}}>
                 <Paper >
                     <Route component={NotificationsBar} />
                 </Paper>

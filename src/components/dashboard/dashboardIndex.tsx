@@ -25,14 +25,15 @@ export class Dashboard extends React.Component<DashboardProps, DashboardState> {
         socketListeners();
     }
     componentDidMount() {
-        this.props.loadLanguages(this.props.language);
+        // let lang = window.navigator.language; 
+        this.props.loadLanguages('en');
         this.props.getUser()
             .then(() => console.log(this.props.user));
     }
     render() {
         return (
             this.props.language ?
-                <div>
+                <div style={{overflow: 'auto'}}>
                     <div className={'Dashboard'}>
                         <div className="Sidebar">
                             <Sidebar />

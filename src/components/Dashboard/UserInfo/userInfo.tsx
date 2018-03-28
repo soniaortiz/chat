@@ -20,7 +20,9 @@ export class Me extends React.Component<MeProps> {
     }
     render() {
         return (
-            <Paper>
+            <Paper style={{
+                overflow: 'auto'
+            }}>
                 <Avatar src="./avatar.jpg" size={100} className="Avatar"
                     onClick={this.openAvatar}
                     style={
